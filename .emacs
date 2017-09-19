@@ -32,7 +32,7 @@
       scroll-conservatively 10000)    ;;平滑滚动
 (setq column-number-mode t)    ;;显示列号在状态栏
 (setq line-number-mode t)    ;;显示行号在状态栏
-(global-linum-mode t)    ;;显示行号
+(global-linum-mode 0)    ;;不显示行号
 (display-time-mode t)    ;;显示时间
 (setq display-time-24hr-format t)    ;;时间使用24小时制
 (setq show-paren-style 'parenthesis)    ;;括号匹配时可以高亮显示另外一边的括号
@@ -245,8 +245,8 @@
 ;;####=自定义主题设置=###########################################################################################
 (deftheme jazz "The Jazz Color Theme")
 (let ((class '((class color) (min-colors 89)))
-      (jazz-bg "#ffffff")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
-      (jazz-hil "#fdf0f0")(jazz-reg "#e8dcdc")(jazz-fun "#0018b3"))
+     (jazz-bg "#ffffff")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")(jazz-fg-1 "#555555")
+     (jazz-hil "#f2f2f2")(jazz-reg "#e8e8e8")(jazz-fun "#0018b3")(jazz-bg-1 "#e5e5e5"))
   (custom-theme-set-faces 'jazz
    `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))    ;;默认字体颜色和全局背景颜色
    `(cursor ((,class (:foreground ,jazz-fg :background ,jazz-fg))))    ;;光标颜色
@@ -255,6 +255,27 @@
    `(font-lock-comment-delimiter-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
    `(font-lock-function-name-face ((,class (:foreground ,jazz-fun))))    ;;函数名字体颜色
    `(highlight ((,class (:background ,jazz-hil))))    ;;高亮当前行背景颜色
+   `(linum ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
+   `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
+   `(fringe ((,class (:foreground ,jazz-fg :background ,jazz-bg-1))))
+   `(mode-line
+     ((,class (:foreground ,jazz-fg
+               :background ,jazz-bg-1
+               :box (:line-width 3 :color ,jazz-bg-1)))))
+   `(mode-line-buffer-id ((,class (:foreground ,jazz-fg :weight bold))))
+   `(mode-line-highlight ((,class (:foreground ,jazz-fg-1))))
+   `(mode-line-inactive
+     ((,class (:inherit mode-line :foreground ,jazz-fg
+               :background ,jazz-bg-1
+               :box (:line-width 3 :color ,jazz-bg-1)))))
+   `(mode-line-folder-face ((,class (:foreground ,jazz-fg))))
+   `(mode-line-modified-face ((,class (:foreground ,jazz-fg))))
+   `(mode-line-ro-modified-face ((,class (:foreground ,jazz-fg))))
+   `(mode-line-buffer-name ((,class (:foreground ,jazz-fg))))
+   `(mode-line-mode-name ((,class (:foreground ,jazz-fg))))
+   `(mode-line-mode-string ((,class (:foreground ,jazz-fg))))
+   `(mode-line-vc-mode ((,class (:foreground ,jazz-fg))))
+   `(mode-line-minor-mode-face ((,class (:foreground ,jazz-fg :height 96))))
    '(company-preview ((t (:foreground "darkgray" :underline t))))
    '(company-preview-common ((t (:inherit company-preview))))
    '(company-scrollbar-bg ((t (:background "#ebdcdc"))))
