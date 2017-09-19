@@ -29,7 +29,7 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))    ;;一次滚动一行
 (setq mouse-wheel-follow-mouse 't)    ;;鼠标滚动窗口
 (setq scroll-step 1
-    scroll-conservatively 10000)    ;;平滑滚动
+      scroll-conservatively 10000)    ;;平滑滚动
 (setq column-number-mode t)    ;;显示列号在状态栏
 (setq line-number-mode t)    ;;显示行号在状态栏
 (global-linum-mode t)    ;;显示行号
@@ -82,15 +82,16 @@
 (set-selection-coding-system 'utf-8)    ;;选择块编码
 (set-terminal-coding-system 'utf-8)    ;;终端编码
 (set-keyboard-coding-system 'utf-8)    ;;键盘输入编码
-(set-default-font "Consolas-11")    ;;设置英文字体
+(set-default-font "Consolas-12")    ;;设置英文字体
 (set-fontset-font (frame-parameter nil 'font)    ;;设置中文字体
-    'han '("微软雅黑" . "unicode-bmp"))
+                  'han '("微软雅黑" . "unicode-bmp"))
 
 ;;####=插件包管理源设置:=########################################################################################
 (require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")    ;;官方GNU源
-  ("marmalade" . "https://marmalade-repo.org/packages/")    ;;第三方Marmalade源
-  ("melpa" . "https://melpa.org/packages/")))    ;;第三方Melpa源
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")    ;;官方GNU源
+        ("marmalade" . "https://marmalade-repo.org/packages/")    ;;第三方Marmalade源
+        ("melpa" . "https://melpa.org/packages/")))    ;;第三方Melpa源
 (package-initialize)
 
 ;;####=自动安装插件包:=##########################################################################################
@@ -104,32 +105,56 @@
   (package-install 'rust-mode))    ;;自动安装Rust语言插件包
 (when (not (package-installed-p 'racer))
   (package-install 'racer))    ;;自动安装Rust-Racer补全插件包
-(when (not (package-installed-p 'ac-racer))
-  (package-install 'ac-racer))    ;;自动安装AC-Racer自动补全插件包
-(when (not (package-installed-p 'auto-complete))
-  (package-install 'auto-complete))    ;;自动安装自动补全插件包
-(when (not (package-installed-p 'go-autocomplete))
-  (package-install 'go-autocomplete))    ;;自动安装GO语言补全插件包
+(when (not (package-installed-p 'company))
+  (package-install 'company))    ;;自动安装company自动补全插件包
+(when (not (package-installed-p 'company-go))
+  (package-install 'company-go))    ;;自动安装Go语言自动补全插件包
+(when (not (package-installed-p 'company-racer))
+  (package-install 'company-racer))    ;;自动安装company-racer自动补全插件包
 
 ;;####=默认加载插件设置:=########################################################################################
 (require 'undo-tree)    ;;打开反撤销功能
 (require 'rust-mode)    ;;打开Rust语言编辑模式
 (require 'racer)    ;;打开Racer补全模式
 (require 'go-mode)    ;;打开GO语言编辑模式
-(require 'go-mode-autoloads)    ;;打开GO语言编辑模式
-(require 'auto-complete)    ;;打开自动补全模式
-(require 'auto-complete-config)    ;;打开自动补全配置
-(require 'go-autocomplete)    ;;打开GO语言自动补全模式
-(require 'ac-racer)    ;;打开AC-Racer补全模式
+(require 'company)    ;;打开自动补全插件包
+(require 'company-go)    ;;打开GO语言自动补全插件包
+(require 'company-racer)    ;;打开Rust语言自动补全插件包
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
-(ac-config-default)    ;;设置为默认模式 (自动补全)
-(setq ac-auto-show-menu 0.1)    ;;设置延时跳出菜单
+(setq company-tooltip-limit 20)
+(setq company-idle-delay 0.2)
+(setq company-echo-delay 0)
+(setq company-begin-commands '(self-insert-command))
+(add-hook 'go-mode-hook (lambda ()
+    (set (make-local-variable 'company-backends) '(company-go))
+    (company-mode)))
 (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))    ;;默认RS文件进入编辑模式
 (setq racer-cmd "~/.cargo/bin/racer")    ;;Racer配置路径
-(setq racer-rust-src-path "~/.rust/src")    ;;Racer源代码路径
+;;(setq racer-rust-src-path "/home/src")    ;;Rust库配置路径(原路径太长，复制一份到Home目录下)
+(unless (getenv "RUST_SRC_PATH")
+  (setenv "RUST_SRC_PATH"
+    (expand-file-name "/home/src")))
+(global-company-mode)
+(add-hook 'rust-mode-hook '(lambda () (racer-activate)
+    (racer-turn-on-eldoc)
+    (set (make-local-variable 'company-backends) '(company-racer))
+    (local-set-key (kbd "M-.") #'racer-find-definition)))    ;;跳转到定义
+
+;;####=编译窗口设置:=############################################################################################
+(defun my-compilation-mode-hook ()
+  (interactive)
+  (read-only-mode -1)    ;;更改只读模式为可输入
+  (comint-mode))    ;;切换交互模式
+(add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
+(setq special-display-buffer-names '("*compilation*"))    ;;分割编译窗口
+(setq special-display-function
+      (lambda (buffer &optional args)
+        (split-window nil (floor (* 1.2 (window-body-height))) 'left)    ;;设置编译窗口大小
+        (switch-to-buffer buffer)    ;;切换到编译窗口
+        (get-buffer-window buffer 0)))
 
 ;;####=快捷键绑定:=##############################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
@@ -199,34 +224,30 @@
   (interactive)
   (compile (concat "go build " (buffer-name (current-buffer)))))
 (global-set-key (kbd "<f5>") 'go-quick-compile)    ;;按"F5"一键编译当前GO文件(GO语言)
+(defun rust-compile-run ()
+  (interactive)
+  (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
+      (compile "cargo run")
+    (compile (concat "rustc " (buffer-file-name)))))
+(global-set-key (kbd "<f8>") 'rust-compile-run)    ;;按"F8"一键编译并运行(Rust语言)
 (defun rust-compile-build ()
   (interactive)
   (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
       (compile "cargo build")
     (compile (concat "rustc " (buffer-file-name)))))
-(global-set-key (kbd "<f8>") 'rust-compile-build)    ;;按"F8"一键编译生成EXE文件(Rust语言)
+(global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成EXE文件(Rust语言)
 (defun cpp-quick-compile()
   (interactive)
   (compile (concat "g++ -Wall -o " (file-name-sans-extension (buffer-name))
                    " " (buffer-name (current-buffer)))))
 (global-set-key (kbd "<f9>") 'cpp-quick-compile)    ;;按"F9"一键编译生成C++文件(C++语言)
 
-;;####=编译成功后自动关闭弹出窗口=###############################################################################
-(defun kill-buffer-when-compile-success (process)
-  (set-process-sentinel process
-    (lambda (proc change)
-      (when (string-match "finished" change)
-        (delete-windows-on (process-buffer proc))))))
-(add-hook 'compilation-start-hook 'kill-buffer-when-compile-success)
-
 ;;####=自定义主题设置=###########################################################################################
 (deftheme jazz "The Jazz Color Theme")
 (let ((class '((class color) (min-colors 89)))
-      (jazz-bg "#ffffff")(jazz-acbg "#ebdcdc")(jazz-fg "#232323")(jazz-acfg "#262626")
-      (jazz-acsc "#decbca")(jazz-com "#b15353")(jazz-acms "#e8d4d3")(jazz-red "#ff0000")
+      (jazz-bg "#ffffff")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
       (jazz-hil "#fdf0f0")(jazz-reg "#e8dcdc")(jazz-fun "#0018b3"))
-  (custom-theme-set-faces
-   'jazz
+  (custom-theme-set-faces 'jazz
    `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))    ;;默认字体颜色和全局背景颜色
    `(cursor ((,class (:foreground ,jazz-fg :background ,jazz-fg))))    ;;光标颜色
    `(region ((,class (:background ,jazz-reg :foreground nil))))    ;;选取块背景颜色
@@ -234,20 +255,21 @@
    `(font-lock-comment-delimiter-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
    `(font-lock-function-name-face ((,class (:foreground ,jazz-fun))))    ;;函数名字体颜色
    `(highlight ((,class (:background ,jazz-hil))))    ;;高亮当前行背景颜色
+   '(company-preview ((t (:foreground "darkgray" :underline t))))
+   '(company-preview-common ((t (:inherit company-preview))))
+   '(company-scrollbar-bg ((t (:background "#ebdcdc"))))
+   '(company-scrollbar-fg ((t (:background "#cfbdbc"))))
+   '(company-tooltip ((t (:background "#ebdcdc" :foreground "#232323"))))
+   '(company-tooltip-common ((((type x))
+    (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
+   '(company-tooltip-common-selection ((((type x))
+    (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
+   `(company-tooltip-mouse ((t (:background "#decbca"))))
+   '(company-tooltip-annotation ((t (:foreground "firebrick4"))))
+   '(company-tooltip-selection ((t (:background "#decbca" :foreground "#262626"))))   
    `(show-paren-mismatch ((,class (:foreground ,jazz-red :background nil :weight bold))))    ;;高亮括号匹配颜色
-   `(show-paren-match ((,class (:foreground ,jazz-red :background nil :weight bold))))    ;;高亮括号匹配颜色
-   `(ac-candidate-face ((,class (:background ,jazz-acbg :foreground ,jazz-acfg))))    ;;以下补全窗口颜色
-   `(ac-selection-face ((,class (:background ,jazz-acsc :foreground ,jazz-acfg))))
-   `(ac-candidate-mouse-face ((,class (:background ,jazz-acms :foreground ,jazz-acfg))))
-   `(popup-tip-face ((,class (:background ,jazz-acbg :foreground ,jazz-acfg))))
-   `(popup-scroll-bar-foreground-face ((,class (:background ,jazz-acsc))))
-   `(popup-scroll-bar-background-face ((,class (:background ,jazz-acbg))))
-   `(popup-isearch-match ((,class (:background ,jazz-acbg :foreground ,jazz-acfg))))))
+   `(show-paren-match ((,class (:foreground ,jazz-red :background nil :weight bold))))))    ;;高亮括号匹配颜色
 (provide-theme 'jazz)
-
-;;####=自动补全菜单字体=#########################################################################################
-(set-face-font 'ac-candidate-face "Consolas 11")    ;;设置菜单字体
-(set-face-font 'ac-selection-face "Consolas 11")    ;;设置菜单字体
 
 ;;####=更改GDB多窗口布局=########################################################################################
 (defadvice gdb-setup-windows (after setup-gdb-windows activate)
