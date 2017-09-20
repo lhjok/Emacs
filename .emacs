@@ -123,6 +123,7 @@
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
+(add-hook 'after-init-hook 'global-company-mode)
 (setq company-tooltip-limit 20)
 (setq company-idle-delay 0.2)
 (setq company-echo-delay 0)
@@ -142,6 +143,18 @@
     (racer-turn-on-eldoc)
     (set (make-local-variable 'company-backends) '(company-racer))
     (local-set-key (kbd "M-.") #'racer-find-definition)))    ;;跳转到定义
+(custom-set-variables    ;;补全来源设置
+ '(company-backends
+   (quote
+    (company-sample-backend
+     company-bbdb company-nxml company-css company-eclim company-semantic
+     company-clang company-xcode company-cmake company-capf company-files
+     (company-dabbrev-code company-gtags company-etags company-keywords)
+     company-oddmuse company-dabbrev)))
+ '(package-selected-packages
+   (quote
+    (slime-company undo-tree racer jazz-theme company-racer company-go))))
+(custom-set-faces)
 
 ;;####=编译窗口设置:=############################################################################################
 (defun my-compilation-mode-hook ()
