@@ -105,6 +105,10 @@
   (package-install 'rust-mode))    ;;自动安装Rust语言插件包
 (when (not (package-installed-p 'racer))
   (package-install 'racer))    ;;自动安装Rust-Racer补全插件包
+(when (not (package-installed-p 'flycheck))
+  (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
+(when (not (package-installed-p 'flycheck-rust))
+  (package-install 'flycheck-rust))    ;;自动安装flycheck-rust语法检查插件包
 (when (not (package-installed-p 'company))
   (package-install 'company))    ;;自动安装company自动补全插件包
 (when (not (package-installed-p 'company-go))
@@ -117,6 +121,8 @@
 (require 'rust-mode)    ;;打开Rust语言编辑模式
 (require 'racer)    ;;打开Racer补全模式
 (require 'go-mode)    ;;打开GO语言编辑模式
+(require 'flycheck)    ;;打开语法检查插件包
+(require 'flycheck-rust)    ;;打开Rust语言语法检查插件包
 (require 'company)    ;;打开自动补全插件包
 (require 'company-go)    ;;打开GO语言自动补全插件包
 (require 'company-racer)    ;;打开Rust语言自动补全插件包
@@ -124,6 +130,7 @@
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
 (add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 (setq company-tooltip-limit 20)
 (setq company-idle-delay 0.2)
 (setq company-echo-delay 0)
@@ -141,6 +148,7 @@
 (global-company-mode)
 (add-hook 'rust-mode-hook '(lambda () (racer-activate)
     (racer-turn-on-eldoc)
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
     (set (make-local-variable 'company-backends) '(company-racer))
     (local-set-key (kbd "M-.") #'racer-find-definition)))    ;;跳转到定义
 (custom-set-variables    ;;补全来源设置
@@ -233,10 +241,14 @@
   (interactive)
   (gdb (gud-query-cmdline 'gdb))(tool-bar-mode 1))
 (global-set-key (kbd "<f1>") 'gdb-quick-run)    ;;按"F1"一键进入GDB调试环境
-(defun go-quick-compile()
+(defun go-quick-run()
+  (interactive)
+  (compile (concat "go run " (buffer-name (current-buffer)))))
+(global-set-key (kbd "<f5>") 'go-quick-run)    ;;按"F5"一键编译运行当前GO文件(GO语言)
+(defun go-quick-build()
   (interactive)
   (compile (concat "go build " (buffer-name (current-buffer)))))
-(global-set-key (kbd "<f5>") 'go-quick-compile)    ;;按"F5"一键编译当前GO文件(GO语言)
+(global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"F5"一键编译生成当前GO文件(GO语言)
 (defun rust-compile-run ()
   (interactive)
   (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
