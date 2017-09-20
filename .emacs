@@ -17,7 +17,7 @@
 (setq mouse-drag-copy-region nil)    ;;禁止采用鼠标选取后就进入剪切板
 (set-default 'truncate-lines t)    ;;关闭自动换行功能
 (setq pop-up-windows nil)    ;;禁止自动弹出窗口
-(global-hl-line-mode t)    ;;高亮光标所在行
+(global-hl-line-mode 0)    ;;关闭高亮光标所在行
 (cua-mode t)    ;;打开（C-x剪切）/（C-c拷贝）/（C-v粘贴）功能键
 (show-paren-mode t)    ;;打开括号匹配显示模式
 (electric-pair-mode t)    ;;开启自带自动补全括号
@@ -151,10 +151,10 @@
 (add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
 (setq special-display-buffer-names '("*compilation*"))    ;;分割编译窗口
 (setq special-display-function
-      (lambda (buffer &optional args)
-        (split-window nil (floor (* 1.2 (window-body-height))) 'left)    ;;设置编译窗口大小
-        (switch-to-buffer buffer)    ;;切换到编译窗口
-        (get-buffer-window buffer 0)))
+  (lambda (buffer &optional args)
+  (split-window nil (floor (* 1.2 (window-body-height))) 'left)    ;;设置编译窗口大小
+  (switch-to-buffer buffer)    ;;切换到编译窗口
+  (get-buffer-window buffer 0)))
 
 ;;####=快捷键绑定:=##############################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
@@ -245,8 +245,8 @@
 ;;####=自定义主题设置=###########################################################################################
 (deftheme jazz "The Jazz Color Theme")
 (let ((class '((class color) (min-colors 89)))
-     (jazz-bg "#ffffff")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")(jazz-fg-1 "#555555")
-     (jazz-hil "#f2f2f2")(jazz-reg "#e8e8e8")(jazz-fun "#0018b3")(jazz-bg-1 "#e5e5e5"))
+     (jazz-bg "#ffffff")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
+     (jazz-fg-1 "#555555")(jazz-reg "#faf1f1")(jazz-fun "#0018b3")(jazz-bg-1 "#dbdbdb"))
   (custom-theme-set-faces 'jazz
    `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))    ;;默认字体颜色和全局背景颜色
    `(cursor ((,class (:foreground ,jazz-fg :background ,jazz-fg))))    ;;光标颜色
@@ -254,7 +254,10 @@
    `(font-lock-comment-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
    `(font-lock-comment-delimiter-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
    `(font-lock-function-name-face ((,class (:foreground ,jazz-fun))))    ;;函数名字体颜色
-   `(highlight ((,class (:background ,jazz-hil))))    ;;高亮当前行背景颜色
+   `(highlight ((,class (:background ,jazz-bg-1))))    ;;高亮当前行背景颜色
+   `(header-line ((,class (:foreground ,jazz-fg
+                           :background ,jazz-bg-1
+                           :box (:line-width -1 :color ,jazz-bg-1)))))
    `(linum ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
    `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
    `(fringe ((,class (:foreground ,jazz-fg :background ,jazz-bg-1))))
