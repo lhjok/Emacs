@@ -153,7 +153,7 @@
      company-oddmuse company-dabbrev)))
  '(package-selected-packages
    (quote
-    (slime-company undo-tree racer jazz-theme company-racer company-go))))
+    (undo-tree racer jazz-theme company-racer company-go))))
 (custom-set-faces)
 
 ;;####=编译窗口设置:=############################################################################################
