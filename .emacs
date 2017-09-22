@@ -115,6 +115,8 @@
   (package-install 'company-go))    ;;自动安装Go语言自动补全插件包
 (when (not (package-installed-p 'company-racer))
   (package-install 'company-racer))    ;;自动安装company-racer自动补全插件包
+(when (not (package-installed-p 'highlight-symbol))
+  (package-install 'highlight-symbol))    ;;自动安装highlight-symbol自动高亮相同词插件包
 
 ;;####=默认加载插件设置:=########################################################################################
 (require 'undo-tree)    ;;打开反撤销功能
@@ -126,11 +128,14 @@
 (require 'company)    ;;打开自动补全插件包
 (require 'company-go)    ;;打开GO语言自动补全插件包
 (require 'company-racer)    ;;打开Rust语言自动补全插件包
+(require 'highlight-symbol)    ;;打开自动高亮相同词插件包
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'prog-mode-hook 'highlight-symbol-mode)
+(setq highlight-symbol-idle-delay 0.1)
 (setq company-tooltip-limit 20)
 (setq company-idle-delay 0.2)
 (setq company-echo-delay 0)
@@ -218,6 +223,8 @@
 (global-set-key (kbd "M-/") 'hippie-expand)    ;;自带的自动补全
 (global-set-key (kbd "C-{") 'start-kbd-macro)    ;;开始录制宏
 (global-set-key (kbd "C-}") 'end-kbd-macro)    ;;结束宏录制
+(global-set-key (kbd "C-.") 'highlight-symbol-next)    ;;下一个高亮相同词
+(global-set-key (kbd "C-,") 'highlight-symbol-prev)    ;;上一个高亮相同词
 (global-set-key (kbd "C-S-e") 'call-last-kbd-macro)    ;;执行上一次绑定的宏命令
 (global-set-key (kbd "C-S-q") 'save-buffers-kill-emacs)    ;;退出程序
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
