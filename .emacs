@@ -48,7 +48,6 @@
 (setq default-directory "~/")    ;;设置打开文件的缺省路径
 (setq default-major-mode 'text-mode)    ;;打开缺省文本模式
 (semantic-mode t)    ;;开启自带智能补全引擎 (下面一行设置头文件路径)
-(semantic-add-system-include "/usr/include/c++/6.1.1" 'c++-mode)    ;;智能补全配置 (6.1.1是版本)
 (global-semantic-idle-summary-mode t)    ;;加载Semantic辅助模块
 (global-semantic-show-parser-state-mode t)    ;;设置Semantic显示出当前解析状态
 (setq hippie-expand-try-functions-list    ;;自带补全列表
@@ -103,38 +102,54 @@
   (package-install 'go-mode))    ;;自动安装GO语言插件包
 (when (not (package-installed-p 'rust-mode))
   (package-install 'rust-mode))    ;;自动安装Rust语言插件包
+(when (not (package-installed-p 'ycmd))
+  (package-install 'ycmd))    ;;自动安装ycmd补全后端插件包
 (when (not (package-installed-p 'racer))
   (package-install 'racer))    ;;自动安装Rust-Racer补全插件包
 (when (not (package-installed-p 'flycheck))
   (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
 (when (not (package-installed-p 'flycheck-rust))
   (package-install 'flycheck-rust))    ;;自动安装flycheck-rust语法检查插件包
+(when (not (package-installed-p 'flycheck-ycmd))
+  (package-install 'flycheck-ycmd))    ;;自动安装flycheck-ycmd语法检查补全后端插件包
 (when (not (package-installed-p 'company))
   (package-install 'company))    ;;自动安装company自动补全插件包
 (when (not (package-installed-p 'company-go))
   (package-install 'company-go))    ;;自动安装Go语言自动补全插件包
 (when (not (package-installed-p 'company-racer))
   (package-install 'company-racer))    ;;自动安装company-racer自动补全插件包
+(when (not (package-installed-p 'company-ycmd))
+  (package-install 'company-ycmd))    ;;自动安装company-ycmd自动补全后端插件包
 (when (not (package-installed-p 'highlight-symbol))
   (package-install 'highlight-symbol))    ;;自动安装highlight-symbol自动高亮相同词插件包
 
 ;;####=默认加载插件设置:=########################################################################################
 (require 'undo-tree)    ;;打开反撤销功能
 (require 'rust-mode)    ;;打开Rust语言编辑模式
+(require 'ycmd)    ;;打开Ycmd自动补全后端
 (require 'racer)    ;;打开Racer补全模式
 (require 'go-mode)    ;;打开GO语言编辑模式
 (require 'flycheck)    ;;打开语法检查插件包
 (require 'flycheck-rust)    ;;打开Rust语言语法检查插件包
+(require 'flycheck-ycmd)    ;;打开Ycmd语法检查补全后端
 (require 'company)    ;;打开自动补全插件包
 (require 'company-go)    ;;打开GO语言自动补全插件包
 (require 'company-racer)    ;;打开Rust语言自动补全插件包
+(require 'company-ycmd)    ;;打开Ycmd自动补全后端
 (require 'highlight-symbol)    ;;打开自动高亮相同词插件包
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
+(add-hook 'after-init-hook #'global-ycmd-mode)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
+(company-ycmd-setup)
+(flycheck-ycmd-setup)
+(set-variable 'ycmd-server-command '("python" "/home/lhjok/.ycmd/ycmd"))
+(set-variable 'ycmd-global-config "/home/lhjok/.ycmd/examples/.ycm_extra_conf.py")
+(when (not (display-graphic-p))
+  (setq flycheck-indication-mode nil))
 (setq highlight-symbol-idle-delay 0.1)
 (setq company-tooltip-limit 20)
 (setq company-idle-delay 0.2)
@@ -168,6 +183,11 @@
    (quote
     (undo-tree racer jazz-theme company-racer company-go))))
 (custom-set-faces)
+(defun ycmd-setup-completion-at-point-function ()
+  "Setup `completion-at-point-functions' for `ycmd-mode'."
+  (add-hook 'completion-at-point-functions
+            #'ycmd-complete-at-point nil :local))
+(add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function)
 
 ;;####=编译窗口设置:=############################################################################################
 (defun my-compilation-mode-hook ()
