@@ -171,17 +171,12 @@
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
     (set (make-local-variable 'company-backends) '(company-racer))
     (local-set-key (kbd "M-.") #'racer-find-definition)))    ;;跳转到定义
-(custom-set-variables    ;;补全来源设置
+(custom-set-variables
  '(company-backends
    (quote
-    (company-sample-backend
-     company-bbdb company-nxml company-css company-eclim company-semantic
-     company-clang company-xcode company-cmake company-capf company-files
-     (company-dabbrev-code company-gtags company-etags company-keywords)
-     company-oddmuse company-dabbrev)))
- '(package-selected-packages
-   (quote
-    (undo-tree racer jazz-theme company-racer company-go))))
+    (company-keywords company-ycmd company-bbdb company-nxml company-css
+     company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+     (company-dabbrev-code company-gtags company-etags company-keywords) company-oddmuse company-dabbrev))))
 (custom-set-faces)
 (defun ycmd-setup-completion-at-point-function ()
   "Setup `completion-at-point-functions' for `ycmd-mode'."
