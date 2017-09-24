@@ -85,59 +85,6 @@
 (set-fontset-font (frame-parameter nil 'font)    ;;设置中文字体
                   'han '("Source Code Pro" . "unicode-bmp"))
 
-;;####=自定义主题设置=###########################################################################################
-(deftheme jazz "The Jazz Color Theme")
-(let ((class '((class color) (min-colors 89)))
-     (jazz-bg "#f5f5f5")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
-     (jazz-fg-1 "#555555")(jazz-reg "#d4d4d4")(jazz-fun "#0018b3")(jazz-bg-1 "#d4d4d4"))
-  (custom-theme-set-faces 'jazz
-   `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))    ;;默认字体颜色和全局背景颜色
-   `(cursor ((,class (:foreground ,jazz-fg :background ,jazz-fg))))    ;;光标颜色
-   `(region ((,class (:background ,jazz-reg :foreground nil))))    ;;选取块背景颜色
-   `(font-lock-comment-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
-   `(font-lock-comment-delimiter-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
-   `(font-lock-function-name-face ((,class (:foreground ,jazz-fun))))    ;;函数名字体颜色
-   `(highlight ((,class (:background ,jazz-bg-1))))    ;;高亮当前行背景颜色
-   `(header-line ((,class (:foreground ,jazz-fg
-                           :background ,jazz-bg-1
-                           :box (:line-width -1 :color ,jazz-bg-1)))))
-   `(linum ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
-   `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
-   `(fringe ((,class (:foreground ,jazz-fg :background ,jazz-bg-1))))
-   `(mode-line
-     ((,class (:foreground ,jazz-fg
-               :background ,jazz-bg-1
-               :box (:line-width 3 :color ,jazz-bg-1)))))
-   `(mode-line-buffer-id ((,class (:foreground ,jazz-fg :weight bold))))
-   `(mode-line-highlight ((,class (:foreground ,jazz-fg-1))))
-   `(mode-line-inactive
-     ((,class (:inherit mode-line :foreground ,jazz-fg
-               :background ,jazz-bg-1
-               :box (:line-width 3 :color ,jazz-bg-1)))))
-   `(mode-line-folder-face ((,class (:foreground ,jazz-fg))))
-   `(mode-line-modified-face ((,class (:foreground ,jazz-fg))))
-   `(mode-line-ro-modified-face ((,class (:foreground ,jazz-fg))))
-   `(mode-line-buffer-name ((,class (:foreground ,jazz-fg))))
-   `(mode-line-mode-name ((,class (:foreground ,jazz-fg))))
-   `(mode-line-mode-string ((,class (:foreground ,jazz-fg))))
-   `(mode-line-vc-mode ((,class (:foreground ,jazz-fg))))
-   `(mode-line-minor-mode-face ((,class (:foreground ,jazz-fg :height 96))))
-   '(company-preview ((t (:foreground "darkgray" :underline t))))
-   '(company-preview-common ((t (:inherit company-preview))))
-   '(company-scrollbar-bg ((t (:background "#d0d0d0"))))
-   '(company-scrollbar-fg ((t (:background "#c2c2c2"))))
-   '(company-tooltip ((t (:background "#dedede" :foreground "#232323"))))
-   '(company-tooltip-common ((((type x))
-    (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
-   '(company-tooltip-common-selection ((((type x))
-    (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
-   `(company-tooltip-mouse ((t (:background "#d0d0d0"))))
-   '(company-tooltip-annotation ((t (:foreground "#636363"))))
-   '(company-tooltip-selection ((t (:background "#d0d0d0" :foreground "#232323"))))   
-   `(show-paren-mismatch ((,class (:foreground ,jazz-red :background nil :weight bold))))    ;;高亮括号匹配颜色
-   `(show-paren-match ((,class (:foreground ,jazz-red :background nil :weight bold))))))    ;;高亮括号匹配颜色
-(provide-theme 'jazz)
-
 ;;####=插件包管理源设置:=########################################################################################
 (require 'package)
 (setq package-archives
@@ -237,6 +184,59 @@
             #'ycmd-complete-at-point nil :local))
 (add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function)
 
+;;####=自定义主题设置=###########################################################################################
+(deftheme jazz "The Jazz Color Theme")
+(let ((class '((class color) (min-colors 89)))
+     (jazz-bg "#f5f5f5")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
+     (jazz-fg-1 "#555555")(jazz-reg "#d4d4d4")(jazz-fun "#0018b3")(jazz-bg-1 "#d4d4d4"))
+  (custom-theme-set-faces 'jazz
+   `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))    ;;默认字体颜色和全局背景颜色
+   `(cursor ((,class (:foreground ,jazz-fg :background ,jazz-fg))))    ;;光标颜色
+   `(region ((,class (:background ,jazz-reg :foreground nil))))    ;;选取块背景颜色
+   `(font-lock-comment-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
+   `(font-lock-comment-delimiter-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
+   `(font-lock-function-name-face ((,class (:foreground ,jazz-fun))))    ;;函数名字体颜色
+   `(highlight ((,class (:background ,jazz-bg-1))))    ;;高亮当前行背景颜色
+   `(header-line ((,class (:foreground ,jazz-fg
+                           :background ,jazz-bg-1
+                           :box (:line-width -1 :color ,jazz-bg-1)))))
+   `(linum ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
+   `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
+   `(fringe ((,class (:foreground ,jazz-fg :background ,jazz-bg-1))))
+   `(mode-line
+     ((,class (:foreground ,jazz-fg
+               :background ,jazz-bg-1
+               :box (:line-width 3 :color ,jazz-bg-1)))))
+   `(mode-line-buffer-id ((,class (:foreground ,jazz-fg :weight bold))))
+   `(mode-line-highlight ((,class (:foreground ,jazz-fg-1))))
+   `(mode-line-inactive
+     ((,class (:inherit mode-line :foreground ,jazz-fg
+               :background ,jazz-bg-1
+               :box (:line-width 3 :color ,jazz-bg-1)))))
+   `(mode-line-folder-face ((,class (:foreground ,jazz-fg))))
+   `(mode-line-modified-face ((,class (:foreground ,jazz-fg))))
+   `(mode-line-ro-modified-face ((,class (:foreground ,jazz-fg))))
+   `(mode-line-buffer-name ((,class (:foreground ,jazz-fg))))
+   `(mode-line-mode-name ((,class (:foreground ,jazz-fg))))
+   `(mode-line-mode-string ((,class (:foreground ,jazz-fg))))
+   `(mode-line-vc-mode ((,class (:foreground ,jazz-fg))))
+   `(mode-line-minor-mode-face ((,class (:foreground ,jazz-fg :height 96))))
+   '(company-preview ((t (:foreground "darkgray" :underline t))))
+   '(company-preview-common ((t (:inherit company-preview))))
+   '(company-scrollbar-bg ((t (:background "#d0d0d0"))))
+   '(company-scrollbar-fg ((t (:background "#c2c2c2"))))
+   '(company-tooltip ((t (:background "#dedede" :foreground "#232323"))))
+   '(company-tooltip-common ((((type x))
+    (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
+   '(company-tooltip-common-selection ((((type x))
+    (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
+   `(company-tooltip-mouse ((t (:background "#d0d0d0"))))
+   '(company-tooltip-annotation ((t (:foreground "#636363"))))
+   '(company-tooltip-selection ((t (:background "#d0d0d0" :foreground "#232323"))))   
+   `(show-paren-mismatch ((,class (:foreground ,jazz-red :background nil :weight bold))))    ;;高亮括号匹配颜色
+   `(show-paren-match ((,class (:foreground ,jazz-red :background nil :weight bold))))))    ;;高亮括号匹配颜色
+(provide-theme 'jazz)
+
 ;;####=编译窗口设置:=############################################################################################
 (defun my-compilation-mode-hook ()
   (interactive)
@@ -323,7 +323,7 @@
 (defun go-quick-build()
   (interactive)
   (compile (concat "go build " (buffer-name (current-buffer)))))
-(global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"F5"一键编译生成当前GO文件(GO语言)
+(global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"Ctrl+F5"一键编译生成当前GO文件(GO语言)
 (defun rust-compile-run ()
   (interactive)
   (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
