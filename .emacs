@@ -249,6 +249,17 @@
   (split-window nil (floor (* 1.2 (window-body-height))) 'left)    ;;设置编译窗口大小
   (switch-to-buffer buffer)    ;;切换到编译窗口
   (get-buffer-window buffer 0)))
+(defun my-ansi-term ()    ;;真实终端设置
+  (interactive)
+  (progn
+    (if (not (get-buffer-window "*ansi-term*"))
+        (progn
+          (split-window-vertically)
+          (other-window 1)
+          (shrink-window (- (window-height (get-buffer-window "*ansi-term*")) 15))
+          (ansi-term "/bin/bash")
+          (switch-to-buffer "*ansi-term*")))))
+(global-set-key (kbd "<f12>") 'my-ansi-term)    ;;按"F12"一键开启真实终端
 
 ;;####=快捷键绑定:=##############################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
@@ -298,7 +309,7 @@
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
 (define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
 
-;;####=代码折叠功能:系统自带功能=################################################################################
+;;####=代码折叠功能:系统自带功能=#################################################################################
 (load-library "hideshow")    ;;开启代码折叠功能
 (add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
 (add-hook 'c++-mode-hook 'hs-minor-mode)    ;;C++文件折叠功能
