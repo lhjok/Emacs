@@ -154,7 +154,8 @@
 (setq company-begin-commands '(self-insert-command))
 (add-hook 'go-mode-hook (lambda ()
     (set (make-local-variable 'company-backends) '(company-ycmd))
-    (company-mode)))
+    (company-mode)
+    (local-set-key (kbd "M-.") #'godef-jump-other-window)))    ;;跳转到定义
 (setq gofmt-command "goreturns")
 (add-hook 'before-save-hook 'gofmt-before-save)
 (autoload 'rust-mode "rust-mode" nil t)
