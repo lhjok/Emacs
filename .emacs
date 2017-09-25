@@ -114,8 +114,6 @@
   (package-install 'flycheck-ycmd))    ;;自动安装flycheck-ycmd语法检查补全后端插件包
 (when (not (package-installed-p 'company))
   (package-install 'company))    ;;自动安装company自动补全插件包
-(when (not (package-installed-p 'company-go))
-  (package-install 'company-go))    ;;自动安装Go语言自动补全插件包
 (when (not (package-installed-p 'company-racer))
   (package-install 'company-racer))    ;;自动安装company-racer自动补全插件包
 (when (not (package-installed-p 'company-ycmd))
@@ -133,7 +131,6 @@
 (require 'flycheck-rust)    ;;打开Rust语言语法检查插件包
 (require 'flycheck-ycmd)    ;;打开Ycmd语法检查补全后端
 (require 'company)    ;;打开自动补全插件包
-(require 'company-go)    ;;打开GO语言自动补全插件包
 (require 'company-racer)    ;;打开Rust语言自动补全插件包
 (require 'company-ycmd)    ;;打开Ycmd自动补全后端
 (require 'highlight-symbol)    ;;打开自动高亮相同词插件包
@@ -156,8 +153,10 @@
 (setq company-echo-delay 0)
 (setq company-begin-commands '(self-insert-command))
 (add-hook 'go-mode-hook (lambda ()
-    (set (make-local-variable 'company-backends) '(company-go))
+    (set (make-local-variable 'company-backends) '(company-ycmd))
     (company-mode)))
+(setq gofmt-command "goreturns")
+(add-hook 'before-save-hook 'gofmt-before-save)
 (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))    ;;默认RS文件进入编辑模式
 (setq racer-cmd "~/.cargo/bin/racer")    ;;Racer配置路径
