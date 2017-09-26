@@ -165,7 +165,6 @@
 (unless (getenv "RUST_SRC_PATH")
   (setenv "RUST_SRC_PATH"
     (expand-file-name "/home/src")))
-(global-company-mode)
 (add-hook 'rust-mode-hook '(lambda () (racer-activate)
     (racer-turn-on-eldoc)
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
