@@ -187,7 +187,7 @@
 ;;####=自定义主题设置=###########################################################################################
 (deftheme jazz "The Jazz Color Theme")
 (let ((class '((class color) (min-colors 89)))
-     (jazz-bg "#f5f5f5")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
+     (jazz-bg "#f7f7f7")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
      (jazz-fg-1 "#555555")(jazz-reg "#d4d4d4")(jazz-fun "#0018b3")(jazz-bg-1 "#d4d4d4"))
   (custom-theme-set-faces 'jazz
    `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))    ;;默认字体颜色和全局背景颜色
