@@ -1,7 +1,3 @@
-;; 更改窗口大小:（下面三行代码添加到：~/.Xresources）
-;; Emacs.FontBackend: xft
-;; Emacs.geometry: 155x50+330+200
-;; $ xrdb .Xresources
 ;;####=优先启动设置:=############################################################################################
 (tool-bar-mode 0)    ;;取消工具栏
 (scroll-bar-mode 0)    ;;取消滚动条
@@ -182,6 +178,9 @@
   (add-hook 'completion-at-point-functions
             #'ycmd-complete-at-point nil :local))
 (add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function)
+(set-frame-position (selected-frame) 300 110)    ;;窗口位置
+(set-frame-width (selected-frame) 140)    ;;窗口宽度
+(set-frame-height (selected-frame) 50)    ;;窗口高度
 
 ;;####=自定义主题设置=###########################################################################################
 (deftheme jazz "The Jazz Color Theme")
