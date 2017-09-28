@@ -98,6 +98,8 @@
   (package-install 'go-mode))    ;;自动安装GO语言插件包
 (when (not (package-installed-p 'rust-mode))
   (package-install 'rust-mode))    ;;自动安装Rust语言插件包
+(when (not (package-installed-p 'toml-mode))
+  (package-install 'toml-mode))    ;;自动安装toml插件包
 (when (not (package-installed-p 'ycmd))
   (package-install 'ycmd))    ;;自动安装ycmd补全后端插件包
 (when (not (package-installed-p 'racer))
@@ -120,6 +122,7 @@
 ;;####=默认加载插件设置:=########################################################################################
 (require 'undo-tree)    ;;打开反撤销功能
 (require 'rust-mode)    ;;打开Rust语言编辑模式
+(require 'toml-mode)    ;;打开toml编辑模式
 (require 'ycmd)    ;;打开Ycmd自动补全后端
 (require 'racer)    ;;打开Racer补全模式
 (require 'go-mode)    ;;打开GO语言编辑模式
@@ -133,6 +136,7 @@
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
+(setq rust-format-on-save t)    ;;保存自动格式化文件
 (add-hook 'after-init-hook #'global-ycmd-mode)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -156,6 +160,7 @@
 (add-hook 'before-save-hook 'gofmt-before-save)
 (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))    ;;默认RS文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
 (setq racer-cmd "~/.cargo/bin/racer")    ;;Racer配置路径
 ;;(setq racer-rust-src-path "/home/src")    ;;Rust库配置路径(原路径太长，复制一份到Home目录下)
 (unless (getenv "RUST_SRC_PATH")
@@ -344,7 +349,13 @@
   (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
       (compile "cargo build")
     (compile (concat "rustc " (buffer-file-name)))))
-(global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成EXE文件(Rust语言)
+(global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
+(defun rust-compile-build-release ()
+  (interactive)
+  (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
+      (compile "cargo build --release")
+    (compile (concat "rustc " (buffer-file-name)))))
+(global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
 (defun cpp-quick-compile()
   (interactive)
   (compile (concat "g++ -Wall -o " (file-name-sans-extension (buffer-name))
