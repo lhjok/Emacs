@@ -248,18 +248,18 @@
 (add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
 (setq special-display-buffer-names '("*compilation*"))    ;;分割编译窗口
 (setq special-display-function
-  (lambda (buffer &optional args)
-  (split-window nil (floor (* 1.2 (window-body-height))) 'left)    ;;设置编译窗口大小
-  (switch-to-buffer buffer)    ;;切换到编译窗口
-  (get-buffer-window buffer 0)))
+      (lambda (buffer &optional args)
+        (split-window-horizontally ( / ( * (window-width) 2) 3))    ;;设置编译窗口大小
+        (other-window 1)
+        (switch-to-buffer buffer)    ;;切换到编译窗口
+        (get-buffer-window buffer 0)))
 (defun my-ansi-term ()    ;;真实终端设置
   (interactive)
   (progn
     (if (not (get-buffer-window "*ansi-term*"))
         (progn
-          (split-window-vertically)
+          (split-window-vertically ( - (window-height (get-buffer-window "*ansi-term*")) 15))
           (other-window 1)
-          (shrink-window (- (window-height (get-buffer-window "*ansi-term*")) 15))
           (ansi-term "/bin/bash")
           (switch-to-buffer "*ansi-term*")))))
 (global-set-key (kbd "<f12>") 'my-ansi-term)    ;;按"F12"一键开启真实终端
