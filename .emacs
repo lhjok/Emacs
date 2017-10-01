@@ -199,6 +199,7 @@
    `(font-lock-comment-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
    `(font-lock-comment-delimiter-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
    `(font-lock-function-name-face ((,class (:foreground ,jazz-fun))))    ;;函数名字体颜色
+   `(font-lock-keyword-face ((t (:foreground "Purple" :weight bold))))    ;;关键字字体颜色
    `(highlight ((,class (:background ,jazz-bg-1))))    ;;高亮当前行背景颜色
    `(header-line ((,class (:foreground ,jazz-fg
                            :background ,jazz-bg-1
