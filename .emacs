@@ -229,7 +229,7 @@
    '(company-preview ((t (:foreground "darkgray" :underline t))))
    '(company-preview-common ((t (:inherit company-preview))))
    '(company-scrollbar-bg ((t (:background "#d0d0d0"))))
-   '(company-scrollbar-fg ((t (:background "#c2c2c2"))))
+   '(company-scrollbar-fg ((t (:background "#b8b8b8"))))
    '(company-tooltip ((t (:background "#dedede" :foreground "#212121"))))
    '(company-tooltip-common ((((type x))
     (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
