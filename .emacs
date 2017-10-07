@@ -16,6 +16,7 @@
 (global-hl-line-mode 0)    ;;关闭高亮光标所在行
 (cua-mode t)    ;;打开（C-x剪切）/（C-c拷贝）/（C-v粘贴）功能键
 (show-paren-mode t)    ;;打开括号匹配显示模式
+(desktop-save-mode 1)    ;;默认打开上一次编辑的文件
 (electric-pair-mode t)    ;;开启自带自动补全括号
 (global-ede-mode t)    ;;开启自带EDE模块
 (mouse-wheel-mode t)    ;;开启鼠标滚轮
@@ -191,7 +192,7 @@
 (deftheme jazz "The Jazz Color Theme")
 (let ((class '((class color) (min-colors 89)))
      (jazz-bg "#f7f7f7")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
-     (jazz-fg-1 "#555555")(jazz-reg "#d4d4d4")(jazz-fun "#0018b3")(jazz-bg-1 "#d4d4d4"))
+     (jazz-fg-1 "#555555")(jazz-reg "#97d7fc")(jazz-fun "#0018b3")(jazz-bg-1 "#d4d4d4"))
   (custom-theme-set-faces 'jazz
    `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))    ;;默认字体颜色和全局背景颜色
    `(cursor ((,class (:foreground ,jazz-fg :background ,jazz-fg))))    ;;光标颜色
@@ -229,14 +230,14 @@
    '(company-preview-common ((t (:inherit company-preview))))
    '(company-scrollbar-bg ((t (:background "#d0d0d0"))))
    '(company-scrollbar-fg ((t (:background "#c2c2c2"))))
-   '(company-tooltip ((t (:background "#dedede" :foreground "#232323"))))
+   '(company-tooltip ((t (:background "#dedede" :foreground "#212121"))))
    '(company-tooltip-common ((((type x))
     (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
    '(company-tooltip-common-selection ((((type x))
     (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
-   `(company-tooltip-mouse ((t (:background "#d0d0d0"))))
-   '(company-tooltip-annotation ((t (:foreground "#636363"))))
-   '(company-tooltip-selection ((t (:background "#d0d0d0" :foreground "#232323"))))   
+   `(company-tooltip-mouse ((t (:background "#cacaca"))))
+   '(company-tooltip-annotation ((t (:foreground "firebrick4"))))
+   '(company-tooltip-selection ((t (:background "#cacaca" :foreground "#212121"))))
    `(show-paren-mismatch ((,class (:foreground ,jazz-red :background nil :weight bold))))    ;;高亮括号匹配颜色
    `(show-paren-match ((,class (:foreground ,jazz-red :background nil :weight bold))))))    ;;高亮括号匹配颜色
 (provide-theme 'jazz)
