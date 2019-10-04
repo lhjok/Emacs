@@ -99,6 +99,8 @@
   (package-install 'go-mode))    ;;自动安装GO语言插件包
 (when (not (package-installed-p 'rust-mode))
   (package-install 'rust-mode))    ;;自动安装Rust语言插件包
+(when (not (package-installed-p 'js2-mode))
+  (package-install 'js2-mode))    ;;自动安装JavaScript语言插件包
 (when (not (package-installed-p 'toml-mode))
   (package-install 'toml-mode))    ;;自动安装toml插件包
 (when (not (package-installed-p 'ycmd))
@@ -123,6 +125,7 @@
 ;;####=默认加载插件设置:=########################################################################################
 (require 'undo-tree)    ;;打开反撤销功能
 (require 'rust-mode)    ;;打开Rust语言编辑模式
+(require 'js2-mode)    ;;打开JavaScript语言编辑模式
 (require 'toml-mode)    ;;打开toml编辑模式
 (require 'ycmd)    ;;打开Ycmd自动补全后端
 (require 'racer)    ;;打开Racer补全模式
@@ -159,7 +162,9 @@
     (local-set-key (kbd "M-.") #'godef-jump-other-window)))    ;;跳转到定义
 (setq gofmt-command "goreturns")
 (add-hook 'before-save-hook 'gofmt-before-save)
+(autoload 'js2-mode "js2-mode" nil t)
 (autoload 'rust-mode "rust-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))    ;;默认RS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
 (setq racer-cmd "~/.cargo/bin/racer")    ;;Racer配置路径
@@ -175,9 +180,12 @@
 (custom-set-variables
  '(company-backends
    (quote
-    (company-keywords company-ycmd company-bbdb company-nxml company-css
-     company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
-     (company-dabbrev-code company-gtags company-etags company-keywords) company-oddmuse company-dabbrev))))
+    (company-keywords company-ycmd company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+                      (company-dabbrev-code company-gtags company-etags company-keywords)
+                      company-oddmuse company-dabbrev)))
+ '(package-selected-packages
+   (quote
+    (highlight-symbol company-ycmd company-racer company flycheck-ycmd flycheck-rust flycheck racer ycmd toml-mode rust-mode go-mode undo-tree))))
 (custom-set-faces)
 (defun ycmd-setup-completion-at-point-function ()
   "Setup `completion-at-point-functions' for `ycmd-mode'."
@@ -264,7 +272,7 @@
           (other-window 1)
           (ansi-term "/bin/bash")
           (switch-to-buffer "*ansi-term*")))))
-(global-set-key (kbd "<f12>") 'my-ansi-term)    ;;按"F12"一键开启真实终端
+(global-set-key (kbd "<f11>") 'my-ansi-term)    ;;按"F11"一键开启真实终端
 
 ;;####=快捷键绑定:=##############################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
@@ -319,6 +327,7 @@
 (add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
 (add-hook 'c++-mode-hook 'hs-minor-mode)    ;;C++文件折叠功能
 (add-hook 'go-mode-hook 'hs-minor-mode)    ;;GO文件折叠功能
+(add-hook 'js2-mode-hook 'hs-minor-mode)    ;;JS文件折叠功能
 (add-hook 'rust-mode-hook 'hs-minor-mode)    ;;Rust文件折叠功能
 (add-hook 'python-mode-hook 'hs-minor-mode)    ;;Python文件折叠功能
 (global-set-key (kbd "C--") 'hs-hide-block)    ;;折叠代码 (键绑定)
@@ -332,6 +341,15 @@
   (interactive)
   (gdb (gud-query-cmdline 'gdb))(tool-bar-mode 1))
 (global-set-key (kbd "<f1>") 'gdb-quick-run)    ;;按"F1"一键进入GDB调试环境
+(defun nodejs-quick-run()
+  (interactive)
+  (progn
+    (if (get-buffer "*compilation*")
+        (progn (delete-windows-on (get-buffer "*compilation*"))
+               (kill-buffer "*compilation*")))
+    (compile (concat "node " (buffer-name (current-buffer))))
+    (end-of-buffer)))
+(global-set-key (kbd "<f12>") 'nodejs-quick-run)    ;;按"F12"一键编译运行当前JS文件(JavaScript语言)
 (defun go-quick-run()
   (interactive)
   (progn
