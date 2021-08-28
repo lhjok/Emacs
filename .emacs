@@ -78,7 +78,7 @@
 (set-selection-coding-system 'utf-8)    ;;选择块编码
 (set-terminal-coding-system 'utf-8)    ;;终端编码
 (set-keyboard-coding-system 'utf-8)    ;;键盘输入编码
-(set-default-font "Consolas-12")    ;;设置英文字体
+(set-frame-font "Consolas-12" nil t)    ;;设置英文字体
 (set-fontset-font (frame-parameter nil 'font)    ;;设置中文字体
                   'han '("Source Code Pro" . "unicode-bmp"))
 
@@ -103,10 +103,10 @@
   (package-install 'js2-mode))    ;;自动安装JavaScript语言插件包
 (when (not (package-installed-p 'toml-mode))
   (package-install 'toml-mode))    ;;自动安装toml插件包
+(when (not (package-installed-p 'lsp-mode))
+  (package-install 'lsp-mode))    ;;自动安装lsp插件包
 (when (not (package-installed-p 'ycmd))
   (package-install 'ycmd))    ;;自动安装ycmd补全后端插件包
-(when (not (package-installed-p 'racer))
-  (package-install 'racer))    ;;自动安装Rust-Racer补全插件包
 (when (not (package-installed-p 'flycheck))
   (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
 (when (not (package-installed-p 'flycheck-rust))
@@ -115,8 +115,6 @@
   (package-install 'flycheck-ycmd))    ;;自动安装flycheck-ycmd语法检查补全后端插件包
 (when (not (package-installed-p 'company))
   (package-install 'company))    ;;自动安装company自动补全插件包
-(when (not (package-installed-p 'company-racer))
-  (package-install 'company-racer))    ;;自动安装company-racer自动补全插件包
 (when (not (package-installed-p 'company-ycmd))
   (package-install 'company-ycmd))    ;;自动安装company-ycmd自动补全后端插件包
 (when (not (package-installed-p 'highlight-symbol))
@@ -128,13 +126,11 @@
 (require 'js2-mode)    ;;打开JavaScript语言编辑模式
 (require 'toml-mode)    ;;打开toml编辑模式
 (require 'ycmd)    ;;打开Ycmd自动补全后端
-(require 'racer)    ;;打开Racer补全模式
 (require 'go-mode)    ;;打开GO语言编辑模式
 (require 'flycheck)    ;;打开语法检查插件包
 (require 'flycheck-rust)    ;;打开Rust语言语法检查插件包
 (require 'flycheck-ycmd)    ;;打开Ycmd语法检查补全后端
 (require 'company)    ;;打开自动补全插件包
-(require 'company-racer)    ;;打开Rust语言自动补全插件包
 (require 'company-ycmd)    ;;打开Ycmd自动补全后端
 (require 'highlight-symbol)    ;;打开自动高亮相同词插件包
 
@@ -147,8 +143,8 @@
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 (company-ycmd-setup)
 (flycheck-ycmd-setup)
-(set-variable 'ycmd-server-command '("python" "/home/lhjok/.ycmd/ycmd"))
-(set-variable 'ycmd-global-config "/home/lhjok/.ycmd/examples/.ycm_extra_conf.py")
+(set-variable 'ycmd-server-command '("python" "/var/home/lhjok/.ycmd/ycmd"))
+(set-variable 'ycmd-global-config "/var/home/lhjok/.ycmd/examples/.ycm_extra_conf.py")
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
 (setq highlight-symbol-idle-delay 0.1)
@@ -167,26 +163,18 @@
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))    ;;默认RS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
-(setq racer-cmd "~/.cargo/bin/racer")    ;;Racer配置路径
-;;(setq racer-rust-src-path "/home/src")    ;;Rust库配置路径(原路径太长，复制一份到Home目录下)
 (unless (getenv "RUST_SRC_PATH")
   (setenv "RUST_SRC_PATH"
-    (expand-file-name "/home/src")))
-(add-hook 'rust-mode-hook '(lambda () (racer-activate)
-    (racer-turn-on-eldoc)
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-    (set (make-local-variable 'company-backends) '(company-racer))
-    (local-set-key (kbd "M-.") #'racer-find-definition)))    ;;跳转到定义
+    (expand-file-name "/var/home/src")))
 (custom-set-variables
  '(company-backends
-   (quote
-    (company-keywords company-ycmd company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+   '(company-keywords company-ycmd company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
                       (company-dabbrev-code company-gtags company-etags company-keywords)
-                      company-oddmuse company-dabbrev)))
+                      company-oddmuse company-dabbrev))
  '(package-selected-packages
-   (quote
-    (highlight-symbol company-ycmd company-racer company flycheck-ycmd flycheck-rust flycheck racer ycmd toml-mode rust-mode go-mode undo-tree))))
-(custom-set-faces)
+   '(highlight-symbol company-ycmd company flycheck-ycmd flycheck-rust flycheck ycmd toml-mode rust-mode go-mode undo-tree)))
+(custom-set-faces
+ )
 (defun ycmd-setup-completion-at-point-function ()
   "Setup `completion-at-point-functions' for `ycmd-mode'."
   (add-hook 'completion-at-point-functions
