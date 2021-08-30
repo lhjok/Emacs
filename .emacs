@@ -125,6 +125,7 @@
 (require 'rust-mode)    ;;打开Rust语言编辑模式
 (require 'js2-mode)    ;;打开JavaScript语言编辑模式
 (require 'toml-mode)    ;;打开toml编辑模式
+(require 'lsp-mode)    ;;打开lsp自动补全后端
 (require 'ycmd)    ;;打开Ycmd自动补全后端
 (require 'go-mode)    ;;打开GO语言编辑模式
 (require 'flycheck)    ;;打开语法检查插件包
@@ -135,6 +136,7 @@
 (require 'highlight-symbol)    ;;打开自动高亮相同词插件包
 
 ;;####=插件功能设置:=############################################################################################
+(setq lsp-rust-server 'rust-analyzer)
 (global-undo-tree-mode)    ;;开启反撤销功能
 (setq rust-format-on-save t)    ;;保存自动格式化文件
 (add-hook 'after-init-hook #'global-ycmd-mode)
@@ -143,8 +145,8 @@
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 (company-ycmd-setup)
 (flycheck-ycmd-setup)
-(set-variable 'ycmd-server-command '("python" "/var/home/lhjok/.ycmd/ycmd"))
-(set-variable 'ycmd-global-config "/var/home/lhjok/.ycmd/examples/.ycm_extra_conf.py")
+(set-variable 'ycmd-server-command '("python" "/var/home/lhjok/.ycmd/third_party/ycmd/ycmd"))
+(set-variable 'ycmd-global-config "/var/home/lhjok/.ycmd/third_party/ycmd/examples/.ycm_extra_conf.py")
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
 (setq highlight-symbol-idle-delay 0.1)
@@ -165,8 +167,12 @@
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
 (unless (getenv "RUST_SRC_PATH")
   (setenv "RUST_SRC_PATH"
-    (expand-file-name "/var/home/src")))
+    (expand-file-name "/var/home/lhjok/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src")))
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(company-backends
    '(company-keywords company-ycmd company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
                       (company-dabbrev-code company-gtags company-etags company-keywords)
@@ -174,6 +180,10 @@
  '(package-selected-packages
    '(highlight-symbol company-ycmd company flycheck-ycmd flycheck-rust flycheck ycmd toml-mode rust-mode go-mode undo-tree)))
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
 (defun ycmd-setup-completion-at-point-function ()
   "Setup `completion-at-point-functions' for `ycmd-mode'."
@@ -183,60 +193,6 @@
 (set-frame-position (selected-frame) 300 110)    ;;窗口位置
 (set-frame-width (selected-frame) 140)    ;;窗口宽度
 (set-frame-height (selected-frame) 50)    ;;窗口高度
-
-;;####=自定义主题设置=###########################################################################################
-(deftheme jazz "The Jazz Color Theme")
-(let ((class '((class color) (min-colors 89)))
-     (jazz-bg "#f7f7f7")(jazz-fg "#232323")(jazz-com "#b15353")(jazz-red "#ff0000")
-     (jazz-fg-1 "#555555")(jazz-reg "#97d7fc")(jazz-fun "#0018b3")(jazz-bg-1 "#d4d4d4"))
-  (custom-theme-set-faces 'jazz
-   `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))    ;;默认字体颜色和全局背景颜色
-   `(cursor ((,class (:foreground ,jazz-fg :background ,jazz-fg))))    ;;光标颜色
-   `(region ((,class (:background ,jazz-reg :foreground nil))))    ;;选取块背景颜色
-   `(font-lock-comment-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
-   `(font-lock-comment-delimiter-face ((,class (:foreground ,jazz-com))))    ;;注释字体颜色
-   `(font-lock-function-name-face ((,class (:foreground ,jazz-fun))))    ;;函数名字体颜色
-   `(font-lock-keyword-face ((t (:foreground "Purple" :weight bold))))    ;;关键字字体颜色
-   `(highlight ((,class (:background ,jazz-bg-1))))    ;;高亮当前行背景颜色
-   `(header-line ((,class (:foreground ,jazz-fg
-                           :background ,jazz-bg-1
-                           :box (:line-width -1 :color ,jazz-bg-1)))))
-   `(linum ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
-   `(default ((,class (:foreground ,jazz-fg :background ,jazz-bg))))
-   `(fringe ((,class (:foreground ,jazz-fg :background ,jazz-bg-1))))
-   `(mode-line
-     ((,class (:foreground ,jazz-fg
-               :background ,jazz-bg-1
-               :box (:line-width 3 :color ,jazz-bg-1)))))
-   `(mode-line-buffer-id ((,class (:foreground ,jazz-fg :weight bold))))
-   `(mode-line-highlight ((,class (:foreground ,jazz-fg-1))))
-   `(mode-line-inactive
-     ((,class (:inherit mode-line :foreground ,jazz-fg
-               :background ,jazz-bg-1
-               :box (:line-width 3 :color ,jazz-bg-1)))))
-   `(mode-line-folder-face ((,class (:foreground ,jazz-fg))))
-   `(mode-line-modified-face ((,class (:foreground ,jazz-fg))))
-   `(mode-line-ro-modified-face ((,class (:foreground ,jazz-fg))))
-   `(mode-line-buffer-name ((,class (:foreground ,jazz-fg))))
-   `(mode-line-mode-name ((,class (:foreground ,jazz-fg))))
-   `(mode-line-mode-string ((,class (:foreground ,jazz-fg))))
-   `(mode-line-vc-mode ((,class (:foreground ,jazz-fg))))
-   `(mode-line-minor-mode-face ((,class (:foreground ,jazz-fg :height 96))))
-   '(company-preview ((t (:foreground "darkgray" :underline t))))
-   '(company-preview-common ((t (:inherit company-preview))))
-   '(company-scrollbar-bg ((t (:background "#d0d0d0"))))
-   '(company-scrollbar-fg ((t (:background "#b8b8b8"))))
-   '(company-tooltip ((t (:background "#dedede" :foreground "#212121"))))
-   '(company-tooltip-common ((((type x))
-    (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
-   '(company-tooltip-common-selection ((((type x))
-    (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
-   `(company-tooltip-mouse ((t (:background "#cacaca"))))
-   '(company-tooltip-annotation ((t (:foreground "firebrick4"))))
-   '(company-tooltip-selection ((t (:background "#cacaca" :foreground "#212121"))))
-   `(show-paren-mismatch ((,class (:foreground ,jazz-red :background nil :weight bold))))    ;;高亮括号匹配颜色
-   `(show-paren-match ((,class (:foreground ,jazz-red :background nil :weight bold))))))    ;;高亮括号匹配颜色
-(provide-theme 'jazz)
 
 ;;####=编译窗口设置:=############################################################################################
 (defun my-compilation-mode-hook ()
