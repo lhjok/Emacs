@@ -136,8 +136,8 @@
 (require 'highlight-symbol)    ;;打开自动高亮相同词插件包
 
 ;;####=插件功能设置:=############################################################################################
-(setq lsp-rust-server 'rust-analyzer)
 (global-undo-tree-mode)    ;;开启反撤销功能
+(setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
 (setq rust-format-on-save t)    ;;保存自动格式化文件
 (add-hook 'after-init-hook #'global-ycmd-mode)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -170,7 +170,7 @@
   (add-hook 'completion-at-point-functions
             #'ycmd-complete-at-point nil :local))
 (add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function)
-(set-frame-position (selected-frame) 300 110)    ;;窗口位置
+(set-frame-position (selected-frame) 320 110)    ;;窗口位置
 (set-frame-width (selected-frame) 140)    ;;窗口宽度
 (set-frame-height (selected-frame) 50)    ;;窗口高度
 
