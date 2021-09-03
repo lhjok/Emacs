@@ -165,26 +165,6 @@
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))    ;;默认RS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
-(unless (getenv "RUST_SRC_PATH")
-  (setenv "RUST_SRC_PATH"
-    (expand-file-name "/var/home/lhjok/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src")))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-backends
-   '(company-keywords company-ycmd company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
-                      (company-dabbrev-code company-gtags company-etags company-keywords)
-                      company-oddmuse company-dabbrev))
- '(package-selected-packages
-   '(highlight-symbol company-ycmd company flycheck-ycmd flycheck-rust flycheck ycmd toml-mode rust-mode go-mode undo-tree)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 (defun ycmd-setup-completion-at-point-function ()
   "Setup `completion-at-point-functions' for `ycmd-mode'."
   (add-hook 'completion-at-point-functions
