@@ -1,4 +1,5 @@
 ;;####=优先启动设置:=############################################################################################
+;;(menu-bar-mode 0)    ;;取消菜单栏
 (tool-bar-mode 0)    ;;取消工具栏
 (scroll-bar-mode 0)    ;;取消滚动条
 (setq-default cursor-type 'bar)    ;;显示细条光标
@@ -78,7 +79,7 @@
 (set-selection-coding-system 'utf-8)    ;;选择块编码
 (set-terminal-coding-system 'utf-8)    ;;终端编码
 (set-keyboard-coding-system 'utf-8)    ;;键盘输入编码
-(set-frame-font "Consolas-12" nil t)    ;;设置英文字体
+(set-frame-font "Consolas-13" nil t)    ;;设置英文字体
 (set-fontset-font (frame-parameter nil 'font)    ;;设置中文字体
                   'han '("Source Code Pro" . "unicode-bmp"))
 
@@ -119,6 +120,8 @@
   (package-install 'company-ycmd))    ;;自动安装company-ycmd自动补全后端插件包
 (when (not (package-installed-p 'highlight-symbol))
   (package-install 'highlight-symbol))    ;;自动安装highlight-symbol自动高亮相同词插件包
+(when (not (package-installed-p 'doom-themes))
+  (package-install 'doom-themes))    ;;自动安装doom-themes主题插件包
 
 ;;####=默认加载插件设置:=########################################################################################
 (require 'undo-tree)    ;;打开反撤销功能
@@ -134,8 +137,12 @@
 (require 'company)    ;;打开自动补全插件包
 (require 'company-ycmd)    ;;打开Ycmd自动补全后端
 (require 'highlight-symbol)    ;;打开自动高亮相同词插件包
+(require 'doom-themes)    ;;打开doom-themes主题插件包
 
 ;;####=插件功能设置:=############################################################################################
+(setq doom-themes-enable-bold t    ;;开启主题粗体字
+      doom-themes-enable-italic t)    ;;开启主题斜体字
+(load-theme 'doom-one-light t)    ;;加载主题类型
 (global-undo-tree-mode)    ;;开启反撤销功能
 (setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
 (setq rust-format-on-save t)    ;;保存自动格式化文件
