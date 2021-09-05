@@ -94,12 +94,14 @@
 ;;####=自动安装插件包:=##########################################################################################
 (when (not package-archive-contents)
   (package-refresh-contents))    ;;自动初始化源安装列表
+(when (not (package-installed-p 'use-package))
+  (package-install 'use-package))    ;;自动安装包管理模块
 (when (not (package-installed-p 'undo-tree))
   (package-install 'undo-tree))    ;;自动安装撤销插件包
 (when (not (package-installed-p 'go-mode))
   (package-install 'go-mode))    ;;自动安装GO语言插件包
-(when (not (package-installed-p 'rust-mode))
-  (package-install 'rust-mode))    ;;自动安装Rust语言插件包
+(when (not (package-installed-p 'rustic))
+  (package-install 'rustic))    ;;自动安装Rust语言插件包
 (when (not (package-installed-p 'js2-mode))
   (package-install 'js2-mode))    ;;自动安装JavaScript语言插件包
 (when (not (package-installed-p 'toml-mode))
@@ -110,8 +112,6 @@
   (package-install 'ycmd))    ;;自动安装ycmd补全后端插件包
 (when (not (package-installed-p 'flycheck))
   (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
-(when (not (package-installed-p 'flycheck-rust))
-  (package-install 'flycheck-rust))    ;;自动安装flycheck-rust语法检查插件包
 (when (not (package-installed-p 'flycheck-ycmd))
   (package-install 'flycheck-ycmd))    ;;自动安装flycheck-ycmd语法检查补全后端插件包
 (when (not (package-installed-p 'company))
@@ -124,15 +124,15 @@
   (package-install 'doom-themes))    ;;自动安装doom-themes主题插件包
 
 ;;####=默认加载插件设置:=########################################################################################
+(require 'use-package)    ;;打开包管理模块
 (require 'undo-tree)    ;;打开反撤销功能
-(require 'rust-mode)    ;;打开Rust语言编辑模式
+(require 'rustic)    ;;打开Rust语言编辑模式
 (require 'js2-mode)    ;;打开JavaScript语言编辑模式
 (require 'toml-mode)    ;;打开toml编辑模式
 (require 'lsp-mode)    ;;打开lsp自动补全后端
 (require 'ycmd)    ;;打开Ycmd自动补全后端
 (require 'go-mode)    ;;打开GO语言编辑模式
 (require 'flycheck)    ;;打开语法检查插件包
-(require 'flycheck-rust)    ;;打开Rust语言语法检查插件包
 (require 'flycheck-ycmd)    ;;打开Ycmd语法检查补全后端
 (require 'company)    ;;打开自动补全插件包
 (require 'company-ycmd)    ;;打开Ycmd自动补全后端
@@ -144,8 +144,8 @@
       doom-themes-enable-italic t)    ;;开启主题斜体字
 (load-theme 'doom-one-light t)    ;;加载主题类型
 (global-undo-tree-mode)    ;;开启反撤销功能
+(use-package rustic)    ;;开启Rust语言编辑模式
 (setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
-(setq rust-format-on-save t)    ;;保存自动格式化文件
 (add-hook 'after-init-hook #'global-ycmd-mode)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -168,17 +168,13 @@
 (setq gofmt-command "goreturns")
 (add-hook 'before-save-hook 'gofmt-before-save)
 (autoload 'js2-mode "js2-mode" nil t)
-(autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
-(add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))    ;;默认RS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
 (defun ycmd-setup-completion-at-point-function ()
   "Setup `completion-at-point-functions' for `ycmd-mode'."
   (add-hook 'completion-at-point-functions
             #'ycmd-complete-at-point nil :local))
 (add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function)
-(with-eval-after-load 'rust-mode
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))    ;;开启rust错误提醒模式
 (set-frame-position (selected-frame) 320 110)    ;;窗口位置
 (set-frame-width (selected-frame) 140)    ;;窗口宽度
 (set-frame-height (selected-frame) 50)    ;;窗口高度
