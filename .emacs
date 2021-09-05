@@ -175,7 +175,7 @@
   (add-hook 'completion-at-point-functions
             #'ycmd-complete-at-point nil :local))
 (add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function)
-(set-frame-position (selected-frame) 320 110)    ;;窗口位置
+(set-frame-position (selected-frame) 320 70)    ;;窗口位置
 (set-frame-width (selected-frame) 140)    ;;窗口宽度
 (set-frame-height (selected-frame) 50)    ;;窗口高度
 
