@@ -120,8 +120,12 @@
   (package-install 'company-ycmd))    ;;自动安装company-ycmd自动补全后端插件包
 (when (not (package-installed-p 'highlight-symbol))
   (package-install 'highlight-symbol))    ;;自动安装highlight-symbol自动高亮相同词插件包
+(when (not (package-installed-p 'all-the-icons))
+  (package-install 'all-the-icons))    ;;自动安装all-the-icons图标主题插件包
 (when (not (package-installed-p 'doom-themes))
   (package-install 'doom-themes))    ;;自动安装doom-themes主题插件包
+(when (not (package-installed-p 'treemacs))
+  (package-install 'treemacs))    ;;自动安装treemacs文件浏览器
 
 ;;####=默认加载插件设置:=########################################################################################
 (require 'use-package)    ;;打开包管理模块
@@ -137,14 +141,24 @@
 (require 'company)    ;;打开自动补全插件包
 (require 'company-ycmd)    ;;打开Ycmd自动补全后端
 (require 'highlight-symbol)    ;;打开自动高亮相同词插件包
+(require 'all-the-icons)    ;;打开all-the-icons图标主题插件包
 (require 'doom-themes)    ;;打开doom-themes主题插件包
+(require 'treemacs)    ;;打开treemacs文件浏览器
 
 ;;####=插件功能设置:=############################################################################################
-(setq doom-themes-enable-bold t    ;;开启主题粗体字
-      doom-themes-enable-italic t)    ;;开启主题斜体字
-(load-theme 'doom-one-light t)    ;;加载主题类型
 (global-undo-tree-mode)    ;;开启反撤销功能
 (use-package rustic)    ;;开启Rust语言编辑模式
+(use-package all-the-icons)    ;;开启all-the-icons图标主题
+(use-package doom-themes    ;;开启doom-themes主题
+  :ensure t :config
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-one-light t)
+  (doom-themes-visual-bell-config)
+  (setq doom-themes-treemacs-theme "doom-atom")
+  (doom-themes-treemacs-config)
+  (doom-themes-org-config))
+(use-package treemacs)    ;;开启treemacs文件浏览器
 (setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
 (add-hook 'after-init-hook #'global-ycmd-mode)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -162,9 +176,9 @@
 (setq company-echo-delay 0)
 (setq company-begin-commands '(self-insert-command))
 (add-hook 'go-mode-hook (lambda ()
-    (set (make-local-variable 'company-backends) '(company-ycmd))
-    (company-mode)
-    (local-set-key (kbd "M-.") #'godef-jump-other-window)))    ;;跳转到定义
+   (set (make-local-variable 'company-backends) '(company-ycmd))
+   (company-mode)
+   (local-set-key (kbd "M-.") #'godef-jump-other-window)))    ;;跳转到定义
 (setq gofmt-command "goreturns")
 (add-hook 'before-save-hook 'gofmt-before-save)
 (autoload 'js2-mode "js2-mode" nil t)
@@ -175,6 +189,8 @@
   (add-hook 'completion-at-point-functions
             #'ycmd-complete-at-point nil :local))
 (add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function)
+(with-eval-after-load 'treemacs
+  (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 (set-frame-position (selected-frame) 320 70)    ;;窗口位置
 (set-frame-width (selected-frame) 140)    ;;窗口宽度
 (set-frame-height (selected-frame) 50)    ;;窗口高度
@@ -211,7 +227,7 @@
 (global-set-key (kbd "C-v") 'yank)    ;;粘贴
 (global-set-key (kbd "C-n") 'find-file)    ;;打开或新建文件
 (global-set-key (kbd "C-p") 'insert-file)    ;;插入文件
-(global-set-key (kbd "C-o") 'find-file-read-only)    ;;以只读模式打开
+(global-set-key (kbd "C-o") 'treemacs-select-window)    ;;打开treemacs文件浏览器
 (global-set-key (kbd "C-s") 'save-buffer)    ;;保存文件
 (global-set-key (kbd "C-S-s") 'write-file)    ;;另存文件
 (global-set-key (kbd "C-S-b") 'save-some-buffers)    ;;保存所有未保存的缓冲区
