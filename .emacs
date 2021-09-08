@@ -102,8 +102,6 @@
   (package-install 'go-mode))    ;;自动安装GO语言插件包
 (when (not (package-installed-p 'rustic))
   (package-install 'rustic))    ;;自动安装Rust语言插件包
-(when (not (package-installed-p 'js2-mode))
-  (package-install 'js2-mode))    ;;自动安装JavaScript语言插件包
 (when (not (package-installed-p 'toml-mode))
   (package-install 'toml-mode))    ;;自动安装toml插件包
 (when (not (package-installed-p 'lsp-mode))
@@ -124,6 +122,8 @@
   (package-install 'all-the-icons))    ;;自动安装all-the-icons图标主题插件包
 (when (not (package-installed-p 'doom-themes))
   (package-install 'doom-themes))    ;;自动安装doom-themes主题插件包
+(when (not (package-installed-p 'doom-modeline))
+  (package-install 'doom-modeline))    ;;自动安装doom-modeline主题插件包
 (when (not (package-installed-p 'treemacs))
   (package-install 'treemacs))    ;;自动安装treemacs文件浏览器
 
@@ -131,7 +131,6 @@
 (require 'use-package)    ;;打开包管理模块
 (require 'undo-tree)    ;;打开反撤销功能
 (require 'rustic)    ;;打开Rust语言编辑模式
-(require 'js2-mode)    ;;打开JavaScript语言编辑模式
 (require 'toml-mode)    ;;打开toml编辑模式
 (require 'lsp-mode)    ;;打开lsp自动补全后端
 (require 'ycmd)    ;;打开Ycmd自动补全后端
@@ -143,6 +142,7 @@
 (require 'highlight-symbol)    ;;打开自动高亮相同词插件包
 (require 'all-the-icons)    ;;打开all-the-icons图标主题插件包
 (require 'doom-themes)    ;;打开doom-themes主题插件包
+(require 'doom-modeline)    ;;打开doom-modeline主题插件包
 (require 'treemacs)    ;;打开treemacs文件浏览器
 
 ;;####=插件功能设置:=############################################################################################
@@ -159,6 +159,11 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package treemacs)    ;;开启treemacs文件浏览器
+(doom-modeline-mode 1)    ;;开启doom-modeline主题
+(setq doom-modeline-height 30)    ;;设置状态栏高度
+(set-face-attribute 'mode-line nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
+(set-face-attribute 'mode-line-inactive nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
+(setq doom-modeline-modal-icon t)
 (setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
 (add-hook 'after-init-hook #'global-ycmd-mode)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -181,8 +186,6 @@
    (local-set-key (kbd "M-.") #'godef-jump-other-window)))    ;;跳转到定义
 (setq gofmt-command "goreturns")
 (add-hook 'before-save-hook 'gofmt-before-save)
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
 (defun ycmd-setup-completion-at-point-function ()
   "Setup `completion-at-point-functions' for `ycmd-mode'."
@@ -275,7 +278,6 @@
 (add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
 (add-hook 'c++-mode-hook 'hs-minor-mode)    ;;C++文件折叠功能
 (add-hook 'go-mode-hook 'hs-minor-mode)    ;;GO文件折叠功能
-(add-hook 'js2-mode-hook 'hs-minor-mode)    ;;JS文件折叠功能
 (add-hook 'rust-mode-hook 'hs-minor-mode)    ;;Rust文件折叠功能
 (add-hook 'python-mode-hook 'hs-minor-mode)    ;;Python文件折叠功能
 (global-set-key (kbd "C--") 'hs-hide-block)    ;;折叠代码 (键绑定)
