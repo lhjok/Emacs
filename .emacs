@@ -98,6 +98,14 @@
   (package-install 'use-package))    ;;自动安装包管理模块
 (when (not (package-installed-p 'undo-tree))
   (package-install 'undo-tree))    ;;自动安装撤销插件包
+(when (not (package-installed-p 'js2-mode))
+  (package-install 'js2-mode))    ;;自动安装JavaScript语言插件包
+(when (not (package-installed-p 'rjsx-mode))
+  (package-install 'rjsx-mode))    ;;自动安装React语言插件包
+(when (not (package-installed-p 'typescript-mode))
+  (package-install 'typescript-mode))    ;;自动安装TypeScript语言插件包
+(when (not (package-installed-p 'tide))
+  (package-install 'tide))    ;;自动安装Tide补全插件包
 (when (not (package-installed-p 'go-mode))
   (package-install 'go-mode))    ;;自动安装GO语言插件包
 (when (not (package-installed-p 'rustic))
@@ -130,6 +138,10 @@
 ;;####=默认加载插件设置:=########################################################################################
 (require 'use-package)    ;;打开包管理模块
 (require 'undo-tree)    ;;打开反撤销功能
+(require 'js2-mode)    ;;打开JavaScript语言编辑模式
+(require 'rjsx-mode)    ;;打开React语言插件包
+(require 'typescript-mode)    ;;打开TypeScript语言插件包
+(require 'tide)    ;;打开Tide自动补全模块
 (require 'rustic)    ;;打开Rust语言编辑模式
 (require 'toml-mode)    ;;打开toml编辑模式
 (require 'lsp-mode)    ;;打开lsp自动补全后端
@@ -159,18 +171,39 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package treemacs)    ;;开启treemacs文件浏览器
+(defun setup-tide-mode()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (company-mode +1))
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (setq doom-modeline-height 30)    ;;设置状态栏高度
 (set-face-attribute 'mode-line nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
 (set-face-attribute 'mode-line-inactive nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
 (setq doom-modeline-modal-icon t)
+(company-ycmd-setup)    ;;开启Ycmd自动补全后端
+(flycheck-ycmd-setup)    ;;开启Flycheck动态语法检查
 (setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
-(add-hook 'after-init-hook #'global-ycmd-mode)
+(flycheck-add-mode 'javascript-eslint 'rjsx-mode)
+(flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
+(add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))    ;;默认JSX文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
+(add-hook 'js-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
+(add-hook 'rjsx-mode-hook #'setup-tide-mode)    ;;开启React语言Tide自动补全后端
+(add-hook 'typescript-mode-hook #'setup-tide-mode)    ;;开启TypeScript语言Tide自动补全后端
+(flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
+(flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+(add-hook 'c++-mode-hook 'ycmd-mode)    ;;开启C++语言Ycmd自动补全后端
+(add-hook 'go-mode-hook 'ycmd-mode)    ;;开启Go语言Ycmd自动补全后端
+(add-hook 'rust-mode-hook 'ycmd-mode)    ;;开启Rust语言Ycmd自动补全后端
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
-(company-ycmd-setup)
-(flycheck-ycmd-setup)
 (set-variable 'ycmd-server-command '("python" "/var/home/lhjok/.ycmd/third_party/ycmd/ycmd"))
 (set-variable 'ycmd-global-config "/var/home/lhjok/.ycmd/third_party/ycmd/examples/.ycm_extra_conf.py")
 (when (not (display-graphic-p))
@@ -186,7 +219,6 @@
    (local-set-key (kbd "M-.") #'godef-jump-other-window)))    ;;跳转到定义
 (setq gofmt-command "goreturns")
 (add-hook 'before-save-hook 'gofmt-before-save)
-(add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
 (defun ycmd-setup-completion-at-point-function ()
   "Setup `completion-at-point-functions' for `ycmd-mode'."
   (add-hook 'completion-at-point-functions
