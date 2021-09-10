@@ -111,9 +111,13 @@
 (when (not (package-installed-p 'rustic))
   (package-install 'rustic))    ;;自动安装Rust语言插件包
 (when (not (package-installed-p 'toml-mode))
-  (package-install 'toml-mode))    ;;自动安装toml插件包
+  (package-install 'toml-mode))    ;;自动安装Toml插件包
+(when (not (package-installed-p 'json-mode))
+  (package-install 'json-mode))    ;;自动安装Json插件包
+(when (not (package-installed-p 'yaml-mode))
+  (package-install 'yaml-mode))    ;;自动安装Yaml插件包
 (when (not (package-installed-p 'lsp-mode))
-  (package-install 'lsp-mode))    ;;自动安装lsp插件包
+  (package-install 'lsp-mode))    ;;自动安装LSP插件包
 (when (not (package-installed-p 'ycmd))
   (package-install 'ycmd))    ;;自动安装ycmd补全后端插件包
 (when (not (package-installed-p 'flycheck))
@@ -143,7 +147,9 @@
 (require 'typescript-mode)    ;;打开TypeScript语言插件包
 (require 'tide)    ;;打开Tide自动补全模块
 (require 'rustic)    ;;打开Rust语言编辑模式
-(require 'toml-mode)    ;;打开toml编辑模式
+(require 'toml-mode)    ;;打开Toml编辑模式
+(require 'json-mode)    ;;打开Json编辑模式
+(require 'yaml-mode)    ;;打开Yaml编辑模式
 (require 'lsp-mode)    ;;打开lsp自动补全后端
 (require 'ycmd)    ;;打开Ycmd自动补全后端
 (require 'go-mode)    ;;打开GO语言编辑模式
@@ -193,6 +199,8 @@
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))    ;;默认JSX文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))    ;;默认Json文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))    ;;默认Yaml文件进入编辑模式
 (add-hook 'js-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
 (add-hook 'rjsx-mode-hook #'setup-tide-mode)    ;;开启React语言Tide自动补全后端
 (add-hook 'typescript-mode-hook #'setup-tide-mode)    ;;开启TypeScript语言Tide自动补全后端
