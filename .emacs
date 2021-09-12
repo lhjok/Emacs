@@ -104,6 +104,12 @@
   (package-install 'rjsx-mode))    ;;自动安装React语言插件包
 (when (not (package-installed-p 'typescript-mode))
   (package-install 'typescript-mode))    ;;自动安装TypeScript语言插件包
+(when (not (package-installed-p 'less-css-mode))
+  (package-install 'less-css-mode))    ;;自动安装Less语言插件包
+(when (not (package-installed-p 'scss-mode))
+  (package-install 'scss-mode))    ;;自动安装Scss语言插件包
+(when (not (package-installed-p 'sass-mode))
+  (package-install 'sass-mode))    ;;自动安装Sass语言插件包
 (when (not (package-installed-p 'tide))
   (package-install 'tide))    ;;自动安装Tide补全插件包
 (when (not (package-installed-p 'go-mode))
@@ -145,6 +151,9 @@
 (require 'js2-mode)    ;;打开JavaScript语言编辑模式
 (require 'rjsx-mode)    ;;打开React语言插件包
 (require 'typescript-mode)    ;;打开TypeScript语言插件包
+(require 'less-css-mode)    ;;打开Less语言插件包
+(require 'scss-mode)    ;;打开Scss语言插件包
+(require 'sass-mode)    ;;打开Sass语言插件包
 (require 'tide)    ;;打开Tide自动补全模块
 (require 'rustic)    ;;打开Rust语言编辑模式
 (require 'toml-mode)    ;;打开Toml编辑模式
@@ -196,7 +205,15 @@
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
 (autoload 'js2-mode "js2-mode" nil t)
+(autoload 'go-mode "go-mode" nil t)
+(autoload 'scss-mode "scss-mode" nil t)
+(autoload 'sass-mode "sass-mode" nil t)
+(autoload 'less-css-mode "less-css-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))    ;;默认GO文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))    ;;默认Scss文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))    ;;默认Sass文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode))    ;;默认Less文件进入编辑模式
 (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))    ;;默认JSX文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))    ;;默认Json文件进入编辑模式
