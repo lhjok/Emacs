@@ -235,6 +235,8 @@
 (set-variable 'ycmd-global-config "/var/home/lhjok/.ycmd/third_party/ycmd/examples/.ycm_extra_conf.py")
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
+(set-face-attribute 'highlight-symbol-face nil
+  :background "#d9eaf7" :foreground "default")
 (setq highlight-symbol-idle-delay 0.1)
 (setq company-tooltip-limit 20)
 (setq company-idle-delay 0.2)

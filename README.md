@@ -1,22 +1,25 @@
 # LINUX环境下的Emacs配置文件
 
-### 每一条配置语句都经过严格验证。
+### 配置文件根据自己需求量身定制
 * Email：lhjok@live.cn
 
 ### 编译安装Emacs编辑器。
 
-#### 官网下载Emacs源码，解压到用户(.opt)目录下：
+#### 官网下载Emacs源码，解压到(~/.opt)目录下：
+执行`./configure`命令时查看错误提示，安装相应的依赖库，直到没有错误提示。
 
 ```sh
-toolbox enter
-./autogen.sh
+$ cd emacs
+$ toolbox enter
+$ ./autogen.sh
 ./configure --with-xpm --with-jpeg --with-tiff --with-gif --with-png \
 --with-rsvg --with-cairo --with-modules --with-dbus --with-xft --with-json \
 --with-threads --without-gpm --with-harfbuzz
-make
+$ make
 ```
 
-#### 编辑桌面启动文件(emacs.desktop)：
+#### 创建桌面启动文件
+编辑`emacs.desktop`桌面文件，放在`~/.local/share/applications`目录下。
 
 ```sh
 [Desktop Entry]
@@ -32,5 +35,5 @@ StartupWMClass=Emacs
 Keywords=Text;Editor;
 ```
 
-### 一个配置文件搞定所有事情：
+### 一个配置文件搞定所有事情
 EMACS最吸引我的就是其强大的配置能力和灵活性，一个配置文件就可以自动安装所有的插件。
