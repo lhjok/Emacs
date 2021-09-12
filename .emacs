@@ -10,7 +10,9 @@
 (kill-buffer "*Messages*")    ;;关闭"Messages"缓冲区
 (setq ac-use-quick-help nil)    ;;关闭帮助模式
 (setq ring-bell-function 'ignore)    ;;关闭提示音和闪屏警报
-(setq auto-save-default nil)    ;;关闭备份文件
+(setq auto-save-default nil)    ;;关闭自动保存文件
+(setq make-backup-files nil)    ;;关闭备份文件
+(setq create-lockfiles nil)    ;;关闭创建锁文件
 (setq mouse-drag-copy-region nil)    ;;禁止采用鼠标选取后就进入剪切板
 (set-default 'truncate-lines t)    ;;关闭自动换行功能
 (setq pop-up-windows nil)    ;;禁止自动弹出窗口
