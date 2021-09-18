@@ -291,7 +291,7 @@
 (global-set-key (kbd "C-v") 'yank)    ;;粘贴
 (global-set-key (kbd "C-n") 'find-file)    ;;打开或新建文件
 (global-set-key (kbd "C-p") 'insert-file)    ;;插入文件
-(global-set-key (kbd "C-`") 'treemacs)    ;;显示和隐藏treemacs文件浏览器
+(global-set-key (kbd "C-`") 'other-window)    ;;显示和隐藏treemacs文件浏览器
 (global-set-key (kbd "C-o") 'treemacs-select-window)    ;;打开treemacs文件浏览器
 (global-set-key (kbd "C-S-o") 'treemacs-add-project-to-workspace)    ;;添加项目到工作区
 (global-set-key (kbd "C-S-d") 'treemacs-remove-project-from-workspace)    ;;工作区删除项目
@@ -306,7 +306,7 @@
 (global-set-key (kbd "C-S-w") 'delete-other-windows)    ;;关闭其他窗口,除当前窗口外
 (global-set-key (kbd "C-l") 'split-window-vertically)    ;;分割横窗口
 (global-set-key (kbd "C-t") 'split-window-horizontally)    ;;分割纵窗口
-(global-set-key (kbd "<C-tab>") 'other-window)    ;;窗口切换
+(global-set-key (kbd "<C-tab>") 'treemacs)    ;;窗口切换
 (global-set-key (kbd "<M-next>") 'scroll-up)    ;;向下滚动屏幕
 (global-set-key (kbd "<M-prior>") 'scroll-down)    ;;向上滚动屏幕
 (global-set-key (kbd "<C-wheel-down>") 'scroll-up)    ;;向上滚动屏幕
