@@ -60,10 +60,10 @@
 (setq-default line-spacing 2)    ;;设置代码行间距
 (setq c-default-style "linux")    ;;不缩进括号 (缩进方式)
 (defun sgml-mode-indent-setup ()
-  (setq sgml-basic-offset 4))
+  (setq sgml-basic-offset 2))
 (add-hook 'sgml-mode-hook 'sgml-mode-indent-setup)    ;;设置HTML缩进位数
 (defun nxml-mode-indent-setup ()
-  (setq nxml-child-indent 4))
+  (setq nxml-child-indent 2))
 (add-hook 'nxml-mode-hook 'nxml-mode-indent-setup)    ;;设置XML缩进位数
 (setq tab-stop-list (number-sequence 4 400 4))    ;;缩进列表位 (100个缩进位,每次缩4位)
 (transient-mark-mode 1)    ;;EmacsWiki里面写的
@@ -331,6 +331,8 @@
 (global-set-key (kbd "C-,") 'highlight-symbol-prev)    ;;上一个高亮相同词
 (global-set-key (kbd "C-S-e") 'call-last-kbd-macro)    ;;执行上一次绑定的宏命令
 (global-set-key (kbd "C-S-q") 'save-buffers-kill-emacs)    ;;退出程序
+(global-set-key [f1] 'highlight-symbol-next)    ;;移动到下一个高亮相同词
+(global-set-key [f2] 'highlight-symbol-prev)    ;;移动到上一个高亮相同词
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
 (define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
 
@@ -351,7 +353,7 @@
 (defun gdb-quick-run()
   (interactive)
   (gdb (gud-query-cmdline 'gdb))(tool-bar-mode 1))
-(global-set-key (kbd "<f1>") 'gdb-quick-run)    ;;按"F1"一键进入GDB调试环境
+(global-set-key (kbd "<f3>") 'gdb-quick-run)    ;;按"F3"一键进入GDB调试环境
 (defun nodejs-quick-run()
   (interactive)
   (progn
