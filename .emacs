@@ -147,34 +147,37 @@
   (package-install 'treemacs))    ;;自动安装treemacs文件浏览器
 (when (not (package-installed-p 'magit))
   (package-install 'magit))    ;;自动安装magit版本控制插件
+(when (not (package-installed-p 'popwin))
+  (package-install 'popwin))    ;;自动安装popwin弹出窗口管理器
 
 ;;####=默认加载插件设置:=########################################################################################
-(require 'use-package)    ;;打开包管理模块
-(require 'undo-tree)    ;;打开反撤销功能
-(require 'js2-mode)    ;;打开JavaScript语言编辑模式
-(require 'rjsx-mode)    ;;打开React语言插件包
-(require 'typescript-mode)    ;;打开TypeScript语言插件包
-(require 'less-css-mode)    ;;打开Less语言插件包
-(require 'scss-mode)    ;;打开Scss语言插件包
-(require 'sass-mode)    ;;打开Sass语言插件包
-(require 'tide)    ;;打开Tide自动补全模块
-(require 'rustic)    ;;打开Rust语言编辑模式
-(require 'toml-mode)    ;;打开Toml编辑模式
-(require 'json-mode)    ;;打开Json编辑模式
-(require 'yaml-mode)    ;;打开Yaml编辑模式
-(require 'lsp-mode)    ;;打开lsp自动补全后端
-(require 'ycmd)    ;;打开Ycmd自动补全后端
-(require 'go-mode)    ;;打开GO语言编辑模式
-(require 'flycheck)    ;;打开语法检查插件包
-(require 'flycheck-ycmd)    ;;打开Ycmd语法检查补全后端
-(require 'company)    ;;打开自动补全插件包
-(require 'company-ycmd)    ;;打开Ycmd自动补全后端
-(require 'highlight-symbol)    ;;打开自动高亮相同词插件包
-(require 'all-the-icons)    ;;打开all-the-icons图标主题插件包
-(require 'doom-themes)    ;;打开doom-themes主题插件包
-(require 'doom-modeline)    ;;打开doom-modeline主题插件包
-(require 'treemacs)    ;;打开treemacs文件浏览器
-(require 'magit)    ;;打开magit版本控制插件
+(require 'use-package)    ;;导入包管理模块
+(require 'undo-tree)    ;;导入反撤销功能
+(require 'js2-mode)    ;;导入JavaScript语言编辑模式
+(require 'rjsx-mode)    ;;导入React语言插件包
+(require 'typescript-mode)    ;;导入TypeScript语言插件包
+(require 'less-css-mode)    ;;导入Less语言插件包
+(require 'scss-mode)    ;;导入Scss语言插件包
+(require 'sass-mode)    ;;导入Sass语言插件包
+(require 'tide)    ;;导入Tide自动补全模块
+(require 'rustic)    ;;导入Rust语言编辑模式
+(require 'toml-mode)    ;;导入Toml编辑模式
+(require 'json-mode)    ;;导入Json编辑模式
+(require 'yaml-mode)    ;;导入Yaml编辑模式
+(require 'lsp-mode)    ;;导入lsp自动补全后端
+(require 'ycmd)    ;;导入Ycmd自动补全后端
+(require 'go-mode)    ;;导入GO语言编辑模式
+(require 'flycheck)    ;;导入语法检查插件包
+(require 'flycheck-ycmd)    ;;导入Ycmd语法检查补全后端
+(require 'company)    ;;导入自动补全插件包
+(require 'company-ycmd)    ;;导入Ycmd自动补全后端
+(require 'highlight-symbol)    ;;导入自动高亮相同词插件包
+(require 'all-the-icons)    ;;导入all-the-icons图标主题插件包
+(require 'doom-themes)    ;;导入doom-themes主题插件包
+(require 'doom-modeline)    ;;导入doom-modeline主题插件包
+(require 'treemacs)    ;;导入treemacs文件浏览器
+(require 'magit)    ;;导入magit版本控制插件
+(require 'popwin)    ;;导入popwin弹出窗口管理器
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
@@ -198,6 +201,7 @@
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
   (company-mode +1))
+(popwin-mode 1)    ;;开启popwin弹出窗口管理器
 (recentf-mode 1)    ;;开启最近打开的文件
 (setq recentf-max-menu-items 15)    ;;设置最近打开的文件数量
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
