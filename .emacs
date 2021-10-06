@@ -19,7 +19,7 @@
 (global-hl-line-mode 0)    ;;关闭高亮光标所在行
 (cua-mode t)    ;;打开（C-x剪切）/（C-c拷贝）/（C-v粘贴）功能键
 (show-paren-mode t)    ;;打开括号匹配显示模式
-(desktop-save-mode 1)    ;;默认打开上一次编辑的文件
+(desktop-save-mode 0)    ;;关闭打开上一次编辑的文件
 (electric-pair-mode t)    ;;开启自带自动补全括号
 (global-ede-mode t)    ;;开启自带EDE模块
 (mouse-wheel-mode t)    ;;开启鼠标滚轮
@@ -76,7 +76,7 @@
 (setq locale-coding-system 'utf-8)    ;;设置中文环境
 (prefer-coding-system 'utf-8)    ;;优先读取指定文件编码
 (setq default-buffer-file-coding-system 'utf-8)    ;;缓冲区编码
-(setq default-process-coding-system 'utf-8)    ;;进程输出输入编码
+;;(setq default-process-coding-system 'utf-8)    ;;进程输出输入编码(与MaGit产生冲突)
 (setq file-name-coding-system 'utf-8)    ;;文件名编码
 (set-selection-coding-system 'utf-8)    ;;选择块编码
 (set-terminal-coding-system 'utf-8)    ;;终端编码
@@ -146,6 +146,8 @@
   (package-install 'doom-modeline))    ;;自动安装doom-modeline主题插件包
 (when (not (package-installed-p 'treemacs))
   (package-install 'treemacs))    ;;自动安装treemacs文件浏览器
+(when (not (package-installed-p 'magit))
+  (package-install 'magit))    ;;自动安装magit版本控制插件
 
 ;;####=默认加载插件设置:=########################################################################################
 (require 'use-package)    ;;打开包管理模块
@@ -173,6 +175,7 @@
 (require 'doom-themes)    ;;打开doom-themes主题插件包
 (require 'doom-modeline)    ;;打开doom-modeline主题插件包
 (require 'treemacs)    ;;打开treemacs文件浏览器
+(require 'magit)    ;;打开magit版本控制插件
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
