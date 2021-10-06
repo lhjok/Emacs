@@ -76,7 +76,6 @@
 (setq locale-coding-system 'utf-8)    ;;设置中文环境
 (prefer-coding-system 'utf-8)    ;;优先读取指定文件编码
 (setq default-buffer-file-coding-system 'utf-8)    ;;缓冲区编码
-;;(setq default-process-coding-system 'utf-8)    ;;进程输出输入编码(与MaGit产生冲突)
 (setq file-name-coding-system 'utf-8)    ;;文件名编码
 (set-selection-coding-system 'utf-8)    ;;选择块编码
 (set-terminal-coding-system 'utf-8)    ;;终端编码
