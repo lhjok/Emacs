@@ -199,6 +199,8 @@
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
   (company-mode +1))
+(recentf-mode 1)    ;;开启最近打开的文件
+(setq recentf-max-menu-items 15)    ;;设置最近打开的文件数量
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (setq doom-modeline-height 30)    ;;设置状态栏高度
 (set-face-attribute 'mode-line nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
@@ -245,6 +247,10 @@
 (setq company-idle-delay 0.2)
 (setq company-echo-delay 0)
 (setq company-begin-commands '(self-insert-command))
+(defun ido-choose-from-recentf ()
+  (interactive)
+  (find-file (ido-completing-read "Open File: " recentf-list nil t)))
+(global-set-key (kbd "C-c f") 'ido-choose-from-recentf)    ;;打开最近文件
 (add-hook 'go-mode-hook (lambda ()
    (set (make-local-variable 'company-backends) '(company-ycmd))
    (company-mode)
