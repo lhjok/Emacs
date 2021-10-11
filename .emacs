@@ -203,7 +203,8 @@
   (company-mode +1))
 (popwin-mode 1)    ;;开启popwin弹出窗口管理器
 (recentf-mode 1)    ;;开启最近打开的文件
-(setq recentf-max-menu-items 10)    ;;设置最近打开的文件数量
+(setq recentf-max-menu-items 10)    ;;设置最近打开的文件显示数量
+(setq recentf-max-saved-items 10)    ;;设置最近打开的文件保存数量
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (setq doom-modeline-height 30)    ;;设置状态栏高度
 (set-face-attribute 'mode-line nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
