@@ -203,7 +203,7 @@
   (company-mode +1))
 (popwin-mode 1)    ;;开启popwin弹出窗口管理器
 (recentf-mode 1)    ;;开启最近打开的文件
-(setq recentf-max-menu-items 15)    ;;设置最近打开的文件数量
+(setq recentf-max-menu-items 10)    ;;设置最近打开的文件数量
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (setq doom-modeline-height 30)    ;;设置状态栏高度
 (set-face-attribute 'mode-line nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
@@ -252,7 +252,10 @@
 (setq company-begin-commands '(self-insert-command))
 (defun ido-choose-from-recentf ()
   (interactive)
-  (find-file (ido-completing-read "Open File: " recentf-list nil t)))
+  (let ((home (expand-file-name (getenv "HOME"))))
+    (find-file (ido-completing-read "Open File: "
+      (mapcar (lambda (path)
+        (replace-regexp-in-string home "~" path)) recentf-list) nil t))))
 (global-set-key (kbd "C-o") 'ido-choose-from-recentf)    ;;打开最近文件
 (add-hook 'go-mode-hook (lambda ()
    (set (make-local-variable 'company-backends) '(company-ycmd))
