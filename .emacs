@@ -355,9 +355,12 @@
 (load-library "hideshow")    ;;开启代码折叠功能
 (add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
 (add-hook 'c++-mode-hook 'hs-minor-mode)    ;;C++文件折叠功能
-(add-hook 'go-mode-hook 'hs-minor-mode)    ;;GO文件折叠功能
-(add-hook 'rust-mode-hook 'hs-minor-mode)    ;;Rust文件折叠功能
 (add-hook 'python-mode-hook 'hs-minor-mode)    ;;Python文件折叠功能
+(add-hook 'js2-mode-hook 'hs-minor-mode)    ;;JS文件折叠功能
+(add-hook 'rjsx-mode-hook 'hs-minor-mode)    ;;JSX文件折叠功能
+(add-hook 'typescript-mode-hook 'hs-minor-mode)    ;;TS文件折叠功能
+(add-hook 'go-mode-hook 'hs-minor-mode)    ;;GO文件折叠功能
+(add-hook 'rustic-mode-hook 'hs-minor-mode)    ;;Rust文件折叠功能
 (global-set-key (kbd "C--") 'hs-hide-block)    ;;折叠代码 (键绑定)
 (global-set-key (kbd "C-=") 'hs-show-block)    ;;打开折叠 (键绑定)
 (global-set-key (kbd "C-<") 'hs-hide-all)    ;;折叠全部代码 (键绑定)
