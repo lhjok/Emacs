@@ -149,6 +149,12 @@
   (package-install 'magit))    ;;自动安装magit版本控制插件
 (when (not (package-installed-p 'popwin))
   (package-install 'popwin))    ;;自动安装popwin弹出窗口管理器
+(when (not (package-installed-p 'ivy))
+  (package-install 'ivy))    ;;自动安装ivy缓冲区补全模块
+(when (not (package-installed-p 'counsel))
+  (package-install 'counsel))    ;;自动安装counsel增强文件管理功能
+(when (not (package-installed-p 'swiper))
+  (package-install 'swiper))    ;;自动安装swiper增强查找功能
 
 ;;####=默认加载插件设置:=########################################################################################
 (require 'use-package)    ;;导入包管理模块
@@ -178,6 +184,9 @@
 (require 'treemacs)    ;;导入treemacs文件浏览器
 (require 'magit)    ;;导入magit版本控制插件
 (require 'popwin)    ;;导入popwin弹出窗口管理器
+(require 'ivy)    ;;导入ivy缓冲区补全模块
+(require 'counsel)    ;;导入counsel增强文件管理功能
+(require 'swiper)    ;;导入swiper增强查找功能
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
@@ -203,6 +212,9 @@
   (company-mode +1))
 (popwin-mode 1)    ;;开启popwin弹出窗口管理器
 (recentf-mode 1)    ;;开启最近打开的文件
+(ivy-mode 1)    ;;开启ivy模块
+(setq ivy-use-virtual-buffers t)    ;;添加近期打开的文件
+(setq enable-recursive-minibuffers t)    ;;开启递归Mini缓冲区
 (setq recentf-max-menu-items 10)    ;;设置最近打开的文件显示数量
 (setq recentf-max-saved-items 10)    ;;设置最近打开的文件保存数量
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
@@ -305,7 +317,8 @@
 (global-set-key (kbd "C-y") 'redo)    ;;反撤销
 (global-set-key (kbd "C-a") 'mark-whole-buffer)    ;;全选
 (global-set-key (kbd "C-v") 'yank)    ;;粘贴
-(global-set-key (kbd "C-n") 'find-file)    ;;打开或新建文件
+(global-set-key (kbd "M-x") 'counsel-M-x)    ;;打开(M-x)命令
+(global-set-key (kbd "C-n") 'counsel-find-file)    ;;打开或新建文件
 (global-set-key (kbd "C-`") 'other-window)    ;;窗口切换
 (global-set-key (kbd "C-p") 'treemacs-select-window)    ;;打开treemacs文件浏览器
 (global-set-key (kbd "C-S-p") 'treemacs-add-project-to-workspace)    ;;添加项目到工作区
@@ -313,14 +326,15 @@
 (global-set-key (kbd "C-s") 'save-buffer)    ;;保存文件
 (global-set-key (kbd "C-S-s") 'write-file)    ;;另存文件
 (global-set-key (kbd "C-S-b") 'save-some-buffers)    ;;保存所有未保存的缓冲区
-(global-set-key (kbd "C-f") 'isearch-forward)    ;;向后查找
-(global-set-key (kbd "C-S-f") 'isearch-backward)    ;;向前查找
+(global-set-key (kbd "C-f") 'swiper)    ;;查找关键词
+(global-set-key (kbd "C-S-f") 'switch-to-buffer)    ;;查找历史/缓冲区文件
 (global-set-key (kbd "C-r") 'replace-string)    ;;查找与替换
 (global-set-key (kbd "C-S-k") 'kill-buffer)    ;;关闭当前缓冲区
 (global-set-key (kbd "C-w") 'delete-window)    ;;关闭当前窗口
 (global-set-key (kbd "C-S-w") 'delete-other-windows)    ;;关闭其他窗口,除当前窗口外
 (global-set-key (kbd "C-l") 'split-window-vertically)    ;;分割横窗口
 (global-set-key (kbd "C-t") 'split-window-horizontally)    ;;分割纵窗口
+(global-set-key (kbd "<f6>") 'ivy-resume)    ;;返回上一次命令
 (global-set-key (kbd "<C-tab>") 'treemacs)    ;;显示和隐藏treemacs文件浏览器
 (global-set-key (kbd "<M-next>") 'scroll-up)    ;;向下滚动屏幕
 (global-set-key (kbd "<M-prior>") 'scroll-down)    ;;向上滚动屏幕
