@@ -139,6 +139,8 @@
   (package-install 'highlight-symbol))    ;;自动安装highlight-symbol自动高亮相同词插件包
 (when (not (package-installed-p 'all-the-icons))
   (package-install 'all-the-icons))    ;;自动安装all-the-icons图标主题插件包
+(when (not (package-installed-p 'multiple-cursors))
+  (package-install 'multiple-cursors))    ;;自动安装multiple-cursors多光标功能
 (when (not (package-installed-p 'doom-themes))
   (package-install 'doom-themes))    ;;自动安装doom-themes主题插件包
 (when (not (package-installed-p 'doom-modeline))
@@ -179,6 +181,7 @@
 (require 'company-ycmd)    ;;导入Ycmd自动补全后端
 (require 'highlight-symbol)    ;;导入自动高亮相同词插件包
 (require 'all-the-icons)    ;;导入all-the-icons图标主题插件包
+(require 'multiple-cursors)    ;;导入multiple-cursors多光标功能
 (require 'doom-themes)    ;;导入doom-themes主题插件包
 (require 'doom-modeline)    ;;导入doom-modeline主题插件包
 (require 'treemacs)    ;;导入treemacs文件浏览器
@@ -334,6 +337,8 @@
 (global-set-key (kbd "C-S-w") 'delete-other-windows)    ;;关闭其他窗口,除当前窗口外
 (global-set-key (kbd "C-l") 'split-window-vertically)    ;;分割横窗口
 (global-set-key (kbd "C-t") 'split-window-horizontally)    ;;分割纵窗口
+(global-set-key (kbd "C-i") 'mc/edit-lines)    ;;选择一块区域在每行插入一个光标
+(global-set-key (kbd "M-S-i") 'mc/edit-ends-of-lines)    ;;选择一块区域在每行末尾插入一个光标
 (global-set-key (kbd "<f6>") 'ivy-resume)    ;;返回上一次命令
 (global-set-key (kbd "<C-tab>") 'treemacs)    ;;显示和隐藏treemacs文件浏览器
 (global-set-key (kbd "<M-next>") 'scroll-up)    ;;向下滚动屏幕
@@ -364,6 +369,8 @@
 (global-set-key [f2] 'highlight-symbol-prev)    ;;移动到上一个高亮相同词
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
 (define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
+(global-unset-key (kbd "M-<down-mouse-1>"))    ;;去除原来的键绑定
+(global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)    ;;绑定"Alt"+鼠标左键=添加多光标
 
 ;;####=代码折叠功能:系统自带功能=#################################################################################
 (load-library "hideshow")    ;;开启代码折叠功能
