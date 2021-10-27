@@ -14,7 +14,7 @@ $ toolbox enter
 $ ./autogen.sh
 $ ./configure --with-xpm --with-jpeg --with-tiff --with-gif --with-png \
 --with-rsvg --with-cairo --with-modules --with-dbus --with-xft --with-json \
---with-threads --without-gpm --with-harfbuzz
+--with-threads --without-gpm --with-harfbuzz --with-pop --with-mailutils
 $ make
 ```
 
@@ -33,6 +33,13 @@ Terminal=false
 Categories=Development;TextEditor;
 StartupWMClass=Emacs
 Keywords=Text;Editor;
+```
+
+#### 安装图标字体
+为了使图标正常工作，安装此软件包中包括的资源字体非常重要。
+
+```sh
+M-x all-the-icons-install-fonts
 ```
 
 ### 一个配置文件搞定所有事情
