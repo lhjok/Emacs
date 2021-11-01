@@ -337,7 +337,7 @@
 (global-set-key (kbd "C-S-w") 'delete-other-windows)    ;;关闭其他窗口,除当前窗口外
 (global-set-key (kbd "C-l") 'split-window-vertically)    ;;分割横窗口
 (global-set-key (kbd "C-t") 'split-window-horizontally)    ;;分割纵窗口
-(global-set-key (kbd "C-i") 'mc/edit-lines)    ;;选择一块区域在每行插入一个光标
+(global-set-key (kbd "C-m") 'mc/edit-lines)    ;;选择一块区域在每行插入一个光标
 (global-set-key (kbd "M-S-i") 'mc/edit-ends-of-lines)    ;;选择一块区域在每行末尾插入一个光标
 (global-set-key (kbd "<f6>") 'ivy-resume)    ;;返回上一次命令
 (global-set-key (kbd "<C-tab>") 'treemacs)    ;;显示和隐藏treemacs文件浏览器
