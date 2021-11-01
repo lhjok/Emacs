@@ -1,8 +1,5 @@
 # Linux环境下的Emacs配置文件
 
-### 配置文件根据自己需求量身定制
-* Email：lhjok@live.cn
-
 ### 编译安装Emacs编辑器
 
 #### 官网下载Emacs源码，解压到(~/.opt)目录下
@@ -40,6 +37,13 @@ Keywords=Text;Editor;
 
 ```sh
 M-x all-the-icons-install-fonts
+```
+
+#### 安装Rust-Analysis补全后端
+Rustic插件需要安装Rust-Analysis补全后端。
+
+```sh
+$ rustup component add rls rust-analysis rust-src
 ```
 
 ### 一个配置文件搞定所有事情

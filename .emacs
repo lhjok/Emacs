@@ -228,6 +228,7 @@
 (company-ycmd-setup)    ;;开启Ycmd自动补全后端
 (flycheck-ycmd-setup)    ;;开启Flycheck动态语法检查
 (setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
+(setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
 (autoload 'js2-mode "js2-mode" nil t)
