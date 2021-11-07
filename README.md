@@ -44,6 +44,10 @@ Rustic插件需要安装Rust-Analysis补全后端。
 
 ```sh
 $ rustup component add rls rust-analysis rust-src
+$ curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download\
+/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.cargo/bin/rust-analyzer
+$ chmod +x ~/.cargo/bin/rust-analyzer
+$ rustup +nightly component add rust-analyzer-preview
 ```
 
 ### 一个配置文件搞定所有事情
