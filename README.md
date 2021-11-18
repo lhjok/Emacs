@@ -32,21 +32,24 @@ StartupWMClass=Emacs
 Keywords=Text;Editor;
 ```
 
-#### 安装图标字体
+#### 安装图标字体和更新插件源
 为了使图标正常工作，安装此软件包中包括的资源字体非常重要。
 
 ```sh
 M-x all-the-icons-install-fonts
+M-x package-refresh-contents
 ```
 
 #### 安装Rust-Analysis补全后端
 Rustic插件需要安装Rust-Analysis补全后端。
 
 ```sh
+$ npm install -g typescript
+$ go install golang.org/x/tools/gopls@latest
 $ rustup component add rls rust-analysis rust-src
-$ curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download\
-/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.cargo/bin/rust-analyzer
-$ chmod +x ~/.cargo/bin/rust-analyzer
+$ git clone https://github.com/rust-analyzer/rust-analyzer.git
+$ cd rust-analyzer
+$ cargo xtask install --server
 $ rustup +nightly component add rust-analyzer-preview
 ```
 

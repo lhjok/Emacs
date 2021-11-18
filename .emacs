@@ -125,16 +125,12 @@
   (package-install 'yaml-mode))    ;;自动安装Yaml插件包
 (when (not (package-installed-p 'lsp-mode))
   (package-install 'lsp-mode))    ;;自动安装LSP插件包
-(when (not (package-installed-p 'ycmd))
-  (package-install 'ycmd))    ;;自动安装ycmd补全后端插件包
+(when (not (package-installed-p 'eglot))
+  (package-install 'eglot))    ;;自动安装Eglot插件包
 (when (not (package-installed-p 'flycheck))
   (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
-(when (not (package-installed-p 'flycheck-ycmd))
-  (package-install 'flycheck-ycmd))    ;;自动安装flycheck-ycmd语法检查补全后端插件包
 (when (not (package-installed-p 'company))
   (package-install 'company))    ;;自动安装company自动补全插件包
-(when (not (package-installed-p 'company-ycmd))
-  (package-install 'company-ycmd))    ;;自动安装company-ycmd自动补全后端插件包
 (when (not (package-installed-p 'highlight-symbol))
   (package-install 'highlight-symbol))    ;;自动安装highlight-symbol自动高亮相同词插件包
 (when (not (package-installed-p 'all-the-icons))
@@ -173,12 +169,10 @@
 (require 'json-mode)    ;;导入Json编辑模式
 (require 'yaml-mode)    ;;导入Yaml编辑模式
 (require 'lsp-mode)    ;;导入lsp自动补全后端
-(require 'ycmd)    ;;导入Ycmd自动补全后端
+(require 'eglot)    ;;导入eglot自动补全后端
 (require 'go-mode)    ;;导入GO语言编辑模式
 (require 'flycheck)    ;;导入语法检查插件包
-(require 'flycheck-ycmd)    ;;导入Ycmd语法检查补全后端
 (require 'company)    ;;导入自动补全插件包
-(require 'company-ycmd)    ;;导入Ycmd自动补全后端
 (require 'highlight-symbol)    ;;导入自动高亮相同词插件包
 (require 'all-the-icons)    ;;导入all-the-icons图标主题插件包
 (require 'multiple-cursors)    ;;导入multiple-cursors多光标功能
@@ -190,6 +184,7 @@
 (require 'ivy)    ;;导入ivy缓冲区补全模块
 (require 'counsel)    ;;导入counsel增强文件管理功能
 (require 'swiper)    ;;导入swiper增强查找功能
+(require 'project)    ;;导入内置项目管理
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
@@ -225,9 +220,9 @@
 (set-face-attribute 'mode-line nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
 (set-face-attribute 'mode-line-inactive nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
 (setq doom-modeline-modal-icon t)
-(company-ycmd-setup)    ;;开启Ycmd自动补全后端
-(flycheck-ycmd-setup)    ;;开启Flycheck动态语法检查
 (setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
+(setq rustic-lsp-client 'eglot)    ;;使用eglot作为Rust的LSP客户端
+(push 'rustic-clippy flycheck-checkers)    ;;使用flycheck错误检查器
 (setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
@@ -245,19 +240,15 @@
 (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))    ;;默认Json文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))    ;;默认Yaml文件进入编辑模式
+(add-hook 'go-mode-hook 'eglot-ensure)    ;;使用eglot作为GO的LSP客户端
 (add-hook 'js-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
 (add-hook 'rjsx-mode-hook #'setup-tide-mode)    ;;开启React语言Tide自动补全后端
 (add-hook 'typescript-mode-hook #'setup-tide-mode)    ;;开启TypeScript语言Tide自动补全后端
 (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
-(add-hook 'c++-mode-hook 'ycmd-mode)    ;;开启C++语言Ycmd自动补全后端
-(add-hook 'go-mode-hook 'ycmd-mode)    ;;开启Go语言Ycmd自动补全后端
-(add-hook 'rust-mode-hook 'ycmd-mode)    ;;开启Rust语言Ycmd自动补全后端
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
-(set-variable 'ycmd-server-command '("python" "/var/home/lhjok/.ycmd/third_party/ycmd/ycmd"))
-(set-variable 'ycmd-global-config "/var/home/lhjok/.ycmd/third_party/ycmd/examples/.ycm_extra_conf.py")
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
 (set-face-attribute 'highlight-symbol-face nil
@@ -267,6 +258,19 @@
 (setq company-idle-delay 0.2)
 (setq company-echo-delay 0)
 (setq company-begin-commands '(self-insert-command))
+(defun project-find-go-module (dir)
+  (when-let ((root (locate-dominating-file dir "go.mod")))
+    (cons 'go-module root)))
+(cl-defmethod project-root ((project (head go-module)))
+  (cdr project))
+(add-hook 'project-find-functions #'project-find-go-module)
+(defun eglot-format-buffer-on-save ()
+  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+(add-hook 'go-mode-hook #'eglot-format-buffer-on-save)
+(setq-default eglot-workspace-configuration
+    '((:gopls .
+        ((staticcheck . t)
+         (matcher . "CaseSensitive")))))
 (defun ido-choose-from-recentf ()
   (interactive)
   (let ((home (expand-file-name (getenv "HOME"))))
@@ -274,17 +278,8 @@
       (mapcar (lambda (path)
         (replace-regexp-in-string home "~" path)) recentf-list) nil t))))
 (global-set-key (kbd "C-o") 'ido-choose-from-recentf)    ;;打开最近文件
-(add-hook 'go-mode-hook (lambda ()
-   (set (make-local-variable 'company-backends) '(company-ycmd))
-   (company-mode)
-   (local-set-key (kbd "M-.") #'godef-jump)))    ;;跳转到定义
 (setq gofmt-command "goreturns")
 (add-hook 'before-save-hook 'gofmt-before-save)
-(defun ycmd-setup-completion-at-point-function ()
-  "Setup `completion-at-point-functions' for `ycmd-mode'."
-  (add-hook 'completion-at-point-functions
-            #'ycmd-complete-at-point nil :local))
-(add-hook 'ycmd-mode #'ycmd-setup-completion-at-point-function)
 (with-eval-after-load 'treemacs
   (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 (set-frame-position (selected-frame) 320 70)    ;;窗口位置
