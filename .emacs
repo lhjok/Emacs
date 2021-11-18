@@ -221,8 +221,6 @@
 (set-face-attribute 'mode-line-inactive nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
 (setq doom-modeline-modal-icon t)
 (setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
-(setq rustic-lsp-client 'eglot)    ;;使用eglot作为Rust的LSP客户端
-(push 'rustic-clippy flycheck-checkers)    ;;使用flycheck错误检查器
 (setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
