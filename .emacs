@@ -186,10 +186,126 @@
 (require 'swiper)    ;;导入swiper增强查找功能
 (require 'project)    ;;导入内置项目管理
 
-;;####=插件功能设置:=############################################################################################
-(global-undo-tree-mode)    ;;开启反撤销功能
+;;####=函数定义区域:=############################################################################################
+(defun setup-tide-mode()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (company-mode +1))
+;;设置Go语言项目根目录
+(defun project-find-go-module (dir)
+  (when-let ((root (locate-dominating-file dir "go.mod")))
+    (cons 'go-module root)))
+(cl-defmethod project-root ((project (head go-module)))
+  (cdr project))
+;;打开最近文件
+(defun ido-choose-from-recentf()
+  (interactive)
+  (let ((home (expand-file-name (getenv "HOME"))))
+    (find-file
+     (ido-completing-read
+      "Open File: "
+      (mapcar (lambda (path)
+                (replace-regexp-in-string home "~" path))
+              recentf-list)
+      nil t))))
+;;改变终端的只读模式
+(defun my-compilation-mode-hook()
+  (interactive)
+  (read-only-mode -1)    ;;更改只读模式为可输入
+  (comint-mode))    ;;切换交互模式
+;;一键开启真实终端
+(defun my-ansi-term()    ;;真实终端设置
+  (interactive)
+  (progn
+    (if (not (get-buffer-window "*ansi-term*"))
+        (progn
+          (split-window-vertically
+           ( - (window-height (get-buffer-window "*ansi-term*")) 15))
+          (other-window 1)
+          (ansi-term "/bin/bash")
+          (switch-to-buffer "*ansi-term*")))))
+;;一键进入GDB调试环境
+(defun gdb-quick-run()
+  (interactive)
+  (gdb (gud-query-cmdline 'gdb))(tool-bar-mode 1))
+;;一键编译运行当前JS文件(JavaScript语言)
+(defun nodejs-quick-run()
+  (interactive)
+  (progn
+    (if (get-buffer "*compilation*")
+        (progn (delete-windows-on (get-buffer "*compilation*"))
+               (kill-buffer "*compilation*")))
+    (compile (concat "node " (buffer-name (current-buffer))))
+    (end-of-buffer)))
+;;一键编译并运行(Go语言)
+(defun go-quick-run()
+  (interactive)
+  (progn
+    (if (get-buffer "*compilation*")
+        (progn (delete-windows-on (get-buffer "*compilation*"))
+               (kill-buffer "*compilation*")))
+    (compile (concat "go run " (buffer-name (current-buffer))))
+    (end-of-buffer)))
+;;一键编译生成可执行文件(Go语言)
+(defun go-quick-build()
+  (interactive)
+  (progn
+    (if (get-buffer "*compilation*")
+        (progn (delete-windows-on (get-buffer "*compilation*"))
+               (kill-buffer "*compilation*")))
+    (compile (concat "go build " (buffer-name (current-buffer))))
+    (end-of-buffer)))
+;;一键编译并运行(Rust语言)
+(defun rust-compile-run()
+  (interactive)
+  (progn
+    (if (get-buffer "*compilation*")
+        (progn (delete-windows-on (get-buffer "*compilation*"))
+               (kill-buffer "*compilation*")))
+    (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
+        (compile "cargo run")
+      (compile (concat "rustc " (buffer-file-name))))
+    (end-of-buffer)))
+;;一键编译生成可执行文件(Rust语言)
+(defun rust-compile-build()
+  (interactive)
+  (progn
+    (if (get-buffer "*compilation*")
+        (progn (delete-windows-on (get-buffer "*compilation*"))
+               (kill-buffer "*compilation*")))
+    (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
+        (compile "cargo build")
+      (compile (concat "rustc " (buffer-file-name))))
+    (end-of-buffer)))
+;;一键编译生成可执行文件(Rust语言-发布)
+(defun rust-compile-build-release()
+  (interactive)
+  (progn
+    (if (get-buffer "*compilation*")
+        (progn (delete-windows-on (get-buffer "*compilation*"))
+               (kill-buffer "*compilation*")))
+    (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
+        (compile "cargo build --release")
+      (compile (concat "rustc " (buffer-file-name))))
+    (end-of-buffer)))
+;;一键编译生成C++文件(C++语言)
+(defun cpp-quick-compile()
+  (interactive)
+  (progn
+    (if (get-buffer "*compilation*")
+        (progn (delete-windows-on (get-buffer "*compilation*"))
+               (kill-buffer "*compilation*")))
+    (compile (concat "g++ -Wall -o " (file-name-sans-extension (buffer-name))
+                     " " (buffer-name (current-buffer))))))
+
+;;####=【Use-Package】设置区域:=#################################################################################
 (use-package rustic)    ;;开启Rust语言编辑模式
 (use-package all-the-icons)    ;;开启all-the-icons图标主题
+(use-package treemacs)    ;;开启treemacs文件浏览器
 (use-package doom-themes    ;;开启doom-themes主题
   :ensure t :config
   (setq doom-themes-enable-bold t
@@ -199,38 +315,28 @@
   (setq doom-themes-treemacs-theme "doom-atom")
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
-(use-package treemacs)    ;;开启treemacs文件浏览器
-(defun setup-tide-mode()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (company-mode +1))
+
+;;####=插件功能设置:=############################################################################################
+(global-undo-tree-mode)    ;;开启反撤销功能
 (popwin-mode 1)    ;;开启popwin弹出窗口管理器
 (recentf-mode 1)    ;;开启最近打开的文件
 (ivy-mode 1)    ;;开启ivy模块
-(setq ivy-use-virtual-buffers t)    ;;添加近期打开的文件
-(setq enable-recursive-minibuffers t)    ;;开启递归Mini缓冲区
-(setq recentf-max-menu-items 10)    ;;设置最近打开的文件显示数量
-(setq recentf-max-saved-items 10)    ;;设置最近打开的文件保存数量
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
-(setq doom-modeline-height 30)    ;;设置状态栏高度
+(load-library "hideshow")    ;;开启代码折叠功能
 (set-face-attribute 'mode-line nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
 (set-face-attribute 'mode-line-inactive nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
-(setq doom-modeline-modal-icon t)
-(setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
-(setq lsp-auto-guess-root t)    ;;自动选项目根目录
+(set-face-attribute 'highlight-symbol-face nil :background "#d9eaf7" :foreground "default")
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+(flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
 (autoload 'js2-mode "js2-mode" nil t)
 (autoload 'go-mode "go-mode" nil t)
 (autoload 'scss-mode "scss-mode" nil t)
 (autoload 'sass-mode "sass-mode" nil t)
 (autoload 'less-css-mode "less-css-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))    ;;默认GO文件进入编辑模式
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))    ;;默认JS文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.js\\" . js2-mode))    ;;默认JS文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))    ;;默认TS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))    ;;默认Scss文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))    ;;默认Sass文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode))    ;;默认Less文件进入编辑模式
@@ -239,57 +345,48 @@
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))    ;;默认Json文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))    ;;默认Yaml文件进入编辑模式
 (add-hook 'go-mode-hook 'eglot-ensure)    ;;使用eglot作为GO的LSP客户端
-(add-hook 'js-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
+(add-hook 'js2-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
 (add-hook 'rjsx-mode-hook #'setup-tide-mode)    ;;开启React语言Tide自动补全后端
 (add-hook 'typescript-mode-hook #'setup-tide-mode)    ;;开启TypeScript语言Tide自动补全后端
-(flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
-(flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
+(add-hook 'project-find-functions #'project-find-go-module)
+(add-hook 'before-save-hook 'gofmt-before-save)
+(add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
+(add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
+(add-hook 'c++-mode-hook 'hs-minor-mode)    ;;C++文件折叠功能
+(add-hook 'python-mode-hook 'hs-minor-mode)    ;;Python文件折叠功能
+(add-hook 'js2-mode-hook 'hs-minor-mode)    ;;JS文件折叠功能
+(add-hook 'rjsx-mode-hook 'hs-minor-mode)    ;;JSX文件折叠功能
+(add-hook 'typescript-mode-hook 'hs-minor-mode)    ;;TS文件折叠功能
+(add-hook 'go-mode-hook 'hs-minor-mode)    ;;GO文件折叠功能
+(add-hook 'rustic-mode-hook 'hs-minor-mode)    ;;Rust文件折叠功能
+(set-frame-position (selected-frame) 320 70)    ;;窗口位置
+(set-frame-width (selected-frame) 140)    ;;窗口宽度
+(set-frame-height (selected-frame) 50)    ;;窗口高度
+
+;;####=【SETQ】设置区域:=########################################################################################
+(setq ivy-use-virtual-buffers t)    ;;添加近期打开的文件
+(setq enable-recursive-minibuffers t)    ;;开启递归Mini缓冲区
+(setq recentf-max-menu-items 10)    ;;设置最近打开的文件显示数量
+(setq recentf-max-saved-items 10)    ;;设置最近打开的文件保存数量
+(setq doom-modeline-height 30)    ;;设置状态栏高度
+(setq doom-modeline-modal-icon t)
+(setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
+(setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
-(set-face-attribute 'highlight-symbol-face nil
-  :background "#d9eaf7" :foreground "default")
 (setq highlight-symbol-idle-delay 0.1)
 (setq company-tooltip-limit 20)
 (setq company-idle-delay 0.2)
 (setq company-echo-delay 0)
 (setq company-begin-commands '(self-insert-command))
-(defun project-find-go-module (dir)
-  (when-let ((root (locate-dominating-file dir "go.mod")))
-    (cons 'go-module root)))
-(cl-defmethod project-root ((project (head go-module)))
-  (cdr project))
-(add-hook 'project-find-functions #'project-find-go-module)
-(defun eglot-format-buffer-on-save ()
-  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
-(add-hook 'go-mode-hook #'eglot-format-buffer-on-save)
 (setq-default eglot-workspace-configuration
-    '((:gopls .
-        ((staticcheck . t)
-         (matcher . "CaseSensitive")))))
-(defun ido-choose-from-recentf ()
-  (interactive)
-  (let ((home (expand-file-name (getenv "HOME"))))
-    (find-file (ido-completing-read "Open File: "
-      (mapcar (lambda (path)
-        (replace-regexp-in-string home "~" path)) recentf-list) nil t))))
-(global-set-key (kbd "C-o") 'ido-choose-from-recentf)    ;;打开最近文件
+   '((:gopls .
+     ((staticcheck . t)
+      (matcher . "CaseSensitive")))))
 (setq gofmt-command "goreturns")
-(add-hook 'before-save-hook 'gofmt-before-save)
-(with-eval-after-load 'treemacs
-  (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
-(set-frame-position (selected-frame) 320 70)    ;;窗口位置
-(set-frame-width (selected-frame) 140)    ;;窗口宽度
-(set-frame-height (selected-frame) 50)    ;;窗口高度
-
-;;####=编译窗口设置:=############################################################################################
-(defun my-compilation-mode-hook ()
-  (interactive)
-  (read-only-mode -1)    ;;更改只读模式为可输入
-  (comint-mode))    ;;切换交互模式
-(add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
 (setq special-display-buffer-names '("*compilation*"))    ;;分割编译窗口
 (setq special-display-function
       (lambda (buffer &optional args)
@@ -297,16 +394,8 @@
         (other-window 1)
         (switch-to-buffer buffer)    ;;切换到编译窗口
         (get-buffer-window buffer 0)))
-(defun my-ansi-term ()    ;;真实终端设置
-  (interactive)
-  (progn
-    (if (not (get-buffer-window "*ansi-term*"))
-        (progn
-          (split-window-vertically ( - (window-height (get-buffer-window "*ansi-term*")) 15))
-          (other-window 1)
-          (ansi-term "/bin/bash")
-          (switch-to-buffer "*ansi-term*")))))
-(global-set-key (kbd "<f11>") 'my-ansi-term)    ;;按"F11"一键开启真实终端
+(with-eval-after-load 'treemacs
+  (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 
 ;;####=快捷键绑定:=##############################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
@@ -317,6 +406,7 @@
 (global-set-key (kbd "M-x") 'counsel-M-x)    ;;打开(M-x)命令
 (global-set-key (kbd "C-n") 'counsel-find-file)    ;;打开或新建文件
 (global-set-key (kbd "C-`") 'other-window)    ;;窗口切换
+(global-set-key (kbd "C-o") 'ido-choose-from-recentf)    ;;打开最近文件
 (global-set-key (kbd "C-p") 'treemacs-select-window)    ;;打开treemacs文件浏览器
 (global-set-key (kbd "C-S-p") 'treemacs-add-project-to-workspace)    ;;添加项目到工作区
 (global-set-key (kbd "C-S-d") 'treemacs-remove-project-from-workspace)    ;;工作区删除项目
@@ -333,7 +423,6 @@
 (global-set-key (kbd "C-t") 'split-window-horizontally)    ;;分割纵窗口
 (global-set-key (kbd "C-S-i") 'mc/edit-lines)    ;;选择一块区域在每行插入一个光标
 (global-set-key (kbd "M-S-i") 'mc/edit-ends-of-lines)    ;;选择一块区域在每行末尾插入一个光标
-(global-set-key (kbd "<f6>") 'ivy-resume)    ;;返回上一次命令
 (global-set-key (kbd "<C-tab>") 'treemacs)    ;;显示和隐藏treemacs文件浏览器
 (global-set-key (kbd "<M-next>") 'scroll-up)    ;;向下滚动屏幕
 (global-set-key (kbd "<M-prior>") 'scroll-down)    ;;向上滚动屏幕
@@ -359,103 +448,27 @@
 (global-set-key (kbd "C-,") 'highlight-symbol-prev)    ;;上一个高亮相同词
 (global-set-key (kbd "C-S-e") 'call-last-kbd-macro)    ;;执行上一次绑定的宏命令
 (global-set-key (kbd "C-S-q") 'save-buffers-kill-emacs)    ;;退出程序
-(global-set-key [f1] 'highlight-symbol-next)    ;;移动到下一个高亮相同词
-(global-set-key [f2] 'highlight-symbol-prev)    ;;移动到上一个高亮相同词
-(define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
-(define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
-(global-unset-key (kbd "M-<down-mouse-1>"))    ;;去除原来的键绑定
-(global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)    ;;绑定"Alt"+鼠标左键=添加多光标
-
-;;####=代码折叠功能:系统自带功能=#################################################################################
-(load-library "hideshow")    ;;开启代码折叠功能
-(add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
-(add-hook 'c++-mode-hook 'hs-minor-mode)    ;;C++文件折叠功能
-(add-hook 'python-mode-hook 'hs-minor-mode)    ;;Python文件折叠功能
-(add-hook 'js2-mode-hook 'hs-minor-mode)    ;;JS文件折叠功能
-(add-hook 'rjsx-mode-hook 'hs-minor-mode)    ;;JSX文件折叠功能
-(add-hook 'typescript-mode-hook 'hs-minor-mode)    ;;TS文件折叠功能
-(add-hook 'go-mode-hook 'hs-minor-mode)    ;;GO文件折叠功能
-(add-hook 'rustic-mode-hook 'hs-minor-mode)    ;;Rust文件折叠功能
 (global-set-key (kbd "C--") 'hs-hide-block)    ;;折叠代码 (键绑定)
 (global-set-key (kbd "C-=") 'hs-show-block)    ;;打开折叠 (键绑定)
 (global-set-key (kbd "C-<") 'hs-hide-all)    ;;折叠全部代码 (键绑定)
 (global-set-key (kbd "C->") 'hs-show-all)    ;;展开全部折叠 (键绑定)
-
-;;####=快速编译环境=#############################################################################################
-(global-set-key (kbd "<f4>") 'compile)    ;;按"F4"进入小缓冲区输入编译选项
-(defun gdb-quick-run()
-  (interactive)
-  (gdb (gud-query-cmdline 'gdb))(tool-bar-mode 1))
+(global-set-key (kbd "<f1>") 'highlight-symbol-next)    ;;移动到下一个高亮相同词
+(global-set-key (kbd "<f2>") 'highlight-symbol-prev)    ;;移动到上一个高亮相同词
 (global-set-key (kbd "<f3>") 'gdb-quick-run)    ;;按"F3"一键进入GDB调试环境
-(defun nodejs-quick-run()
-  (interactive)
-  (progn
-    (if (get-buffer "*compilation*")
-        (progn (delete-windows-on (get-buffer "*compilation*"))
-               (kill-buffer "*compilation*")))
-    (compile (concat "node " (buffer-name (current-buffer))))
-    (end-of-buffer)))
-(global-set-key (kbd "<f12>") 'nodejs-quick-run)    ;;按"F12"一键编译运行当前JS文件(JavaScript语言)
-(defun go-quick-run()
-  (interactive)
-  (progn
-    (if (get-buffer "*compilation*")
-        (progn (delete-windows-on (get-buffer "*compilation*"))
-               (kill-buffer "*compilation*")))
-    (compile (concat "go run " (buffer-name (current-buffer))))
-    (end-of-buffer)))
+(global-set-key (kbd "<f4>") 'compile)    ;;按"F4"进入小缓冲区输入编译选项
 (global-set-key (kbd "<f5>") 'go-quick-run)    ;;按"F5"一键编译运行当前GO文件(GO语言)
-(defun go-quick-build()
-  (interactive)
-  (progn
-    (if (get-buffer "*compilation*")
-        (progn (delete-windows-on (get-buffer "*compilation*"))
-               (kill-buffer "*compilation*")))
-    (compile (concat "go build " (buffer-name (current-buffer))))
-    (end-of-buffer)))
+(global-set-key (kbd "<f6>") 'ivy-resume)    ;;返回上一次命令
 (global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"Ctrl+F5"一键编译生成当前GO文件(GO语言)
-(defun rust-compile-run ()
-  (interactive)
-  (progn
-    (if (get-buffer "*compilation*")
-        (progn (delete-windows-on (get-buffer "*compilation*"))
-               (kill-buffer "*compilation*")))
-    (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "cargo run")
-      (compile (concat "rustc " (buffer-file-name))))
-    (end-of-buffer)))
 (global-set-key (kbd "<f8>") 'rust-compile-run)    ;;按"F8"一键编译并运行(Rust语言)
-(defun rust-compile-build ()
-  (interactive)
-  (progn
-    (if (get-buffer "*compilation*")
-        (progn (delete-windows-on (get-buffer "*compilation*"))
-               (kill-buffer "*compilation*")))
-    (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "cargo build")
-      (compile (concat "rustc " (buffer-file-name))))
-    (end-of-buffer)))
 (global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
-(defun rust-compile-build-release ()
-  (interactive)
-  (progn
-    (if (get-buffer "*compilation*")
-        (progn (delete-windows-on (get-buffer "*compilation*"))
-               (kill-buffer "*compilation*")))
-    (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "cargo build --release")
-      (compile (concat "rustc " (buffer-file-name))))
-    (end-of-buffer)))
 (global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
-(defun cpp-quick-compile()
-  (interactive)
-  (progn
-    (if (get-buffer "*compilation*")
-        (progn (delete-windows-on (get-buffer "*compilation*"))
-               (kill-buffer "*compilation*")))
-    (compile (concat "g++ -Wall -o " (file-name-sans-extension (buffer-name))
-                     " " (buffer-name (current-buffer))))))
 (global-set-key (kbd "<f9>") 'cpp-quick-compile)    ;;按"F9"一键编译生成C++文件(C++语言)
+(global-set-key (kbd "<f11>") 'my-ansi-term)    ;;按"F11"一键开启真实终端
+(global-set-key (kbd "<f12>") 'nodejs-quick-run)    ;;按"F12"一键编译运行当前JS文件(JavaScript语言)
+(define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
+(define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
+(global-unset-key (kbd "M-<down-mouse-1>"))    ;;去除原来的键绑定
+(global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)    ;;绑定"Alt"+鼠标左键=添加多光标
 
 ;;####=更改GDB多窗口布局=########################################################################################
 (defadvice gdb-setup-windows (after setup-gdb-windows activate)
