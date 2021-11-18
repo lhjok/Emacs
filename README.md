@@ -40,8 +40,11 @@ M-x all-the-icons-install-fonts
 M-x package-refresh-contents
 ```
 
-#### 安装Rust-Analysis补全后端
-Rustic插件需要安装Rust-Analysis补全后端。
+#### 安装各语言补全后端
+Js语言需要安装Tsserver补全后端，
+Go语言需要安装Gopls补全后端，
+Rust语言需要安装Rust.Analysis补全后端，
+C/C++语言需要安装Clangd补全后端[下载](https://github.com/clangd/clangd/releases/latest)，解压到PATH环境目录下。
 
 ```sh
 $ npm install -g typescript

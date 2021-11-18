@@ -344,6 +344,8 @@
 (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))    ;;默认Toml文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))    ;;默认Json文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))    ;;默认Yaml文件进入编辑模式
+(add-hook 'c-mode-hook 'eglot-ensure)    ;;使用eglot作为C的LSP客户端
+(add-hook 'c++-mode-hook 'eglot-ensure)    ;;使用eglot作为C++的LSP客户端
 (add-hook 'go-mode-hook 'eglot-ensure)    ;;使用eglot作为GO的LSP客户端
 (add-hook 'js2-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
 (add-hook 'rjsx-mode-hook #'setup-tide-mode)    ;;开启React语言Tide自动补全后端
