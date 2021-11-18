@@ -41,10 +41,11 @@ M-x package-refresh-contents
 ```
 
 #### 安装各语言补全后端
-Js语言需要安装Tsserver补全后端，
-Go语言需要安装Gopls补全后端，
-Rust语言需要安装Rust.Analysis补全后端，
-C/C++语言需要安装Clangd补全后端[下载](https://github.com/clangd/clangd/releases/latest)，解压到PATH环境目录下。
+- Js语言需要安装Tsserver补全后端，
+- Go语言需要安装Gopls补全后端，
+- Rust语言需要安装Rust.Analysis补全后端，
+- C/C++语言需要安装Clangd补全后端[下载](https://github.com/clangd/clangd/releases/latest)，
+- 解压到PATH环境目录下。
 
 ```sh
 $ npm install -g typescript
@@ -57,4 +58,4 @@ $ rustup +nightly component add rust-analyzer-preview
 ```
 
 ### 一个配置文件搞定所有事情
-Emacs最吸引我的就是其强大的配置能力和灵活性，一个配置文件就可以自动安装所有的插件。
+Emacs最吸引我的就是其强大的配置能力和灵活性，一个配置文件就可以自动完成到最佳状态。
