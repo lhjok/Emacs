@@ -335,14 +335,14 @@
 (autoload 'sass-mode "sass-mode" nil t)
 (autoload 'less-css-mode "less-css-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))    ;;默认GO文件进入编辑模式
-(add-to-list 'auto-mode-alist '("\\.js\\" . js2-mode))    ;;默认JS文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))    ;;默认JS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))    ;;默认TS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))    ;;默认Scss文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))    ;;默认Sass文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode))    ;;默认Less文件进入编辑模式
 (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))    ;;默认JSX文件进入编辑模式
-(add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))    ;;默认Toml文件进入编辑模式
-(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))    ;;默认Json文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))    ;;默认Toml文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))    ;;默认Json文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))    ;;默认Yaml文件进入编辑模式
 (add-hook 'go-mode-hook 'eglot-ensure)    ;;使用eglot作为GO的LSP客户端
 (add-hook 'js2-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
