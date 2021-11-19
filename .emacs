@@ -187,7 +187,7 @@
 (require 'project)    ;;导入内置项目管理
 
 ;;####=函数定义区域:=############################################################################################
-(defun setup-tide-mode()
+(defun setup-tide-mode()    ;;设置Tide代码补全后端
   (interactive)
   (tide-setup)
   (flycheck-mode +1)
@@ -350,9 +350,12 @@
 (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))    ;;默认Toml文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))    ;;默认Json文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))    ;;默认Yaml文件进入编辑模式
-(add-hook 'c-mode-hook 'eglot-ensure)    ;;使用eglot作为C的LSP客户端
-(add-hook 'c++-mode-hook 'eglot-ensure)    ;;使用eglot作为C++的LSP客户端
-(add-hook 'go-mode-hook 'eglot-ensure)    ;;使用eglot作为GO的LSP客户端
+;(add-hook 'c-mode-hook 'eglot-ensure)    ;;使用eglot作为C的LSP客户端
+;(add-hook 'c++-mode-hook 'eglot-ensure)    ;;使用eglot作为C++的LSP客户端
+;(add-hook 'go-mode-hook 'eglot-ensure)    ;;使用eglot作为GO的LSP客户端
+(add-hook 'c-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为C的LSP客户端
+(add-hook 'c++-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为C++的LSP客户端
+(add-hook 'go-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为GO的LSP客户端
 (add-hook 'js2-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
 (add-hook 'rjsx-mode-hook #'setup-tide-mode)    ;;开启React语言Tide自动补全后端
 (add-hook 'typescript-mode-hook #'setup-tide-mode)    ;;开启TypeScript语言Tide自动补全后端
@@ -382,10 +385,14 @@
 (setq recentf-max-saved-items 10)    ;;设置最近打开的文件保存数量
 (setq doom-modeline-height 30)    ;;设置状态栏高度
 (setq doom-modeline-modal-icon t)
-;;(setq lsp-rust-server 'rust-analyzer)    ;;LSP开启rust-analyzer作为Rust的LSP服务端
-(setq eglot-rust-server 'rust-analyzer)    ;;Eglot开启rust-analyzer作为Rust的LSP服务端
-(setq rustic-lsp-server 'rust-analyzer)    ;;默认rust-analyzer作为Rust的LSP服务端
-(setq rustic-lsp-client 'eglot)    ;;使用Eglot作为Rust的LSP客户端
+(setq lsp-rust-server 'rust-analyzer)    ;;LSP开启rust-analyzer作为Rust的LSP服务端
+;(setq eglot-rust-server 'rust-analyzer)    ;;Eglot开启rust-analyzer作为Rust的LSP服务端
+;(setq rustic-lsp-server 'rust-analyzer)    ;;默认rust-analyzer作为Rust的LSP服务端
+;(setq rustic-lsp-client 'eglot)    ;;使用Eglot作为Rust的LSP客户端
+;(setq-default eglot-workspace-configuration    ;;Eglot配置Gopls
+;   '((:gopls .
+;     ((staticcheck . t)
+;      (matcher . "CaseSensitive")))))
 (setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
@@ -394,10 +401,6 @@
 (setq company-idle-delay 0.2)
 (setq company-echo-delay 0)
 (setq company-begin-commands '(self-insert-command))
-(setq-default eglot-workspace-configuration
-   '((:gopls .
-     ((staticcheck . t)
-      (matcher . "CaseSensitive")))))
 (setq gofmt-command "goreturns")
 (setq special-display-buffer-names '("*compilation*"))    ;;分割编译窗口
 (setq special-display-function
