@@ -201,6 +201,12 @@
     (cons 'go-module root)))
 (cl-defmethod project-root ((project (head go-module)))
   (cdr project))
+;;设置Rust语言项目根目录
+(defun project-find-rust-module (dir)
+  (when-let ((root (locate-dominating-file dir "Cargo.toml")))
+    (cons 'rust-module root)))
+(cl-defmethod project-root ((project (head rust-module)))
+  (cdr project))
 ;;打开最近文件
 (defun ido-choose-from-recentf()
   (interactive)
@@ -354,6 +360,7 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 (add-hook 'project-find-functions #'project-find-go-module)
+(add-hook 'project-find-functions #'project-find-rust-module)
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
 (add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
