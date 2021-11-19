@@ -125,8 +125,8 @@
   (package-install 'yaml-mode))    ;;自动安装Yaml插件包
 (when (not (package-installed-p 'lsp-mode))
   (package-install 'lsp-mode))    ;;自动安装LSP插件包
-(when (not (package-installed-p 'eglot))
-  (package-install 'eglot))    ;;自动安装Eglot插件包
+;(when (not (package-installed-p 'eglot))
+;  (package-install 'eglot))    ;;自动安装Eglot插件包
 (when (not (package-installed-p 'flycheck))
   (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
 (when (not (package-installed-p 'company))
@@ -169,7 +169,7 @@
 (require 'json-mode)    ;;导入Json编辑模式
 (require 'yaml-mode)    ;;导入Yaml编辑模式
 (require 'lsp-mode)    ;;导入lsp自动补全后端
-(require 'eglot)    ;;导入eglot自动补全后端
+;(require 'eglot)    ;;导入eglot自动补全后端
 (require 'go-mode)    ;;导入GO语言编辑模式
 (require 'flycheck)    ;;导入语法检查插件包
 (require 'company)    ;;导入自动补全插件包
