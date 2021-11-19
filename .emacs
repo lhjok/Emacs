@@ -212,13 +212,13 @@
                 (replace-regexp-in-string home "~" path))
               recentf-list)
       nil t))))
-;;改变终端的只读模式
+;;更改comint终端只读模式为可读写
 (defun my-compilation-mode-hook()
   (interactive)
-  (read-only-mode -1)    ;;更改只读模式为可输入
-  (comint-mode))    ;;切换交互模式
+  (read-only-mode -1)
+  (comint-mode))
 ;;一键开启真实终端
-(defun my-ansi-term()    ;;真实终端设置
+(defun my-ansi-term()
   (interactive)
   (progn
     (if (not (get-buffer-window "*ansi-term*"))
@@ -375,7 +375,10 @@
 (setq recentf-max-saved-items 10)    ;;设置最近打开的文件保存数量
 (setq doom-modeline-height 30)    ;;设置状态栏高度
 (setq doom-modeline-modal-icon t)
-(setq lsp-rust-server 'rust-analyzer)    ;;开启rust-analyzer补全模式
+;;(setq lsp-rust-server 'rust-analyzer)    ;;LSP开启rust-analyzer作为Rust的LSP服务端
+(setq eglot-rust-server 'rust-analyzer)    ;;Eglot开启rust-analyzer作为Rust的LSP服务端
+(setq rustic-lsp-server 'rust-analyzer)    ;;默认rust-analyzer作为Rust的LSP服务端
+(setq rustic-lsp-client 'eglot)    ;;使用Eglot作为Rust的LSP客户端
 (setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
