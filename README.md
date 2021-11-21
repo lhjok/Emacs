@@ -9,9 +9,9 @@
 $ cd emacs
 $ toolbox enter
 $ ./autogen.sh
-$ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-jpeg \
---with-tiff --with-gif --with-png --with-pop --with-rsvg --with-cairo --with-modules --with-xft --with-json \
---with-dbus --with-threads --without-gpm --with-harfbuzz --with-mailutils --with-native-compilation
+$ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-gif --with-pop \
+--with-tiff --with-jpeg --with-png --with-rsvg --with-cairo --with-modules --with-mailutils --with-json \
+--with-dbus --with-xft --with-threads --without-gpm --with-harfbuzz --with-native-compilation
 $ make && make install
 ```
 
