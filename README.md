@@ -9,10 +9,10 @@
 $ cd emacs
 $ toolbox enter
 $ ./autogen.sh
-$ ./configure --with-xpm --with-jpeg --with-tiff --with-gif --with-png --with-pop \
---with-rsvg --with-cairo --with-modules --with-dbus --with-threads --with-xft --with-json \
---without-gpm --with-harfbuzz --with-mailutils --with-native-compilation
-$ make
+$ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-jpeg \
+--with-tiff --with-gif --with-png --with-pop --with-rsvg --with-cairo --with-modules --with-xft --with-json \
+--with-dbus --with-threads --without-gpm --with-harfbuzz --with-mailutils --with-native-compilation
+$ make && make install
 ```
 
 #### 创建桌面启动文件
@@ -23,8 +23,8 @@ $ make
 Name=Emacs
 GenericName=Text Editor
 Comment=Edit text
-Exec=/var/home/lhjok/.opt/emacs/src/emacs %F
-Icon=/var/home/lhjok/.opt/emacs/etc/images/icons/hicolor/scalable/apps/emacs.svg
+Exec=/var/home/lhjok/.opt/emacs/bin/emacs %F
+Icon=/var/home/lhjok/.opt/emacs/share/icons/hicolor/scalable/apps/emacs.svg
 Type=Application
 Terminal=false
 Categories=Development;TextEditor;
