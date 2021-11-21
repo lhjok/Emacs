@@ -9,9 +9,9 @@
 $ cd emacs
 $ toolbox enter
 $ ./autogen.sh
-$ ./configure --with-xpm --with-jpeg --with-tiff --with-gif --with-png \
---with-rsvg --with-cairo --with-modules --with-dbus --with-xft --with-json \
---with-threads --without-gpm --with-harfbuzz --with-pop --with-mailutils
+$ ./configure --with-xpm --with-jpeg --with-tiff --with-gif --with-png --with-pop \
+--with-rsvg --with-cairo --with-modules --with-dbus --with-threads --with-xft --with-json \
+--without-gpm --with-harfbuzz --with-mailutils --with-native-compilation
 $ make
 ```
 

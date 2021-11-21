@@ -70,6 +70,7 @@
 (setq cua-auto-tabify-rectangles nil)    ;;EmacsWiki里面写的
 (setq gdb-many-windows t)    ;;开启GDB多窗口调试模式
 (setq compile-command nil)    ;;默认编译参数 (把nil改成"参数"即可)
+(setq package-native-compile t)    ;;在安装包时支持提前本地编译
 
 ;;####=文档编码设置:=############################################################################################
 (setq current-language-environment "UTF-8")    ;;设置中文环境
@@ -95,8 +96,6 @@
 ;;####=自动安装插件包:=##########################################################################################
 (when (not package-archive-contents)
   (package-refresh-contents))    ;;自动初始化源安装列表
-(when (not (package-installed-p 'use-package))
-  (package-install 'use-package))    ;;自动安装包管理模块
 (when (not (package-installed-p 'undo-tree))
   (package-install 'undo-tree))    ;;自动安装撤销插件包
 (when (not (package-installed-p 'js2-mode))
@@ -153,6 +152,8 @@
   (package-install 'counsel))    ;;自动安装counsel增强文件管理功能
 (when (not (package-installed-p 'swiper))
   (package-install 'swiper))    ;;自动安装swiper增强查找功能
+(when (not (package-installed-p 'use-package))
+  (package-install 'use-package))    ;;自动安装包管理模块
 
 ;;####=默认加载插件设置:=########################################################################################
 (require 'use-package)    ;;导入包管理模块
@@ -187,7 +188,7 @@
 (require 'project)    ;;导入内置项目管理
 
 ;;####=函数定义区域:=############################################################################################
-(defun setup-tide-mode()    ;;设置Tide代码补全后端
+(defun setup-tide-mode()
   (interactive)
   (tide-setup)
   (flycheck-mode +1)
