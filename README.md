@@ -2,12 +2,17 @@
 
 ### 编译安装Emacs编辑器
 
-#### 官网下载Emacs源码，解压到(~/.opt)目录下
+#### 官网下载或克隆Emacs源码
 执行`./configure`命令时查看错误提示，安装相应的依赖库，直到没有错误提示为止。
 
 ```sh
-$ cd emacs
-$ toolbox enter
+$ git clone https://github.com/emacs-mirror/emacs.git
+$ cd emacs && toolbox enter
+$ sudo dnf install -y make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg-devel libXpm-devel \
+giflib-devel libtiff-devel gnutls-devel ncurses-devel jansson-devel librsvg2-devel libXft-devel \
+libX11-devel libpng-devel libungif-devel pkgconfig texinfo libgccjit libgccjit-devel dbus-devel \
+dbus-glib-devel dbus-python texi2html freetype-devel glib2-devel cairo-devel harfbuzz-devel
+$ git checkout emacs-28
 $ ./autogen.sh
 $ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-gif --with-pop \
 --with-tiff --with-jpeg --with-png --with-rsvg --with-cairo --with-modules --with-mailutils --with-json \
