@@ -379,6 +379,9 @@
 (add-hook 'typescript-mode-hook 'hs-minor-mode)    ;;TS文件折叠功能
 (add-hook 'go-mode-hook 'hs-minor-mode)    ;;GO文件折叠功能
 (add-hook 'rustic-mode-hook 'hs-minor-mode)    ;;Rust文件折叠功能
+;(put 'eglot-node 'flymake-overlay-control nil)    ;;关闭eglot-node覆盖flymake
+;(put 'eglot-warning 'flymake-overlay-control nil)    ;;关闭eglot-warning覆盖flymake
+;(put 'eglot-error 'flymake-overlay-control nil)    ;;关闭eglot-error覆盖flymake
 (set-frame-position (selected-frame) 320 70)    ;;窗口位置
 (set-frame-width (selected-frame) 140)    ;;窗口宽度
 (set-frame-height (selected-frame) 50)    ;;窗口高度
