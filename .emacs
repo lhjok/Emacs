@@ -435,7 +435,7 @@
 (global-set-key (kbd "C-f") 'swiper)    ;;查找关键词
 (global-set-key (kbd "C-S-f") 'counsel-ag)    ;;查找整个项目关键词
 (global-set-key (kbd "C-S-b") 'switch-to-buffer)    ;;查找历史/缓冲区文件
-(global-set-key (kbd "C-r") 'replace-string)    ;;查找与替换
+(global-set-key (kbd "C-r") 'highlight-symbol-query-replace)    ;;查找与替换
 (global-set-key (kbd "C-S-r") 'projectile-replace)    ;;项目内查找与替换
 (global-set-key (kbd "C-S-k") 'kill-buffer)    ;;关闭当前缓冲区
 (global-set-key (kbd "C-w") 'delete-window)    ;;关闭当前窗口
