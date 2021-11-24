@@ -154,6 +154,8 @@
   (package-install 'counsel))    ;;自动安装counsel增强文件管理功能
 (when (not (package-installed-p 'swiper))
   (package-install 'swiper))    ;;自动安装swiper增强查找功能
+(when (not (package-installed-p 'vterm))
+  (package-install 'vterm))    ;;自动安装vterm虚拟终端
 (when (not (package-installed-p 'use-package))
   (package-install 'use-package))    ;;自动安装包管理模块
 
@@ -188,7 +190,7 @@
 (require 'ivy)    ;;导入ivy缓冲区补全模块
 (require 'counsel)    ;;导入counsel增强文件管理功能
 (require 'swiper)    ;;导入swiper增强查找功能
-(require 'project)    ;;导入内置项目管理
+(require 'vterm)    ;;导入vterm虚拟终端
 
 ;;####=函数定义区域:=############################################################################################
 (defun setup-tide-mode()
@@ -199,18 +201,6 @@
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
   (company-mode +1))
-;;设置Go语言项目根目录
-(defun project-find-go-module (dir)
-  (when-let ((root (locate-dominating-file dir "go.mod")))
-    (cons 'go-module root)))
-(cl-defmethod project-root ((project (head go-module)))
-  (cdr project))
-;;设置Rust语言项目根目录
-(defun project-find-rust-module (dir)
-  (when-let ((root (locate-dominating-file dir "Cargo.toml")))
-    (cons 'rust-module root)))
-(cl-defmethod project-root ((project (head rust-module)))
-  (cdr project))
 ;;打开最近文件
 (defun ido-choose-from-recentf()
   (interactive)
@@ -223,21 +213,20 @@
               recentf-list)
       nil t))))
 ;;更改comint终端只读模式为可读写
-(defun my-compilation-mode-hook()
+(defun my-compilation-mode()
   (interactive)
   (read-only-mode -1)
   (comint-mode))
-;;一键开启真实终端
-(defun my-ansi-term()
+;;一键开启虚拟终端
+(defun my-vterm-mode()
   (interactive)
   (progn
-    (if (not (get-buffer-window "*ansi-term*"))
+    (if (not (get-buffer-window "*vterm*"))
         (progn
           (split-window-vertically
-           ( - (window-height (get-buffer-window "*ansi-term*")) 15))
-          (other-window 1)
-          (ansi-term "/bin/bash")
-          (switch-to-buffer "*ansi-term*")))))
+           ( - (window-height (get-buffer-window "*vterm*")) 15))
+          (other-window 1) (vterm)
+          (switch-to-buffer "*vterm*")))))
 ;;一键进入GDB调试环境
 (defun gdb-quick-run()
   (interactive)
@@ -325,6 +314,7 @@
   (setq doom-themes-treemacs-theme "doom-atom")
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
+(use-package vterm :ensure t)
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
@@ -367,10 +357,8 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
-(add-hook 'project-find-functions #'project-find-go-module)
-(add-hook 'project-find-functions #'project-find-rust-module)
 (add-hook 'before-save-hook 'gofmt-before-save)
-(add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
+(add-hook 'compilation-mode-hook 'my-compilation-mode)
 (add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
 (add-hook 'c++-mode-hook 'hs-minor-mode)    ;;C++文件折叠功能
 (add-hook 'python-mode-hook 'hs-minor-mode)    ;;Python文件折叠功能
@@ -379,6 +367,9 @@
 (add-hook 'typescript-mode-hook 'hs-minor-mode)    ;;TS文件折叠功能
 (add-hook 'go-mode-hook 'hs-minor-mode)    ;;GO文件折叠功能
 (add-hook 'rustic-mode-hook 'hs-minor-mode)    ;;Rust文件折叠功能
+(add-hook 'vterm-mode-hook (lambda()    ;;设置终端字体
+  (set (make-local-variable 'buffer-face-mode-face) 'Cantarell)
+  (buffer-face-mode t)))
 ;(put 'eglot-node 'flymake-overlay-control nil)    ;;关闭eglot-node覆盖flymake
 ;(put 'eglot-warning 'flymake-overlay-control nil)    ;;关闭eglot-warning覆盖flymake
 ;(put 'eglot-error 'flymake-overlay-control nil)    ;;关闭eglot-error覆盖flymake
@@ -414,8 +405,7 @@
 (setq special-display-function
       (lambda (buffer &optional args)
         (split-window-horizontally ( / ( * (window-width) 2) 3))    ;;设置编译窗口大小
-        (other-window 1)
-        (switch-to-buffer buffer)    ;;切换到编译窗口
+        (other-window 1) (switch-to-buffer buffer)    ;;切换到编译窗口
         (get-buffer-window buffer 0)))
 (with-eval-after-load 'treemacs
   (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
@@ -487,7 +477,7 @@
 (global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
 (global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
 (global-set-key (kbd "<f9>") 'cpp-quick-compile)    ;;按"F9"一键编译生成C++文件(C++语言)
-(global-set-key (kbd "<f11>") 'my-ansi-term)    ;;按"F11"一键开启真实终端
+(global-set-key (kbd "<f11>") 'my-vterm-mode)    ;;按"F11"一键开启虚拟终端
 (global-set-key (kbd "<f12>") 'nodejs-quick-run)    ;;按"F12"一键编译运行当前JS文件(JavaScript语言)
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
 (define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
