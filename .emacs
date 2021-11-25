@@ -226,7 +226,7 @@
           (split-window-vertically
            ( - (window-height (get-buffer-window "*vterm*")) 15))
           (other-window 1) (vterm)
-          (switch-to-buffer "*vterm*")))))
+          (pop-to-buffer-same-window "*vterm*")))))
 ;;一键进入GDB调试环境
 (defun gdb-quick-run()
   (interactive)
