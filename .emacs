@@ -191,6 +191,7 @@
 (require 'counsel)    ;;导入counsel增强文件管理功能
 (require 'swiper)    ;;导入swiper增强查找功能
 (require 'vterm)    ;;导入vterm虚拟终端
+(require 'uniquify)    ;;处理缓冲区同名文件
 
 ;;####=函数定义区域:=############################################################################################
 (defun setup-tide-mode()
@@ -201,17 +202,6 @@
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
   (company-mode +1))
-;;打开最近文件
-(defun ido-choose-from-recentf()
-  (interactive)
-  (let ((home (expand-file-name (getenv "HOME"))))
-    (find-file
-     (ido-completing-read
-      "Open File: "
-      (mapcar (lambda (path)
-                (replace-regexp-in-string home "~" path))
-              recentf-list)
-      nil t))))
 ;;更改comint终端只读模式为可读写
 (defun my-compilation-mode()
   (interactive)
@@ -302,9 +292,10 @@
                      " " (buffer-name (current-buffer))))))
 
 ;;####=【Use-Package】设置区域:=#################################################################################
-(use-package rustic)    ;;开启Rust语言编辑模式
-(use-package all-the-icons)    ;;开启all-the-icons图标主题
-(use-package treemacs)    ;;开启treemacs文件浏览器
+(use-package rustic :ensure t)    ;;开启Rust语言编辑模式
+(use-package all-the-icons :ensure t)    ;;开启all-the-icons图标主题
+(use-package treemacs :ensure t)    ;;开启treemacs文件浏览器
+(use-package vterm :ensure t)    ;;开启虚拟终端
 (use-package doom-themes    ;;开启doom-themes主题
   :ensure t :config
   (setq doom-themes-enable-bold t
@@ -314,7 +305,6 @@
   (setq doom-themes-treemacs-theme "doom-atom")
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
-(use-package vterm :ensure t)
 
 ;;####=插件功能设置:=############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
@@ -407,6 +397,7 @@
         (split-window-horizontally ( / ( * (window-width) 2) 3))    ;;设置编译窗口大小
         (other-window 1) (switch-to-buffer buffer)    ;;切换到编译窗口
         (get-buffer-window buffer 0)))
+(setq uniquify-buffer-name-style 'forward)    ;;区别缓冲区同名文件
 (with-eval-after-load 'treemacs
   (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 
@@ -419,15 +410,15 @@
 (global-set-key (kbd "M-x") 'counsel-M-x)    ;;打开(M-x)命令
 (global-set-key (kbd "C-n") 'counsel-find-file)    ;;打开或新建文件
 (global-set-key (kbd "C-`") 'other-window)    ;;窗口切换
-(global-set-key (kbd "C-o") 'ido-choose-from-recentf)    ;;打开最近文件
-(global-set-key (kbd "C-p") 'treemacs-select-window)    ;;打开treemacs文件浏览器
-(global-set-key (kbd "C-S-p") 'treemacs-add-project-to-workspace)    ;;添加项目到工作区
+(global-set-key (kbd "C-o") 'projectile-find-file)    ;;打开项目文件
+(global-set-key (kbd "C-p") 'projectile-switch-project)    ;;打开项目
+(global-set-key (kbd "C-S-a") 'treemacs-add-project-to-workspace)    ;;添加项目到工作区
 (global-set-key (kbd "C-S-d") 'treemacs-remove-project-from-workspace)    ;;工作区删除项目
 (global-set-key (kbd "C-s") 'save-buffer)    ;;保存文件
-(global-set-key (kbd "C-S-s") 'write-file)    ;;另存文件
+(global-set-key (kbd "C-S-s") 'save-some-buffers)    ;;保存所有未保存的缓冲区
 (global-set-key (kbd "C-f") 'swiper)    ;;查找关键词
 (global-set-key (kbd "C-S-f") 'counsel-ag)    ;;查找整个项目关键词
-(global-set-key (kbd "C-S-b") 'switch-to-buffer)    ;;查找历史/缓冲区文件
+(global-set-key (kbd "C-S-b") 'ivy-switch-buffer)    ;;查找历史/缓冲区文件
 (global-set-key (kbd "C-r") 'highlight-symbol-query-replace)    ;;查找与替换
 (global-set-key (kbd "C-S-r") 'projectile-replace)    ;;项目内查找与替换
 (global-set-key (kbd "C-S-k") 'kill-buffer)    ;;关闭当前缓冲区
@@ -458,21 +449,20 @@
 (global-set-key (kbd "M-/") 'hippie-expand)    ;;自带的自动补全
 (global-set-key (kbd "C-{") 'start-kbd-macro)    ;;开始录制宏
 (global-set-key (kbd "C-}") 'end-kbd-macro)    ;;结束宏录制
-(global-set-key (kbd "C-.") 'highlight-symbol-next)    ;;下一个高亮相同词
-(global-set-key (kbd "C-,") 'highlight-symbol-prev)    ;;上一个高亮相同词
+(global-set-key (kbd "C-.") 'highlight-symbol-next)    ;;移动到下一个高亮相同词
+(global-set-key (kbd "C-,") 'highlight-symbol-prev)    ;;移动到上一个高亮相同词
 (global-set-key (kbd "C-S-e") 'call-last-kbd-macro)    ;;执行上一次绑定的宏命令
 (global-set-key (kbd "C-S-q") 'save-buffers-kill-emacs)    ;;退出程序
 (global-set-key (kbd "C--") 'hs-hide-block)    ;;折叠代码 (键绑定)
 (global-set-key (kbd "C-=") 'hs-show-block)    ;;打开折叠 (键绑定)
 (global-set-key (kbd "C-<") 'hs-hide-all)    ;;折叠全部代码 (键绑定)
 (global-set-key (kbd "C->") 'hs-show-all)    ;;展开全部折叠 (键绑定)
-(global-set-key (kbd "<f1>") 'highlight-symbol-next)    ;;移动到下一个高亮相同词
-(global-set-key (kbd "<f2>") 'highlight-symbol-prev)    ;;移动到上一个高亮相同词
+(global-set-key (kbd "<f1>") 'projectile-run-project)    ;;按"F1"进入小缓冲区运行项目
 (global-set-key (kbd "<f3>") 'gdb-quick-run)    ;;按"F3"一键进入GDB调试环境
-(global-set-key (kbd "<f4>") 'compile)    ;;按"F4"进入小缓冲区输入编译选项
+(global-set-key (kbd "<f4>") 'projectile-compile-project)    ;;按"F4"进入小缓冲区编译项目
 (global-set-key (kbd "<f5>") 'go-quick-run)    ;;按"F5"一键编译运行当前GO文件(GO语言)
-(global-set-key (kbd "<f6>") 'ivy-resume)    ;;返回上一次命令
 (global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"Ctrl+F5"一键编译生成当前GO文件(GO语言)
+(global-set-key (kbd "<f6>") 'ivy-resume)    ;;返回上一次命令
 (global-set-key (kbd "<f8>") 'rust-compile-run)    ;;按"F8"一键编译并运行(Rust语言)
 (global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
 (global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
