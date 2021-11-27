@@ -154,6 +154,8 @@
   (package-install 'counsel))    ;;自动安装counsel增强文件管理功能
 (when (not (package-installed-p 'swiper))
   (package-install 'swiper))    ;;自动安装swiper增强查找功能
+(when (not (package-installed-p 'iedit))
+  (package-install 'iedit))    ;;自动安装iedit增强替换功能
 (when (not (package-installed-p 'vterm))
   (package-install 'vterm))    ;;自动安装vterm虚拟终端
 (when (not (package-installed-p 'use-package))
@@ -190,6 +192,7 @@
 (require 'ivy)    ;;导入ivy缓冲区补全模块
 (require 'counsel)    ;;导入counsel增强文件管理功能
 (require 'swiper)    ;;导入swiper增强查找功能
+(require 'iedit)    ;;导入iedit增强替换功能
 (require 'vterm)    ;;导入vterm虚拟终端
 (require 'uniquify)    ;;处理缓冲区同名文件
 
@@ -419,7 +422,7 @@
 (global-set-key (kbd "C-f") 'swiper)    ;;查找关键词
 (global-set-key (kbd "C-S-f") 'counsel-ag)    ;;查找整个项目关键词
 (global-set-key (kbd "C-S-b") 'ivy-switch-buffer)    ;;查找历史/缓冲区文件
-(global-set-key (kbd "C-r") 'highlight-symbol-query-replace)    ;;查找与替换
+(global-set-key (kbd "C-r") 'iedit-mode)    ;;替换关键词
 (global-set-key (kbd "C-S-r") 'projectile-replace)    ;;项目内查找与替换
 (global-set-key (kbd "C-S-k") 'kill-buffer)    ;;关闭当前缓冲区
 (global-set-key (kbd "C-w") 'delete-window)    ;;关闭当前窗口
@@ -462,7 +465,6 @@
 (global-set-key (kbd "<f4>") 'projectile-compile-project)    ;;按"F4"进入小缓冲区编译项目
 (global-set-key (kbd "<f5>") 'go-quick-run)    ;;按"F5"一键编译运行当前GO文件(GO语言)
 (global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"Ctrl+F5"一键编译生成当前GO文件(GO语言)
-(global-set-key (kbd "<f6>") 'ivy-resume)    ;;返回上一次命令
 (global-set-key (kbd "<f8>") 'rust-compile-run)    ;;按"F8"一键编译并运行(Rust语言)
 (global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
 (global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
