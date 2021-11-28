@@ -469,7 +469,7 @@
 (global-set-key (kbd "<f4>") 'projectile-compile-project)    ;;按"F4"进入小缓冲区编译项目
 (global-set-key (kbd "<f5>") 'go-quick-run)    ;;按"F5"一键编译运行当前GO文件(GO语言)
 (global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"Ctrl+F5"一键编译生成当前GO文件(GO语言)
-(global-set-key (kbd "<f6>") 'ivy-wgrep-change-to-wgrep-mode)    ;;按"F6"进入Wgrep模式跨文件替换
+(global-set-key (kbd "<f7>") 'ivy-wgrep-change-to-wgrep-mode)    ;;按"F7"进入Wgrep模式跨文件替换
 (global-set-key (kbd "<f8>") 'rust-compile-run)    ;;按"F8"一键编译并运行(Rust语言)
 (global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
 (global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
