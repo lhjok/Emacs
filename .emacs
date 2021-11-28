@@ -156,6 +156,8 @@
   (package-install 'swiper))    ;;自动安装swiper增强查找功能
 (when (not (package-installed-p 'iedit))
   (package-install 'iedit))    ;;自动安装iedit增强替换功能
+(when (not (package-installed-p 'wgrep))
+  (package-install 'wgrep))    ;;自动安装wgrep增强查找替换功能
 (when (not (package-installed-p 'vterm))
   (package-install 'vterm))    ;;自动安装vterm虚拟终端
 (when (not (package-installed-p 'use-package))
@@ -193,6 +195,7 @@
 (require 'counsel)    ;;导入counsel增强文件管理功能
 (require 'swiper)    ;;导入swiper增强查找功能
 (require 'iedit)    ;;导入iedit增强替换功能
+(require 'wgrep)    ;;导入wgrep增强查找替换功能
 (require 'vterm)    ;;导入vterm虚拟终端
 (require 'uniquify)    ;;处理缓冲区同名文件
 
@@ -401,6 +404,7 @@
         (other-window 1) (switch-to-buffer buffer)    ;;切换到编译窗口
         (get-buffer-window buffer 0)))
 (setq uniquify-buffer-name-style 'forward)    ;;区别缓冲区同名文件
+(setq wgrep-auto-save-buffer t)    ;;`C-c-C-e'将更改应用于文件缓冲区后自动保存
 (with-eval-after-load 'treemacs
   (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 
@@ -465,6 +469,7 @@
 (global-set-key (kbd "<f4>") 'projectile-compile-project)    ;;按"F4"进入小缓冲区编译项目
 (global-set-key (kbd "<f5>") 'go-quick-run)    ;;按"F5"一键编译运行当前GO文件(GO语言)
 (global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"Ctrl+F5"一键编译生成当前GO文件(GO语言)
+(global-set-key (kbd "<f6>") 'ivy-wgrep-change-to-wgrep-mode)    ;;按"F6"进入Wgrep模式跨文件替换
 (global-set-key (kbd "<f8>") 'rust-compile-run)    ;;按"F8"一键编译并运行(Rust语言)
 (global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
 (global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
