@@ -12,12 +12,13 @@ $ sudo dnf install -y make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg-
 giflib-devel libtiff-devel gnutls-devel ncurses-devel jansson-devel librsvg2-devel libXft-devel \
 libX11-devel libpng-devel libungif-devel pkgconfig texinfo libgccjit libgccjit-devel dbus-devel \
 dbus-glib-devel dbus-python texi2html freetype-devel glib2-devel cairo-devel harfbuzz-devel
-$ git checkout emacs-28    # (optional) Emacs-29 Add: --with-pgtk
+# (Default) Emacs-29 Add: --with-pgtk
+# (Optional) $ git checkout emacs-28
 $ ./autogen.sh
-$ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm \
---with-pop --with-tiff --with-rsvg --with-cairo --with-modules --with-mailutils \
---with-json --with-dbus --with-xft --with-threads --without-gpm --with-png --with-jpeg \
---with-harfbuzz --with-gif --with-native-compilation --with-pgtk
+$ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-gif \
+--with-pop --with-tiff --with-rsvg --with-cairo --with-modules --with-mailutils --with-jpeg \
+--with-harfbuzz --with-json --with-dbus --with-xft --without-gpm --with-png --with-pgtk \
+--with-threads --with-native-compilation
 $ make && make install
 ```
 
