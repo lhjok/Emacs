@@ -369,9 +369,6 @@
 ;(put 'eglot-node 'flymake-overlay-control nil)    ;;关闭eglot-node覆盖flymake
 ;(put 'eglot-warning 'flymake-overlay-control nil)    ;;关闭eglot-warning覆盖flymake
 ;(put 'eglot-error 'flymake-overlay-control nil)    ;;关闭eglot-error覆盖flymake
-(set-frame-position (selected-frame) 320 70)    ;;窗口位置
-(set-frame-width (selected-frame) 140)    ;;窗口宽度
-(set-frame-height (selected-frame) 50)    ;;窗口高度
 
 ;;####=【SETQ】设置区域:=########################################################################################
 (setq ivy-use-virtual-buffers t)    ;;添加近期打开的文件
@@ -512,4 +509,6 @@
       (gdb-set-window-buffer (gdb-stack-buffer-name) nil win5))
     (select-window win0)))
 
+;;####=默认窗口大小=#############################################################################################
+(set-frame-size (selected-frame) 140 45)    ;;窗口默认大小
 ;;####=配置文件结束=#############################################################################################
