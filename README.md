@@ -12,7 +12,6 @@ $ sudo dnf install -y make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg-
 giflib-devel libtiff-devel gnutls-devel ncurses-devel jansson-devel librsvg2-devel libXft-devel \
 libX11-devel libpng-devel libungif-devel pkgconfig texinfo libgccjit libgccjit-devel dbus-devel \
 dbus-glib-devel dbus-python texi2html freetype-devel glib2-devel cairo-devel harfbuzz-devel
-# (Default) Emacs-29 Add: --with-pgtk
 # (Stable) $ git checkout emacs-29
 $ ./autogen.sh
 $ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-gif \
