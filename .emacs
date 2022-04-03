@@ -404,6 +404,8 @@
 (setq wgrep-auto-save-buffer t)    ;;`C-c-C-e'将更改应用于文件缓冲区后自动保存
 (with-eval-after-load 'treemacs
   (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
+(setq undo-tree-auto-save-history t)    ;;自动保存临时文件
+(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))    ;;指定保存位置
 
 ;;####=快捷键绑定:=##############################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
