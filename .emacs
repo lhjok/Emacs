@@ -319,8 +319,8 @@
 (projectile-mode +1)    ;;开启项目projectile管理器
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (load-library "hideshow")    ;;开启代码折叠功能
-(set-face-attribute 'mode-line nil :family "DejaVu Sans Mono" :height 122)   ;;状态栏字体("Cantarell" 125)
-(set-face-attribute 'mode-line-inactive nil :family "DejaVu Sans Mono" :height 122)   ;;状态栏字体("Cantarell" 125)
+(set-face-attribute 'mode-line nil :family "Microsoft YaHei" :height 122)   ;;状态栏字体("Cantarell" 125)
+(set-face-attribute 'mode-line-inactive nil :family "Microsoft YaHei" :height 122)   ;;状态栏字体("Cantarell" 125)
 (set-face-attribute 'highlight-symbol-face nil :background "#d9eaf7" :foreground "default")
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
