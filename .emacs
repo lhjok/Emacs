@@ -1,4 +1,4 @@
-;;####=优先启动设置:=############################################################################################
+;;####=优先启动设置:=###############################################################################################
 ;;(menu-bar-mode 0)    ;;取消菜单栏
 (tool-bar-mode 0)    ;;取消工具栏
 (scroll-bar-mode 0)    ;;取消滚动条
@@ -72,7 +72,7 @@
 (setq compile-command nil)    ;;默认编译参数 (把nil改成"参数"即可)
 (setq package-native-compile t)    ;;在安装包时支持提前本地编译
 
-;;####=文档编码设置:=############################################################################################
+;;####=文档编码设置:=###############################################################################################
 (setq current-language-environment "UTF-8")    ;;设置中文环境
 (setq locale-coding-system 'utf-8)    ;;设置中文环境
 (prefer-coding-system 'utf-8)    ;;优先读取指定文件编码
@@ -85,14 +85,14 @@
 (set-fontset-font (frame-parameter nil 'font)    ;;设置中文字体
                   'han '("Source Code Pro" . "unicode-bmp"))
 
-;;####=插件包管理源设置:=########################################################################################
+;;####=插件包管理源设置:=###########################################################################################
 (require 'package)
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")    ;;官方GNU源
         ("melpa" . "https://melpa.org/packages/")))    ;;第三方Melpa源
 (package-initialize)
 
-;;####=自动安装插件包:=##########################################################################################
+;;####=自动安装插件包:=#############################################################################################
 (when (not package-archive-contents)
   (package-refresh-contents))    ;;自动初始化源安装列表
 (when (not (package-installed-p 'undo-tree))
@@ -162,7 +162,7 @@
 (when (not (package-installed-p 'use-package))
   (package-install 'use-package))    ;;自动安装包管理模块
 
-;;####=默认加载插件设置:=########################################################################################
+;;####=默认加载插件设置:=###########################################################################################
 (require 'use-package)    ;;导入包管理模块
 (require 'undo-tree)    ;;导入反撤销功能
 (require 'js2-mode)    ;;导入JavaScript语言编辑模式
@@ -198,7 +198,7 @@
 (require 'vterm)    ;;导入vterm虚拟终端
 (require 'uniquify)    ;;处理缓冲区同名文件
 
-;;####=函数定义区域:=############################################################################################
+;;####=函数定义区域:=###############################################################################################
 (defun setup-tide-mode()
   (interactive)
   (tide-setup)
@@ -296,7 +296,7 @@
     (compile (concat "g++ -Wall -o " (file-name-sans-extension (buffer-name))
                      " " (buffer-name (current-buffer))))))
 
-;;####=【Use-Package】设置区域:=#################################################################################
+;;####=【Use-Package】设置区域:=####################################################################################
 (use-package rustic :ensure t)    ;;开启Rust语言编辑模式
 (use-package all-the-icons :ensure t)    ;;开启all-the-icons图标主题
 (use-package treemacs :ensure t)    ;;开启treemacs文件浏览器
@@ -311,7 +311,7 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 
-;;####=插件功能设置:=############################################################################################
+;;####=插件功能设置:=###############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
 (popwin-mode 1)    ;;开启popwin弹出窗口管理器
 (recentf-mode 1)    ;;开启最近打开的文件
@@ -319,8 +319,8 @@
 (projectile-mode +1)    ;;开启项目projectile管理器
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (load-library "hideshow")    ;;开启代码折叠功能
-(set-face-attribute 'mode-line nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
-(set-face-attribute 'mode-line-inactive nil :family "Cantarell" :height 125)    ;;设置状态栏字体和大小
+(set-face-attribute 'mode-line nil :family "DejaVu Sans Mono" :height 122)   ;;状态栏字体("Cantarell" 125)
+(set-face-attribute 'mode-line-inactive nil :family "DejaVu Sans Mono" :height 122)   ;;状态栏字体("Cantarell" 125)
 (set-face-attribute 'highlight-symbol-face nil :background "#d9eaf7" :foreground "default")
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
@@ -369,7 +369,7 @@
 ;(put 'eglot-warning 'flymake-overlay-control nil)    ;;关闭eglot-warning覆盖flymake
 ;(put 'eglot-error 'flymake-overlay-control nil)    ;;关闭eglot-error覆盖flymake
 
-;;####=【SETQ】设置区域:=########################################################################################
+;;####=【SETQ】设置区域:=###########################################################################################
 (setq ivy-use-virtual-buffers t)    ;;添加近期打开的文件
 (setq enable-recursive-minibuffers t)    ;;开启递归Mini缓冲区
 (setq recentf-max-menu-items 10)    ;;设置最近打开的文件显示数量
@@ -406,7 +406,7 @@
 (setq undo-tree-auto-save-history t)    ;;自动保存临时文件
 (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))    ;;指定保存位置
 
-;;####=快捷键绑定:=##############################################################################################
+;;####=快捷键绑定:=#################################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
 (global-set-key (kbd "C-S-z") 'redo)    ;;反撤销
 (global-set-key (kbd "C-y") 'redo)    ;;反撤销
@@ -479,7 +479,7 @@
 (global-unset-key (kbd "M-<down-mouse-1>"))    ;;去除原来的键绑定
 (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)    ;;绑定"Alt"+鼠标左键=添加多光标
 
-;;####=更改GDB多窗口布局=########################################################################################
+;;####=更改GDB多窗口布局=###########################################################################################
 (defadvice gdb-setup-windows (after setup-gdb-windows activate)
   (gdb-get-buffer-create 'gdb-locals-buffer)
   (gdb-get-buffer-create 'gdb-stack-buffer)
@@ -510,6 +510,6 @@
       (gdb-set-window-buffer (gdb-stack-buffer-name) nil win5))
     (select-window win0)))
 
-;;####=默认窗口大小=#############################################################################################
+;;####=默认窗口大小=################################################################################################
 (set-frame-size (selected-frame) 140 45)    ;;窗口默认大小
-;;####=配置文件结束=#############################################################################################
+;;####=配置文件结束=################################################################################################
