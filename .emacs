@@ -88,8 +88,7 @@
 ;;####=插件包管理源设置:=########################################################################################
 (require 'package)
 (setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")    ;;官方GNU源
-        ("marmalade" . "https://marmalade-repo.org/packages/")    ;;第三方Marmalade源
+      '(("gnu" . "https://elpa.gnu.org/packages/")    ;;官方GNU源
         ("melpa" . "https://melpa.org/packages/")))    ;;第三方Melpa源
 (package-initialize)
 
