@@ -422,7 +422,8 @@
 (global-set-key (kbd "C-s") 'save-buffer)    ;;保存文件
 (global-set-key (kbd "C-S-s") 'save-some-buffers)    ;;保存所有未保存的缓冲区
 (global-set-key (kbd "C-f") 'swiper)    ;;查找关键词
-(global-set-key (kbd "C-S-f") 'counsel-ag)    ;;查找整个项目关键词
+;(global-set-key (kbd "C-S-f") 'counsel-ag)    ;;查找整个项目关键词(ag)
+(global-set-key (kbd "C-S-f") 'counsel-rg)    ;;查找整个项目关键词(rg)
 (global-set-key (kbd "C-S-b") 'ivy-switch-buffer)    ;;查找历史/缓冲区文件
 (global-set-key (kbd "C-r") 'iedit-mode)    ;;替换关键词
 (global-set-key (kbd "C-S-r") 'projectile-replace)    ;;项目内查找与替换
