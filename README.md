@@ -60,6 +60,7 @@ $ rustup component add rls rust-analysis rust-src
 $ git clone https://github.com/rust-analyzer/rust-analyzer.git
 $ cd rust-analyzer
 $ cargo xtask install --server
+$ cargo install ripgrep
 $ rustup +nightly component add rust-analyzer-preview
 ```
 

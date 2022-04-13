@@ -129,8 +129,8 @@
   (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
 (when (not (package-installed-p 'company))
   (package-install 'company))    ;;自动安装company自动补全插件包
-(when (not (package-installed-p 'highlight-symbol))
-  (package-install 'highlight-symbol))    ;;自动安装highlight-symbol自动高亮相同词插件包
+(when (not (package-installed-p 'symbol-overlay))
+  (package-install 'symbol-overlay))    ;;自动安装symbol-overlay自动高亮相同词插件包
 (when (not (package-installed-p 'all-the-icons))
   (package-install 'all-the-icons))    ;;自动安装all-the-icons图标主题插件包
 (when (not (package-installed-p 'multiple-cursors))
@@ -181,7 +181,7 @@
 (require 'go-mode)    ;;导入GO语言编辑模式
 (require 'flycheck)    ;;导入语法检查插件包
 (require 'company)    ;;导入自动补全插件包
-(require 'highlight-symbol)    ;;导入自动高亮相同词插件包
+(require 'symbol-overlay)    ;;导入自动高亮相同词插件包
 (require 'all-the-icons)    ;;导入all-the-icons图标主题插件包
 (require 'multiple-cursors)    ;;导入multiple-cursors多光标功能
 (require 'doom-themes)    ;;导入doom-themes主题插件包
@@ -321,7 +321,6 @@
 (load-library "hideshow")    ;;开启代码折叠功能
 (set-face-attribute 'mode-line nil :family "Microsoft YaHei" :height 122)   ;;状态栏字体("Cantarell" 125)
 (set-face-attribute 'mode-line-inactive nil :family "Microsoft YaHei" :height 122)   ;;状态栏字体("Cantarell" 125)
-(set-face-attribute 'highlight-symbol-face nil :background "#d9eaf7" :foreground "default")
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
 (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
@@ -351,7 +350,6 @@
 (add-hook 'typescript-mode-hook #'setup-tide-mode)    ;;开启TypeScript语言Tide自动补全后端
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
-(add-hook 'prog-mode-hook 'highlight-symbol-mode)
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'compilation-mode-hook 'my-compilation-mode)
 (add-hook 'c-mode-hook 'hs-minor-mode)    ;;C文件折叠功能
@@ -387,7 +385,6 @@
 (setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
-(setq highlight-symbol-idle-delay 0.1)
 (setq company-tooltip-limit 20)
 (setq company-idle-delay 0.2)
 (setq company-echo-delay 0)
@@ -414,7 +411,6 @@
 (global-set-key (kbd "C-v") 'yank)    ;;粘贴
 (global-set-key (kbd "M-x") 'counsel-M-x)    ;;打开(M-x)命令
 (global-set-key (kbd "C-n") 'counsel-find-file)    ;;打开或新建文件
-(global-set-key (kbd "C-`") 'other-window)    ;;窗口切换
 (global-set-key (kbd "C-o") 'projectile-find-file)    ;;打开项目文件
 (global-set-key (kbd "C-p") 'projectile-switch-project)    ;;打开项目
 (global-set-key (kbd "C-S-a") 'treemacs-add-project-to-workspace)    ;;添加项目到工作区
@@ -455,24 +451,28 @@
 (global-set-key (kbd "M-/") 'hippie-expand)    ;;自带的自动补全
 (global-set-key (kbd "C-{") 'start-kbd-macro)    ;;开始录制宏
 (global-set-key (kbd "C-}") 'end-kbd-macro)    ;;结束宏录制
-(global-set-key (kbd "C-.") 'highlight-symbol-next)    ;;移动到下一个高亮相同词
-(global-set-key (kbd "C-,") 'highlight-symbol-prev)    ;;移动到上一个高亮相同词
+(global-set-key (kbd "M-n") 'symbol-overlay-jump-next)    ;;移动到下一个高亮相同词
+(global-set-key (kbd "M-p") 'symbol-overlay-jump-prev)    ;;移动到上一个高亮相同词
 (global-set-key (kbd "C-S-e") 'call-last-kbd-macro)    ;;执行上一次绑定的宏命令
 (global-set-key (kbd "C-S-q") 'save-buffers-kill-emacs)    ;;退出程序
 (global-set-key (kbd "C--") 'hs-hide-block)    ;;折叠代码 (键绑定)
 (global-set-key (kbd "C-=") 'hs-show-block)    ;;打开折叠 (键绑定)
 (global-set-key (kbd "C-<") 'hs-hide-all)    ;;折叠全部代码 (键绑定)
 (global-set-key (kbd "C->") 'hs-show-all)    ;;展开全部折叠 (键绑定)
-(global-set-key (kbd "<f1>") 'projectile-run-project)    ;;按"F1"进入小缓冲区运行项目
+(global-set-key (kbd "<f1>") 'other-window)    ;;窗口切换
+(global-set-key (kbd "<f2>") 'symbol-overlay-mode)    ;;开启/关闭高亮相同词
 (global-set-key (kbd "<f3>") 'gdb-quick-run)    ;;按"F3"一键进入GDB调试环境
 (global-set-key (kbd "<f4>") 'projectile-compile-project)    ;;按"F4"进入小缓冲区编译项目
 (global-set-key (kbd "<f5>") 'go-quick-run)    ;;按"F5"一键编译运行当前GO文件(GO语言)
 (global-set-key (kbd "<C-f5>") 'go-quick-build)    ;;按"Ctrl+F5"一键编译生成当前GO文件(GO语言)
+(global-set-key (kbd "<f6>") 'projectile-run-project)    ;;按"F6"进入小缓冲区运行项目
 (global-set-key (kbd "<f7>") 'ivy-wgrep-change-to-wgrep-mode)    ;;按"F7"进入Wgrep模式跨文件替换
 (global-set-key (kbd "<f8>") 'rust-compile-run)    ;;按"F8"一键编译并运行(Rust语言)
 (global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
 (global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
 (global-set-key (kbd "<f9>") 'cpp-quick-compile)    ;;按"F9"一键编译生成C++文件(C++语言)
+(global-set-key (kbd "<f10>") 'symbol-overlay-put)    ;;添加或取消当前高亮相同词
+(global-set-key (kbd "<C-f10>") 'symbol-overlay-remove-all)    ;;关闭所有高亮相同词
 (global-set-key (kbd "<f11>") 'my-vterm-mode)    ;;按"F11"一键开启虚拟终端
 (global-set-key (kbd "<f12>") 'nodejs-quick-run)    ;;按"F12"一键编译运行当前JS文件(JavaScript语言)
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
