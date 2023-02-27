@@ -125,6 +125,8 @@
   (package-install 'yaml-mode))    ;;自动安装Yaml插件包
 (when (not (package-installed-p 'lsp-mode))
   (package-install 'lsp-mode))    ;;自动安装LSP插件包
+(when (not (package-installed-p 'lsp-jedi))
+  (package-install 'lsp-jedi))    ;;自动安装LSP-JEDI插件包
 ;(when (not (package-installed-p 'eglot))
 ;  (package-install 'eglot))    ;;自动安装Eglot插件包
 (when (not (package-installed-p 'flycheck))
@@ -179,6 +181,7 @@
 (require 'json-mode)    ;;导入Json编辑模式
 (require 'yaml-mode)    ;;导入Yaml编辑模式
 (require 'lsp-mode)    ;;导入lsp自动补全后端
+(require 'lsp-jedi)    ;;导入LSP-JEDI自动补全后端
 ;(require 'eglot)    ;;导入eglot自动补全后端
 (require 'python-mode)    ;;导入GO语言编辑模式
 (require 'go-mode)    ;;导入GO语言编辑模式
@@ -313,6 +316,7 @@
   (setq doom-themes-treemacs-theme "doom-atom")
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
+(use-package lsp-jedi :ensure t)
 
 ;;####=插件功能设置:=###############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
@@ -409,6 +413,9 @@
   (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 (setq undo-tree-auto-save-history t)    ;;自动保存临时文件
 (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))    ;;指定保存位置
+(setq lsp-jedi-workspace-extra-paths
+  (vconcat lsp-jedi-workspace-extra-paths
+    ["/var/home/lhjok/.local/lib/python3.11/site-packages"]))
 
 ;;####=快捷键绑定:=#################################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
