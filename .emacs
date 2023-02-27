@@ -111,6 +111,8 @@
   (package-install 'sass-mode))    ;;自动安装Sass语言插件包
 (when (not (package-installed-p 'tide))
   (package-install 'tide))    ;;自动安装Tide补全插件包
+(when (not (package-installed-p 'python-mode))
+  (package-install 'python-mode))    ;;自动安装Python语言插件包
 (when (not (package-installed-p 'go-mode))
   (package-install 'go-mode))    ;;自动安装GO语言插件包
 (when (not (package-installed-p 'rustic))
@@ -178,6 +180,7 @@
 (require 'yaml-mode)    ;;导入Yaml编辑模式
 (require 'lsp-mode)    ;;导入lsp自动补全后端
 ;(require 'eglot)    ;;导入eglot自动补全后端
+(require 'python-mode)    ;;导入GO语言编辑模式
 (require 'go-mode)    ;;导入GO语言编辑模式
 (require 'flycheck)    ;;导入语法检查插件包
 (require 'company)    ;;导入自动补全插件包
@@ -326,6 +329,7 @@
 (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
 (autoload 'js2-mode "js2-mode" nil t)
 (autoload 'go-mode "go-mode" nil t)
+(autoload 'python-mode "python-mode" nil t)
 (autoload 'scss-mode "scss-mode" nil t)
 (autoload 'sass-mode "sass-mode" nil t)
 (autoload 'less-css-mode "less-css-mode" nil t)
@@ -336,6 +340,8 @@
 (add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))    ;;默认Sass文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode))    ;;默认Less文件进入编辑模式
 (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))    ;;默认JSX文件进入编辑模式
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))    ;;默认Py文件进入编辑模式
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))    ;;设置解释器模块列表
 (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))    ;;默认Toml文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))    ;;默认Json文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))    ;;默认Yaml文件进入编辑模式
@@ -345,6 +351,7 @@
 (add-hook 'c-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为C的LSP客户端
 (add-hook 'c++-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为C++的LSP客户端
 (add-hook 'go-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为GO的LSP客户端
+(add-hook 'python-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为Python的LSP客户端
 (add-hook 'js2-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
 (add-hook 'rjsx-mode-hook #'setup-tide-mode)    ;;开启React语言Tide自动补全后端
 (add-hook 'typescript-mode-hook #'setup-tide-mode)    ;;开启TypeScript语言Tide自动补全后端
