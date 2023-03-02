@@ -384,10 +384,10 @@
 (setq recentf-max-menu-items 10)    ;;设置最近打开的文件显示数量
 (setq recentf-max-saved-items 10)    ;;设置最近打开的文件保存数量
 (setq doom-modeline-height 30)    ;;设置状态栏高度
-(setq doom-modeline-modal-icon t)
-(setq lsp-rust-server 'rust-analyzer)    ;;LSP开启rust-analyzer作为Rust的LSP服务端
+(setq doom-modeline-modal-icon t)    ;;开启状态栏图标显示
+(setq rustic-lsp-server 'rust-analyzer)    ;;默认rust-analyzer作为Rust的LSP服务端
+(setq rustic-indent-method-chain t)    ;;开启链式方法调用的缩进风格
 ;(setq eglot-rust-server 'rust-analyzer)    ;;Eglot开启rust-analyzer作为Rust的LSP服务端
-;(setq rustic-lsp-server 'rust-analyzer)    ;;默认rust-analyzer作为Rust的LSP服务端
 ;(setq rustic-lsp-client 'eglot)    ;;使用Eglot作为Rust的LSP客户端
 ;(setq-default eglot-workspace-configuration    ;;Eglot配置Gopls
 ;   '((:gopls .
