@@ -416,6 +416,7 @@
 (setq lsp-jedi-workspace-extra-paths
   (vconcat lsp-jedi-workspace-extra-paths
     ["/var/home/lhjok/.local/lib/python3.11/site-packages"]))
+(setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
 
 ;;####=快捷键绑定:=#################################################################################################
 (global-set-key (kbd "C-z") 'undo)    ;;撤销
