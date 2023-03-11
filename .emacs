@@ -337,6 +337,7 @@
 (autoload 'scss-mode "scss-mode" nil t)
 (autoload 'sass-mode "sass-mode" nil t)
 (autoload 'less-css-mode "less-css-mode" nil t)
+(add-to-list 'exec-path (expand-file-name "~/.cargo/bin/"))    ;;添加Cargo执行路径
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))    ;;默认GO文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))    ;;默认JS文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))    ;;默认TS文件进入编辑模式
