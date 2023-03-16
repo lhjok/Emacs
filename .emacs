@@ -489,8 +489,8 @@
 (global-set-key (kbd "<f9>") 'cpp-quick-compile)    ;;按"F9"一键编译生成C++文件(C++语言)
 (global-set-key (kbd "<f10>") 'symbol-overlay-put)    ;;添加或取消当前高亮相同词
 (global-set-key (kbd "<C-f10>") 'symbol-overlay-remove-all)    ;;关闭所有高亮相同词
-(global-set-key (kbd "<f11>") 'my-vterm-mode)    ;;按"F11"一键开启虚拟终端
-(global-set-key (kbd "<f12>") 'nodejs-quick-run)    ;;按"F12"一键编译运行当前JS文件(JavaScript语言)
+(global-set-key (kbd "<f12>") 'my-vterm-mode)    ;;按"F12"一键开启虚拟终端
+(global-set-key (kbd "<C-f12>") 'nodejs-quick-run)    ;;按"Ctrl+F12"一键编译运行当前JS文件(JavaScript语言)
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
 (define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
 (global-unset-key (kbd "M-<down-mouse-1>"))    ;;去除原来的键绑定
