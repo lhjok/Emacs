@@ -301,16 +301,6 @@
                (kill-buffer "*compilation*")))
     (compile (concat "g++ -Wall -o " (file-name-sans-extension (buffer-name))
                      " " (buffer-name (current-buffer))))))
-;;设置自动匹配到本地的PATH环境变量
-(defun set-exec-path-from-shell-path()
-  (interactive)
-  (let ((path-from-shell
-         (replace-regexp-in-string
-          "[ \t\n]*$" ""
-          (shell-command-to-string
-		   "$SHELL --login -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
 
 ;;####=【Use-Package】设置区域:=####################################################################################
 (use-package rustic :ensure t)    ;;开启Rust语言编辑模式
@@ -336,9 +326,14 @@
 (projectile-mode +1)    ;;开启项目projectile管理器
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (load-library "hideshow")    ;;开启代码折叠功能
-(set-exec-path-from-shell-path)    ;;自动匹配到本地的PATH环境变量
-;(setenv "PATH" (concat (getenv "PATH") ":~/.cargo/bin/"))    ;;手动添加PATH路径到Emacs终端环境
-;(setq exec-path (append exec-path '("~/.cargo/bin/")))    ;;手动添加PATH路径到Emacs执行环境
+(setenv "PATH" (concat (getenv "PATH") ":~/.cargo/bin"))    ;;手动添加PATH路径到Emacs终端环境
+(setq exec-path (append exec-path '("~/.cargo/bin")))    ;;手动添加PATH路径到Emacs执行环境
+(setenv "PATH" (concat (getenv "PATH") ":~/.opt/go/bin"))    ;;手动添加PATH路径到Emacs终端环境
+(setq exec-path (append exec-path '("~/.opt/go/bin")))    ;;手动添加PATH路径到Emacs执行环境
+(setenv "PATH" (concat (getenv "PATH") ":~/.opt/node/bin"))    ;;手动添加PATH路径到Emacs终端环境
+(setq exec-path (append exec-path '("~/.opt/node/bin")))    ;;手动添加PATH路径到Emacs执行环境
+(setenv "PATH" (concat (getenv "PATH") ":~/.npm-global/bin"))    ;;手动添加PATH路径到Emacs终端环境
+(setq exec-path (append exec-path '("~/.npm-global/bin")))    ;;手动添加PATH路径到Emacs执行环境
 (set-face-attribute 'mode-line nil :family "Microsoft YaHei" :height 122)   ;;状态栏字体("Cantarell" 125)
 (set-face-attribute 'mode-line-inactive nil :family "Microsoft YaHei" :height 122)   ;;状态栏字体("Cantarell" 125)
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
