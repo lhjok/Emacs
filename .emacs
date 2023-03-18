@@ -139,6 +139,8 @@
   (package-install 'all-the-icons))    ;;自动安装all-the-icons图标主题插件包
 (when (not (package-installed-p 'multiple-cursors))
   (package-install 'multiple-cursors))    ;;自动安装multiple-cursors多光标功能
+(when (not (package-installed-p 'expand-region))
+  (package-install 'expand-region))    ;;自动安装expand-region扩展所选区域
 (when (not (package-installed-p 'doom-themes))
   (package-install 'doom-themes))    ;;自动安装doom-themes主题插件包
 (when (not (package-installed-p 'doom-modeline))
@@ -190,6 +192,7 @@
 (require 'symbol-overlay)    ;;导入自动高亮相同词插件包
 (require 'all-the-icons)    ;;导入all-the-icons图标主题插件包
 (require 'multiple-cursors)    ;;导入multiple-cursors多光标功能
+(require 'expand-region)    ;;导入expand-region扩展所选区域
 (require 'doom-themes)    ;;导入doom-themes主题插件包
 (require 'doom-modeline)    ;;导入doom-modeline主题插件包
 (require 'treemacs)    ;;导入treemacs文件浏览器
@@ -453,6 +456,7 @@
 (global-set-key (kbd "C-t") 'split-window-horizontally)    ;;分割纵窗口
 (global-set-key (kbd "C-S-i") 'mc/edit-lines)    ;;选择一块区域在每行插入一个光标
 (global-set-key (kbd "M-S-i") 'mc/edit-ends-of-lines)    ;;选择一块区域在每行末尾插入一个光标
+(global-set-key (kbd "<escape>") 'er/expand-region)    ;;扩展所选区域
 (global-set-key (kbd "<C-tab>") 'treemacs)    ;;显示和隐藏treemacs文件浏览器
 (global-set-key (kbd "<M-next>") 'scroll-up)    ;;向下滚动屏幕
 (global-set-key (kbd "<M-prior>") 'scroll-down)    ;;向上滚动屏幕
