@@ -42,6 +42,7 @@ Keywords=Text;Editor;
 为了使图标正常工作，安装此软件包中包括的资源字体非常重要。
 
 ```sh
+M-x nerd-icons-install-fonts
 M-x all-the-icons-install-fonts
 M-x package-refresh-contents
 ```
