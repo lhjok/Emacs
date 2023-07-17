@@ -15,9 +15,9 @@ dbus-glib-devel dbus-python texi2html freetype-devel glib2-devel cairo-devel har
 # (Stable) $ git checkout emacs-29
 $ ./autogen.sh
 $ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-gif \
---with-pop --with-tiff --with-rsvg --with-cairo --with-modules --with-mailutils --with-jpeg \
---with-harfbuzz --with-json --with-dbus --with-xft --without-gpm --with-png --with-threads \
---without-x --with-pgtk --with-native-compilation
+--with-pop --with-tiff --with-rsvg --with-webp --with-cairo --with-modules --with-mailutils --with-jpeg \
+--with-harfbuzz --with-json --with-dbus --with-xft --without-gpm --with-png --with-threads --with-pgtk \
+--without-x --with-native-compilation[=yes] --with-tree-sitter --with-sqlite3 --with-wide-int
 $ make && make install
 ```
 
