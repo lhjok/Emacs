@@ -10,14 +10,14 @@ $ git clone https://github.com/emacs-mirror/emacs.git
 $ cd emacs && toolbox enter
 $ sudo dnf install -y make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg-devel libXpm-devel \
 giflib-devel libtiff-devel gnutls-devel ncurses-devel jansson-devel librsvg2-devel libXft-devel \
-libX11-devel libpng-devel libungif-devel pkgconfig texinfo libgccjit libgccjit-devel dbus-devel \
-dbus-glib-devel dbus-python texi2html freetype-devel glib2-devel cairo-devel harfbuzz-devel
+libX11-devel libpng-devel pkgconfig texinfo libgccjit libgccjit-devel dbus-devel texi2html \
+dbus-glib-devel freetype-devel glib2-devel cairo-devel harfbuzz-devel libtree-sitter-devel
 # (Stable) $ git checkout emacs-29
 $ ./autogen.sh
 $ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-gif \
 --with-pop --with-tiff --with-rsvg --with-webp --with-cairo --with-modules --with-mailutils --with-jpeg \
 --with-harfbuzz --with-json --with-dbus --with-xft --without-gpm --with-png --with-threads --with-pgtk \
---without-x --with-native-compilation[=yes] --with-tree-sitter --with-sqlite3 --with-wide-int
+--without-x --with-native-compilation=yes --with-tree-sitter --with-sqlite3 --with-wide-int
 $ make && make install
 ```
 
