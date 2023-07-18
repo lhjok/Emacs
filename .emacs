@@ -32,7 +32,6 @@
       scroll-conservatively 10000)    ;;平滑滚动
 (setq column-number-mode t)    ;;显示列号在状态栏
 (setq line-number-mode t)    ;;显示行号在状态栏
-(global-linum-mode 0)    ;;不显示行号
 (display-time-mode t)    ;;显示时间
 (setq display-time-24hr-format t)    ;;时间使用24小时制
 (setq show-paren-style 'parenthesis)    ;;括号匹配时可以高亮显示另外一边的括号
@@ -127,8 +126,6 @@
   (package-install 'lsp-mode))    ;;自动安装LSP插件包
 (when (not (package-installed-p 'lsp-jedi))
   (package-install 'lsp-jedi))    ;;自动安装LSP-JEDI插件包
-;(when (not (package-installed-p 'eglot))
-;  (package-install 'eglot))    ;;自动安装Eglot插件包
 (when (not (package-installed-p 'flycheck))
   (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
 (when (not (package-installed-p 'company))
@@ -184,7 +181,6 @@
 (require 'yaml-mode)    ;;导入Yaml编辑模式
 (require 'lsp-mode)    ;;导入lsp自动补全后端
 (require 'lsp-jedi)    ;;导入LSP-JEDI自动补全后端
-;(require 'eglot)    ;;导入eglot自动补全后端
 (require 'python-mode)    ;;导入GO语言编辑模式
 (require 'go-mode)    ;;导入GO语言编辑模式
 (require 'flycheck)    ;;导入语法检查插件包
