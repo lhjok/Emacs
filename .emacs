@@ -305,7 +305,9 @@
 (use-package rustic :ensure t)    ;;开启Rust语言编辑模式
 (use-package all-the-icons :ensure t)    ;;开启all-the-icons图标主题
 (use-package treemacs :ensure t)    ;;开启treemacs文件浏览器
-(use-package vterm :ensure t)    ;;开启虚拟终端
+(use-package vterm :ensure t
+  :bind (:map vterm-mode-map ("C-S-v" . #'vterm-yank))
+  :config (setq vterm-kill-buffer-on-exit t))    ;;开启虚拟终端
 (use-package doom-themes    ;;开启doom-themes主题
   :ensure t :config
   (setq doom-themes-enable-bold t
