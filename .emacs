@@ -164,8 +164,14 @@
   (package-install 'vterm))    ;;自动安装vterm虚拟终端
 (when (not (package-installed-p 'use-package))
   (package-install 'use-package))    ;;自动安装包管理模块
+(when (not (package-installed-p 'quelpa))
+  (package-install 'quelpa))    ;;自动安装Quelpa模块
+(when (not (package-installed-p 'quelpa-use-package))
+  (package-install 'quelpa-use-package))
 
 ;;####=默认加载插件设置:=###########################################################################################
+(require 'quelpa)    ;;导入Quelpa模块
+(require 'quelpa-use-package)    ;;导入包管理Quelpa插件
 (require 'use-package)    ;;导入包管理模块
 (require 'undo-tree)    ;;导入反撤销功能
 (require 'js2-mode)    ;;导入JavaScript语言编辑模式
@@ -318,6 +324,13 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package lsp-jedi :ensure t)
+(use-package copilot :quelpa
+  (copilot    ;;自动安装Copilot人工智能模块
+   :fetcher github
+   :repo "zerolfx/copilot.el"
+   :branch "main"
+   :files ("dist" "*.el")))
+(require 'copilot)
 
 ;;####=插件功能设置:=###############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
@@ -383,6 +396,13 @@
 (add-hook 'vterm-mode-hook (lambda()    ;;设置终端字体
   (set (make-local-variable 'buffer-face-mode-face) 'Cantarell)
   (buffer-face-mode t)))
+(add-hook 'prog-mode-hook 'copilot-mode)
+(add-to-list 'copilot-major-mode-alist '("go" . "go"))
+(add-to-list 'copilot-major-mode-alist '("rustic" . "rust"))
+(add-to-list 'copilot-major-mode-alist '("c++" . "cpp"))
+(add-to-list 'copilot-major-mode-alist '("js2" . "javascript"))
+(add-to-list 'copilot-major-mode-alist '("rjsx" . "typescriptreact"))
+(add-to-list 'copilot-major-mode-alist '("python" . "python"))
 ;(put 'eglot-node 'flymake-overlay-control nil)    ;;关闭eglot-node覆盖flymake
 ;(put 'eglot-warning 'flymake-overlay-control nil)    ;;关闭eglot-warning覆盖flymake
 ;(put 'eglot-error 'flymake-overlay-control nil)    ;;关闭eglot-error覆盖flymake
@@ -500,6 +520,7 @@
 (global-set-key (kbd "<C-f10>") 'symbol-overlay-remove-all)    ;;关闭所有高亮相同词
 (global-set-key (kbd "<f12>") 'my-vterm-mode)    ;;按"F12"一键开启虚拟终端
 (global-set-key (kbd "<C-f12>") 'nodejs-quick-run)    ;;按"Ctrl+F12"一键编译运行当前JS文件(JavaScript语言)
+(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)    ;;人工智能Copilot键绑定
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
 (define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
 (global-unset-key (kbd "M-<down-mouse-1>"))    ;;去除原来的键绑定
