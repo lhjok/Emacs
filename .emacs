@@ -494,14 +494,14 @@
 (global-set-key (kbd "<C-right>") 'shrink-window-horizontally)    ;;向右调整窗口大小
 (global-set-key (kbd "<M-SPC>") 'hippie-expand)    ;;自带的自动补全
 (global-set-key (kbd "M-/") 'comment-dwim)    ;;自带的多行注释
-(global-set-key (kbd "C-{") 'start-kbd-macro)    ;;开始录制宏
-(global-set-key (kbd "C-}") 'end-kbd-macro)    ;;结束宏录制
+(global-set-key (kbd "C-+") 'start-kbd-macro)    ;;开始录制宏
+(global-set-key (kbd "C-=") 'end-kbd-macro)    ;;结束宏录制
 (global-set-key (kbd "M-n") 'symbol-overlay-jump-next)    ;;移动到下一个高亮相同词
 (global-set-key (kbd "M-p") 'symbol-overlay-jump-prev)    ;;移动到上一个高亮相同词
 (global-set-key (kbd "C-S-e") 'call-last-kbd-macro)    ;;执行上一次绑定的宏命令
 (global-set-key (kbd "C-S-q") 'save-buffers-kill-emacs)    ;;退出程序
-(global-set-key (kbd "C--") 'hs-hide-block)    ;;折叠代码 (键绑定)
-(global-set-key (kbd "C-=") 'hs-show-block)    ;;打开折叠 (键绑定)
+(global-set-key (kbd "C-{") 'hs-hide-block)    ;;折叠代码 (键绑定)
+(global-set-key (kbd "C-}") 'hs-show-block)    ;;打开折叠 (键绑定)
 (global-set-key (kbd "C-<") 'hs-hide-all)    ;;折叠全部代码 (键绑定)
 (global-set-key (kbd "C->") 'hs-show-all)    ;;展开全部折叠 (键绑定)
 (global-set-key (kbd "<f1>") 'other-window)    ;;窗口切换
