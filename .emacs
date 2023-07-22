@@ -493,7 +493,7 @@
 (global-set-key (kbd "<C-left>") 'enlarge-window-horizontally)    ;;向左调整窗口大小
 (global-set-key (kbd "<C-right>") 'shrink-window-horizontally)    ;;向右调整窗口大小
 (global-set-key (kbd "<M-SPC>") 'hippie-expand)    ;;自带的自动补全
-(global-set-key (kbd "M-/") 'hippie-expand)    ;;自带的自动补全
+(global-set-key (kbd "M-/") 'comment-dwim)    ;;自带的多行注释
 (global-set-key (kbd "C-{") 'start-kbd-macro)    ;;开始录制宏
 (global-set-key (kbd "C-}") 'end-kbd-macro)    ;;结束宏录制
 (global-set-key (kbd "M-n") 'symbol-overlay-jump-next)    ;;移动到下一个高亮相同词
