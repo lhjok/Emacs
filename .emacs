@@ -340,6 +340,8 @@
 (projectile-mode +1)    ;;开启项目projectile管理器
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (load-library "hideshow")    ;;开启代码折叠功能
+(setq quelpa-update-melpa-p nil)    ;;禁止启动时更新MELPA存储库
+(setq quelpa-checkout-melpa-p nil)    ;;禁用所有MELPA存储库的获取
 (setenv "PATH" (concat (getenv "PATH") ":~/.cargo/bin"))    ;;手动添加PATH路径到Emacs终端环境
 (setq exec-path (append exec-path '("~/.cargo/bin")))    ;;手动添加PATH路径到Emacs执行环境
 (setenv "PATH" (concat (getenv "PATH") ":~/.opt/go/bin"))    ;;手动添加PATH路径到Emacs终端环境
@@ -371,9 +373,9 @@
 (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))    ;;默认Toml文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))    ;;默认Json文件进入编辑模式
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))    ;;默认Yaml文件进入编辑模式
-;(add-hook 'c-mode-hook 'eglot-ensure)    ;;使用eglot作为C的LSP客户端
-;(add-hook 'c++-mode-hook 'eglot-ensure)    ;;使用eglot作为C++的LSP客户端
-;(add-hook 'go-mode-hook 'eglot-ensure)    ;;使用eglot作为GO的LSP客户端
+;;(add-hook 'c-mode-hook 'eglot-ensure)    ;;使用eglot作为C的LSP客户端
+;;(add-hook 'c++-mode-hook 'eglot-ensure)    ;;使用eglot作为C++的LSP客户端
+;;(add-hook 'go-mode-hook 'eglot-ensure)    ;;使用eglot作为GO的LSP客户端
 (add-hook 'c-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为C的LSP客户端
 (add-hook 'c++-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为C++的LSP客户端
 (add-hook 'go-mode-hook #'lsp-deferred)    ;;使用lsp-mode作为GO的LSP客户端
@@ -396,16 +398,16 @@
 (add-hook 'vterm-mode-hook (lambda()    ;;设置终端字体
   (set (make-local-variable 'buffer-face-mode-face) 'Cantarell)
   (buffer-face-mode t)))
-(add-hook 'prog-mode-hook 'copilot-mode)
+(add-hook 'prog-mode-hook 'copilot-mode)    ;;开启Copilot
 (add-to-list 'copilot-major-mode-alist '("go" . "go"))
 (add-to-list 'copilot-major-mode-alist '("rustic" . "rust"))
 (add-to-list 'copilot-major-mode-alist '("c++" . "cpp"))
 (add-to-list 'copilot-major-mode-alist '("js2" . "javascript"))
 (add-to-list 'copilot-major-mode-alist '("rjsx" . "typescriptreact"))
 (add-to-list 'copilot-major-mode-alist '("python" . "python"))
-;(put 'eglot-node 'flymake-overlay-control nil)    ;;关闭eglot-node覆盖flymake
-;(put 'eglot-warning 'flymake-overlay-control nil)    ;;关闭eglot-warning覆盖flymake
-;(put 'eglot-error 'flymake-overlay-control nil)    ;;关闭eglot-error覆盖flymake
+;;(put 'eglot-node 'flymake-overlay-control nil)    ;;关闭eglot-node覆盖flymake
+;;(put 'eglot-warning 'flymake-overlay-control nil)    ;;关闭eglot-warning覆盖flymake
+;;(put 'eglot-error 'flymake-overlay-control nil)    ;;关闭eglot-error覆盖flymake
 
 ;;####=【SETQ】设置区域:=###########################################################################################
 (setq ivy-use-virtual-buffers t)    ;;添加近期打开的文件
@@ -416,12 +418,12 @@
 (setq doom-modeline-modal-icon t)    ;;开启状态栏图标显示
 (setq rustic-lsp-server 'rust-analyzer)    ;;默认rust-analyzer作为Rust的LSP服务端
 (setq rustic-indent-method-chain t)    ;;开启链式方法调用的缩进风格
-;(setq eglot-rust-server 'rust-analyzer)    ;;Eglot开启rust-analyzer作为Rust的LSP服务端
-;(setq rustic-lsp-client 'eglot)    ;;使用Eglot作为Rust的LSP客户端
-;(setq-default eglot-workspace-configuration    ;;Eglot配置Gopls
-;   '((:gopls .
-;     ((staticcheck . t)
-;      (matcher . "CaseSensitive")))))
+;;(setq eglot-rust-server 'rust-analyzer)    ;;Eglot开启rust-analyzer作为Rust的LSP服务端
+;;(setq rustic-lsp-client 'eglot)    ;;使用Eglot作为Rust的LSP客户端
+;;(setq-default eglot-workspace-configuration    ;;Eglot配置Gopls
+;;   '((:gopls .
+;;     ((staticcheck . t)
+;;      (matcher . "CaseSensitive")))))
 (setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
@@ -462,7 +464,7 @@
 (global-set-key (kbd "C-s") 'save-buffer)    ;;保存文件
 (global-set-key (kbd "C-S-s") 'save-some-buffers)    ;;保存所有未保存的缓冲区
 (global-set-key (kbd "C-f") 'swiper)    ;;查找关键词
-;(global-set-key (kbd "C-S-f") 'counsel-ag)    ;;查找整个项目关键词(ag)
+;;(global-set-key (kbd "C-S-f") 'counsel-ag)    ;;查找整个项目关键词(ag)
 (global-set-key (kbd "C-S-f") 'counsel-rg)    ;;查找整个项目关键词(rg)
 (global-set-key (kbd "C-S-b") 'ivy-switch-buffer)    ;;查找历史/缓冲区文件
 (global-set-key (kbd "C-r") 'iedit-mode)    ;;替换关键词
