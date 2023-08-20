@@ -70,6 +70,8 @@
 (setq gdb-many-windows t)    ;;开启GDB多窗口调试模式
 (setq compile-command nil)    ;;默认编译参数 (把nil改成"参数"即可)
 (setq package-native-compile t)    ;;在安装包时支持提前本地编译
+(setq pixel-scroll-precision-large-scroll-height 60)    ;;支持像素滚动（鼠标）
+(setq pixel-scroll-precision-interpolation-factor 8.0)    ;;支持像素滚动（鼠标）
 
 ;;####=文档编码设置:=###############################################################################################
 (setq current-language-environment "UTF-8")    ;;设置中文环境
@@ -162,8 +164,6 @@
   (package-install 'wgrep))    ;;自动安装wgrep增强查找替换功能
 (when (not (package-installed-p 'vterm))
   (package-install 'vterm))    ;;自动安装vterm虚拟终端
-(when (not (package-installed-p 'use-package))
-  (package-install 'use-package))    ;;自动安装包管理模块
 (when (not (package-installed-p 'quelpa))
   (package-install 'quelpa))    ;;自动安装Quelpa模块
 (when (not (package-installed-p 'quelpa-use-package))
@@ -172,7 +172,6 @@
 ;;####=默认加载插件设置:=###########################################################################################
 (require 'quelpa)    ;;导入Quelpa模块
 (require 'quelpa-use-package)    ;;导入包管理Quelpa插件
-(require 'use-package)    ;;导入包管理模块
 (require 'undo-tree)    ;;导入反撤销功能
 (require 'js2-mode)    ;;导入JavaScript语言编辑模式
 (require 'rjsx-mode)    ;;导入React语言插件包

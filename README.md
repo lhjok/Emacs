@@ -14,10 +14,10 @@ libX11-devel libpng-devel pkgconfig texinfo libgccjit libgccjit-devel dbus-devel
 dbus-glib-devel freetype-devel glib2-devel cairo-devel harfbuzz-devel libtree-sitter-devel
 # (Stable) $ git checkout emacs-29
 $ ./autogen.sh
-$ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-gif \
+$ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-harfbuzz \
 --with-pop --with-tiff --with-rsvg --with-webp --with-cairo --with-modules --with-mailutils --with-jpeg \
---with-harfbuzz --with-json --with-dbus --with-xft --without-gpm --with-png --with-threads --with-pgtk \
---without-x --with-native-compilation=yes --with-tree-sitter --with-sqlite3 --with-wide-int
+--with-gif --with-json --with-dbus --with-xft --without-gpm --with-png --with-threads --with-tree-sitter \
+--without-x --with-pgtk --with-native-compilation=yes --with-sqlite3 --with-wide-int --with-xinput2
 $ make && make install
 ```
 
