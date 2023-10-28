@@ -59,10 +59,10 @@
 (setq-default line-spacing 2)    ;;设置代码行间距
 (setq c-default-style "linux")    ;;不缩进括号 (缩进方式)
 (defun sgml-mode-indent-setup ()
-  (setq sgml-basic-offset 2))
+  (setq sgml-basic-offset 4))
 (add-hook 'sgml-mode-hook 'sgml-mode-indent-setup)    ;;设置HTML缩进位数
 (defun nxml-mode-indent-setup ()
-  (setq nxml-child-indent 2))
+  (setq nxml-child-indent 4))
 (add-hook 'nxml-mode-hook 'nxml-mode-indent-setup)    ;;设置XML缩进位数
 (setq tab-stop-list (number-sequence 4 400 4))    ;;缩进列表位 (100个缩进位,每次缩4位)
 (transient-mark-mode 1)    ;;EmacsWiki里面写的
@@ -70,8 +70,8 @@
 (setq gdb-many-windows t)    ;;开启GDB多窗口调试模式
 (setq compile-command nil)    ;;默认编译参数 (把nil改成"参数"即可)
 (setq package-native-compile t)    ;;在安装包时支持提前本地编译
-(setq pixel-scroll-precision-large-scroll-height 60)    ;;支持像素滚动（鼠标）
-(setq pixel-scroll-precision-interpolation-factor 8.0)    ;;支持像素滚动（鼠标）
+;;(setq pixel-scroll-precision-large-scroll-height 60)    ;;支持像素滚动（鼠标）
+;;(setq pixel-scroll-precision-interpolation-factor 8.0)    ;;支持像素滚动（鼠标）
 
 ;;####=文档编码设置:=###############################################################################################
 (setq current-language-environment "UTF-8")    ;;设置中文环境
@@ -339,6 +339,7 @@
 (projectile-mode +1)    ;;开启项目projectile管理器
 (doom-modeline-mode 1)    ;;开启doom-modeline主题
 (load-library "hideshow")    ;;开启代码折叠功能
+(setq magit-show-long-lines-warning nil)    ;;关闭Magit长行警告
 (setq quelpa-update-melpa-p nil)    ;;禁止启动时更新MELPA存储库
 (setq quelpa-checkout-melpa-p nil)    ;;禁用所有MELPA存储库的获取
 (setenv "PATH" (concat (getenv "PATH") ":~/.cargo/bin"))    ;;手动添加PATH路径到Emacs终端环境
