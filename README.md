@@ -7,24 +7,25 @@
 
 ```sh
 $ git clone https://github.com/emacs-mirror/emacs.git
-######################################################################################################
+#####################################################################################################
 $ cd emacs && toolbox enter
 $ sudo dnf install -y make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg-devel libXpm-devel \
 giflib-devel libtiff-devel gnutls-devel ncurses-devel jansson-devel librsvg2-devel libXft-devel \
 libX11-devel libpng-devel pkgconfig texinfo libgccjit libgccjit-devel dbus-devel texi2html \
 dbus-glib-devel freetype-devel glib2-devel cairo-devel harfbuzz-devel libtree-sitter-devel
-######################################################################################################
+#####################################################################################################
 $ cd emacs && distrobox enter opensuse
 $ sudo zypper in git make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg8-devel \
 giflib-devel libgnutls-devel ncurses-devel libjansson-devel librsvg-devel libgccjit-devel \
 tree-sitter-devel makeinfo gawk libXpm-devel texi2html
-######################################################################################################
+#####################################################################################################
 # (Stable) $ git checkout emacs-29
 $ ./autogen.sh
 $ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-harfbuzz \
---with-pop --with-tiff --with-rsvg --with-webp --with-cairo --with-modules --with-mailutils --with-jpeg \
---with-gif --with-json --with-dbus --with-xft --without-gpm --with-png --with-threads --with-tree-sitter \
---without-x --with-pgtk --with-native-compilation=yes --with-sqlite3 --with-wide-int --with-xinput2
+--with-pop --with-tiff --with-rsvg --with-webp --with-cairo --with-modules --with-mailutils \
+--with-jpeg --with-gif --with-json --with-dbus --with-xft --without-gpm --with-png --with-threads \
+--with-tree-sitter --without-x --with-pgtk --with-native-compilation=yes --with-sqlite3 \
+--with-wide-int --with-xinput2
 $ make && make install
 ```
 
