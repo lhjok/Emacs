@@ -7,18 +7,18 @@
 
 ```sh
 $ git clone https://github.com/emacs-mirror/emacs.git
-#####################################################################################################
+####################################################################################################
 $ cd emacs && toolbox enter
 $ sudo dnf install -y make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg-devel libXpm-devel \
 giflib-devel libtiff-devel gnutls-devel ncurses-devel jansson-devel librsvg2-devel libXft-devel \
 libX11-devel libpng-devel pkgconfig texinfo libgccjit libgccjit-devel dbus-devel texi2html \
 dbus-glib-devel freetype-devel glib2-devel cairo-devel harfbuzz-devel libtree-sitter-devel
-#####################################################################################################
+####################################################################################################
 $ cd emacs && distrobox enter opensuse
 $ sudo zypper in git make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg8-devel \
 giflib-devel libgnutls-devel ncurses-devel libjansson-devel librsvg-devel libgccjit-devel \
 tree-sitter-devel makeinfo gawk libXpm-devel texi2html
-#####################################################################################################
+####################################################################################################
 # (Stable) $ git checkout emacs-29
 $ ./autogen.sh
 $ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-harfbuzz \
