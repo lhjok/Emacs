@@ -66,6 +66,8 @@ M-x package-refresh-contents
 $ npm install -g typescript
 $ pip install "python-lsp-server[all]"
 $ pip install -U jedi-language-server
+$ pipx install "python-lsp-server[all]"
+$ pipx install jedi-language-server
 $ go install golang.org/x/tools/gopls@latest
 $ rustup component add rls rust-analysis rust-src
 $ git clone https://github.com/rust-analyzer/rust-analyzer.git
