@@ -243,7 +243,7 @@
     (if (get-buffer "*compilation*")
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
-    (compile (concat "node " (buffer-name (current-buffer))))
+    (compile (concat "distrobox enter opensuse -- node " (buffer-name (current-buffer))))
     (end-of-buffer)))
 ;;一键编译并运行(Go语言)
 (defun go-quick-run()
@@ -252,7 +252,7 @@
     (if (get-buffer "*compilation*")
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
-    (compile (concat "go run " (buffer-name (current-buffer))))
+    (compile (concat "distrobox enter opensuse -- go run " (buffer-name (current-buffer))))
     (end-of-buffer)))
 ;;一键编译生成可执行文件(Go语言)
 (defun go-quick-build()
@@ -261,7 +261,7 @@
     (if (get-buffer "*compilation*")
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
-    (compile (concat "go build " (buffer-name (current-buffer))))
+    (compile (concat "distrobox enter opensuse -- go build " (buffer-name (current-buffer))))
     (end-of-buffer)))
 ;;一键编译并运行(Rust语言)
 (defun rust-compile-run()
@@ -271,7 +271,7 @@
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
     (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "cargo run")
+        (compile "distrobox enter opensuse -- cargo run")
       (compile (concat "rustc " (buffer-file-name))))
     (end-of-buffer)))
 ;;一键编译生成可执行文件(Rust语言)
@@ -282,7 +282,7 @@
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
     (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "cargo build")
+        (compile "distrobox enter opensuse -- cargo build")
       (compile (concat "rustc " (buffer-file-name))))
     (end-of-buffer)))
 ;;一键编译生成可执行文件(Rust语言-发布)
@@ -293,18 +293,9 @@
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
     (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "cargo build --release")
+        (compile "distrobox enter opensuse -- cargo build --release")
       (compile (concat "rustc " (buffer-file-name))))
     (end-of-buffer)))
-;;一键编译生成C++文件(C++语言)
-(defun cpp-quick-compile()
-  (interactive)
-  (progn
-    (if (get-buffer "*compilation*")
-        (progn (delete-windows-on (get-buffer "*compilation*"))
-               (kill-buffer "*compilation*")))
-    (compile (concat "g++ -Wall -o " (file-name-sans-extension (buffer-name))
-                     " " (buffer-name (current-buffer))))))
 
 ;;####=【Use-Package】设置区域:=####################################################################################
 (use-package rustic :ensure t)    ;;开启Rust语言编辑模式
@@ -346,8 +337,8 @@
 (setq exec-path (append exec-path '("~/.cargo/bin")))    ;;手动添加PATH路径到Emacs执行环境
 (setenv "PATH" (concat (getenv "PATH") ":~/.opt/go/bin"))    ;;手动添加PATH路径到Emacs终端环境
 (setq exec-path (append exec-path '("~/.opt/go/bin")))    ;;手动添加PATH路径到Emacs执行环境
-(setenv "PATH" (concat (getenv "PATH") ":~/.opt/node/bin"))    ;;手动添加PATH路径到Emacs终端环境
-(setq exec-path (append exec-path '("~/.opt/node/bin")))    ;;手动添加PATH路径到Emacs执行环境
+(setenv "PATH" (concat (getenv "PATH") ":~/.nvm/versions/node/v21.7.3/bin"))    ;;手动添加PATH路径到Emacs终端环境
+(setq exec-path (append exec-path '("~/.nvm/versions/node/v21.7.3/bin")))    ;;手动添加PATH路径到Emacs执行环境
 (setenv "PATH" (concat (getenv "PATH") ":~/.npm-global/bin"))    ;;手动添加PATH路径到Emacs终端环境
 (setq exec-path (append exec-path '("~/.npm-global/bin")))    ;;手动添加PATH路径到Emacs执行环境
 (set-face-attribute 'mode-line nil :family "Microsoft YaHei" :height 122)   ;;状态栏字体("Cantarell" 125)
@@ -446,7 +437,8 @@
 (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))    ;;指定保存位置
 (setq lsp-jedi-workspace-extra-paths
   (vconcat lsp-jedi-workspace-extra-paths
-    ["/var/home/lhjok/.local/lib/python3.11/site-packages"]))
+    ["~/.local/share/pipx/shared/lib/python3.11/site-packages"]))    ;;openSUSE Aeon 环境中使用
+;;    ["~/.local/lib/python3.11/site-packages"]))    ;;Fedora Silverblue 环境中使用
 (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
 
 ;;####=快捷键绑定:=#################################################################################################
@@ -517,11 +509,10 @@
 (global-set-key (kbd "<f8>") 'rust-compile-run)    ;;按"F8"一键编译并运行(Rust语言)
 (global-set-key (kbd "<C-f8>") 'rust-compile-build)    ;;按"Ctrl+F8"一键编译生成可执行文件(预览)
 (global-set-key (kbd "<C-S-f8>") 'rust-compile-build-release)    ;;按"Ctrl+Shifr+F8"一键编译生成可执行文件(发布)
-(global-set-key (kbd "<f9>") 'cpp-quick-compile)    ;;按"F9"一键编译生成C++文件(C++语言)
+(global-set-key (kbd "<f9>") 'nodejs-quick-run)    ;;按"F9"一键编译运行当前JS文件(JavaScript语言)
 (global-set-key (kbd "<f10>") 'symbol-overlay-put)    ;;添加或取消当前高亮相同词
 (global-set-key (kbd "<C-f10>") 'symbol-overlay-remove-all)    ;;关闭所有高亮相同词
 (global-set-key (kbd "<f12>") 'my-vterm-mode)    ;;按"F12"一键开启虚拟终端
-(global-set-key (kbd "<C-f12>") 'nodejs-quick-run)    ;;按"Ctrl+F12"一键编译运行当前JS文件(JavaScript语言)
 (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)    ;;人工智能Copilot键绑定
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
 (define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
