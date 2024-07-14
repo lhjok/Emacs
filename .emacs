@@ -243,7 +243,8 @@
     (if (get-buffer "*compilation*")
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
-    (compile (concat "distrobox enter opensuse -- node " (buffer-name (current-buffer))))
+    (compile (concat "distrobox enter opensuse -- node " (buffer-name (current-buffer))))  ;;openSUSE Aeon
+;;    (compile (concat "toolbox run node " (buffer-name (current-buffer))))    ;;Fedora Silverblue
     (end-of-buffer)))
 ;;一键编译并运行(Go语言)
 (defun go-quick-run()
@@ -252,7 +253,8 @@
     (if (get-buffer "*compilation*")
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
-    (compile (concat "distrobox enter opensuse -- go run " (buffer-name (current-buffer))))
+    (compile (concat "distrobox enter opensuse -- go run " (buffer-name (current-buffer))))  ;;openSUSE Aeon
+;;    (compile (concat "toolbox run go run " (buffer-name (current-buffer))))    ;;Fedora Silverblue
     (end-of-buffer)))
 ;;一键编译生成可执行文件(Go语言)
 (defun go-quick-build()
@@ -261,7 +263,8 @@
     (if (get-buffer "*compilation*")
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
-    (compile (concat "distrobox enter opensuse -- go build " (buffer-name (current-buffer))))
+    (compile (concat "distrobox enter opensuse -- go build " (buffer-name (current-buffer))))  ;;openSUSE Aeon
+;;(compile (concat "toolbox run go build " (buffer-name (current-buffer))))    ;;Fedora Silverblue
     (end-of-buffer)))
 ;;一键编译并运行(Rust语言)
 (defun rust-compile-run()
@@ -271,8 +274,10 @@
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
     (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "distrobox enter opensuse -- cargo run")
-      (compile (concat "rustc " (buffer-file-name))))
+        (compile "distrobox enter opensuse -- cargo run")    ;;openSUSE Aeon
+;;        (compile "toolbox run cargo run")    ;;Fedora Silverblue
+      (compile (concat "distrobox enter opensuse -- rustc " (buffer-file-name))))    ;;openSUSE Aeon
+;;      (compile (concat "toolbox run rustc " (buffer-file-name))))    ;;Fedora Silverblue
     (end-of-buffer)))
 ;;一键编译生成可执行文件(Rust语言)
 (defun rust-compile-build()
@@ -282,8 +287,10 @@
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
     (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "distrobox enter opensuse -- cargo build")
-      (compile (concat "rustc " (buffer-file-name))))
+        (compile "distrobox enter opensuse -- cargo build")    ;;openSUSE Aeon
+;;        (compile "toolbox run cargo build")    ;;Fedora Silverblue
+      (compile (concat "distrobox enter opensuse -- rustc " (buffer-file-name))))    ;;openSUSE Aeon
+;;      (compile (concat "toolbox run rustc " (buffer-file-name))))    ;;Fedora Silverblue
     (end-of-buffer)))
 ;;一键编译生成可执行文件(Rust语言-发布)
 (defun rust-compile-build-release()
@@ -293,8 +300,10 @@
         (progn (delete-windows-on (get-buffer "*compilation*"))
                (kill-buffer "*compilation*")))
     (if (locate-dominating-file (buffer-file-name) "Cargo.toml")
-        (compile "distrobox enter opensuse -- cargo build --release")
-      (compile (concat "rustc " (buffer-file-name))))
+        (compile "distrobox enter opensuse -- cargo build --release")    ;;openSUSE Aeon
+;;        (compile "toolbox run cargo build --release")    ;;Fedora Silverblue
+      (compile (concat "distrobox enter opensuse -- rustc " (buffer-file-name))))    ;;openSUSE Aeon
+;;      (compile (concat "toolbox run rustc " (buffer-file-name))))    ;;Fedora Silverblue
     (end-of-buffer)))
 
 ;;####=【Use-Package】设置区域:=####################################################################################
