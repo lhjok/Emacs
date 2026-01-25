@@ -24,7 +24,7 @@ $ git checkout emacs-30  # (Stable)
 $ ./autogen.sh
 $ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm \
 --with-harfbuzz --with-pop --with-tiff --with-rsvg --with-webp --with-cairo --with-modules \
---with-tree-sitter \--with-jpeg --with-gif --with-dbus --with-xft --without-gpm \
+--with-tree-sitter --with-jpeg --with-gif --with-dbus --with-xft --without-gpm \
 --with-png --with-threads --with-xinput2 --with-mailutils --without-x --with-pgtk \
 --with-native-compilation=yes --with-sqlite3 --with-wide-int
 $ make && make install
