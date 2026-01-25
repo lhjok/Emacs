@@ -19,13 +19,12 @@ $ sudo zypper in git make automake gcc gcc-c++ kernel-devel gtk3-devel libjpeg8-
 giflib-devel libgnutls-devel ncurses-devel libjansson-devel librsvg-devel libgccjit-devel \
 tree-sitter-devel makeinfo gawk libXpm-devel texi2html
 ####################################################################################################
-# (Stable) $ git checkout emacs-29
+$ git checkout emacs-30  # (Stable)
 $ ./autogen.sh
 $ ./configure --prefix=$HOME/.opt/emacs --exec-prefix=$HOME/.opt/emacs --with-xpm --with-harfbuzz \
---with-pop --with-tiff --with-rsvg --with-webp --with-cairo --with-modules --with-mailutils \
---with-jpeg --with-gif --with-json --with-dbus --with-xft --without-gpm --with-png --with-threads \
---with-tree-sitter --without-x --with-pgtk --with-native-compilation=yes --with-sqlite3 \
---with-wide-int --with-xinput2
+--with-pop --with-tiff --with-rsvg --with-webp --with-cairo --with-modules --with-tree-sitter \
+--with-jpeg --with-gif --with-dbus --with-xft --without-gpm --with-png --with-threads --with-xinput2 \
+--with-mailutils --without-x --with-pgtk --with-native-compilation=yes --with-sqlite3 --with-wide-int
 $ make && make install
 ```
 

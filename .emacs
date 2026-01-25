@@ -5,6 +5,8 @@
 (setq-default cursor-type 'bar)    ;;显示细条光标
 (global-font-lock-mode t)    ;;进行语法加亮
 (setq inhibit-startup-message t)    ;;关闭Emacs启动时的画面
+(setq flymake-err-line-patterns nil)    ;;关闭Flymake错误行模式
+(setq flymake-allowed-file-name-masks nil)    ;;关闭Flymake允许的文件名掩码
 (setq initial-scratch-message nil)    ;;关闭多余缓冲区内文字
 (setq message-log-max nil)    ;;清除"Messages"缓冲区信息
 (kill-buffer "*Messages*")    ;;关闭"Messages"缓冲区
@@ -323,13 +325,6 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package lsp-jedi :ensure t)
-(use-package copilot :quelpa
-  (copilot    ;;自动安装Copilot人工智能模块
-   :fetcher github
-   :repo "zerolfx/copilot.el"
-   :branch "main"
-   :files ("dist" "*.el")))
-(require 'copilot)
 
 ;;####=插件功能设置:=###############################################################################################
 (global-undo-tree-mode)    ;;开启反撤销功能
@@ -398,13 +393,6 @@
 (add-hook 'vterm-mode-hook (lambda()    ;;设置终端字体
   (set (make-local-variable 'buffer-face-mode-face) 'Cantarell)
   (buffer-face-mode t)))
-(add-hook 'prog-mode-hook 'copilot-mode)    ;;开启Copilot
-(add-to-list 'copilot-major-mode-alist '("go" . "go"))
-(add-to-list 'copilot-major-mode-alist '("rustic" . "rust"))
-(add-to-list 'copilot-major-mode-alist '("c++" . "cpp"))
-(add-to-list 'copilot-major-mode-alist '("js2" . "javascript"))
-(add-to-list 'copilot-major-mode-alist '("rjsx" . "typescriptreact"))
-(add-to-list 'copilot-major-mode-alist '("python" . "python"))
 ;;(put 'eglot-node 'flymake-overlay-control nil)    ;;关闭eglot-node覆盖flymake
 ;;(put 'eglot-warning 'flymake-overlay-control nil)    ;;关闭eglot-warning覆盖flymake
 ;;(put 'eglot-error 'flymake-overlay-control nil)    ;;关闭eglot-error覆盖flymake
@@ -522,7 +510,6 @@
 (global-set-key (kbd "<f10>") 'symbol-overlay-put)    ;;添加或取消当前高亮相同词
 (global-set-key (kbd "<C-f10>") 'symbol-overlay-remove-all)    ;;关闭所有高亮相同词
 (global-set-key (kbd "<f12>") 'my-vterm-mode)    ;;按"F12"一键开启虚拟终端
-(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)    ;;人工智能Copilot键绑定
 (define-key global-map (kbd "<S-down-mouse-1>") 'ignore)    ;;去除原来的键绑定
 (define-key global-map (kbd "<S-mouse-1>") 'mouse-save-then-kill)    ;;绑定"Shift"+鼠标左键=点选区域
 (global-unset-key (kbd "M-<down-mouse-1>"))    ;;去除原来的键绑定
