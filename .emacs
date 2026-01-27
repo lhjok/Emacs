@@ -220,7 +220,8 @@
   (flycheck-mode +1)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
-  (tide-hl-identifier-mode +1))
+  (tide-hl-identifier-mode +1)
+  (corfu-mode +1))
 ;;更改comint终端只读模式为可读写
 (defun my-compilation-mode()
   (interactive)
