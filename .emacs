@@ -132,8 +132,10 @@
   (package-install 'lsp-jedi))    ;;自动安装LSP-JEDI插件包
 (when (not (package-installed-p 'flycheck))
   (package-install 'flycheck))    ;;自动安装flycheck语法检查插件包
-(when (not (package-installed-p 'company))
-  (package-install 'company))    ;;自动安装company自动补全插件包
+(when (not (package-installed-p 'corfu))
+  (package-install 'corfu))    ;;自动安装corfu自动补全插件包
+(when (not (package-installed-p 'kind-icon))
+  (package-install 'kind-icon))    ;;自动安装kind-icon补全菜单图标插件包
 (when (not (package-installed-p 'symbol-overlay))
   (package-install 'symbol-overlay))    ;;自动安装symbol-overlay自动高亮相同词插件包
 (when (not (package-installed-p 'all-the-icons))
@@ -191,7 +193,8 @@
 (require 'python-mode)    ;;导入GO语言编辑模式
 (require 'go-mode)    ;;导入GO语言编辑模式
 (require 'flycheck)    ;;导入语法检查插件包
-(require 'company)    ;;导入自动补全插件包
+(require 'corfu)    ;;导入自动补全插件包
+(require 'kind-icon)    ;;导入补全菜单图标插件包
 (require 'symbol-overlay)    ;;导入自动高亮相同词插件包
 (require 'all-the-icons)    ;;导入all-the-icons图标主题插件包
 (require 'multiple-cursors)    ;;导入multiple-cursors多光标功能
@@ -217,8 +220,7 @@
   (flycheck-mode +1)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (company-mode +1))
+  (tide-hl-identifier-mode +1))
 ;;更改comint终端只读模式为可读写
 (defun my-compilation-mode()
   (interactive)
@@ -309,6 +311,11 @@
     (end-of-buffer)))
 
 ;;####=【Use-Package】设置区域:=####################################################################################
+(use-package corfu :custom (corfu-auto t)
+  :init (global-corfu-mode))    ;;开启自动补全功能
+(use-package kind-icon :ensure t :after corfu :custom    ;;开启补全菜单图标功能
+  (kind-icon-blend-background t) (kind-icon-default-face 'corfu-default)
+  :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 (use-package rustic :ensure t)    ;;开启Rust语言编辑模式
 (use-package all-the-icons :ensure t)    ;;开启all-the-icons图标主题
 (use-package treemacs :ensure t)    ;;开启treemacs文件浏览器
@@ -337,6 +344,9 @@
 (setq magit-show-long-lines-warning nil)    ;;关闭Magit长行警告
 (setq quelpa-update-melpa-p nil)    ;;禁止启动时更新MELPA存储库
 (setq quelpa-checkout-melpa-p nil)    ;;禁用所有MELPA存储库的获取
+(setq lsp-completion-show-detail nil)    ;;禁用补全菜单详情显示
+;; (setq lsp-completion-show-kind nil)    ;;禁用补全菜单类型标签显示
+(custom-set-faces '(corfu-current ((t (:background "#c6c7c7" :foreground "#383a42" :weight bold)))))
 (setenv "PATH" (concat (getenv "PATH") ":~/.cargo/bin"))    ;;手动添加PATH路径到Emacs终端环境
 (setq exec-path (append exec-path '("~/.cargo/bin")))    ;;手动添加PATH路径到Emacs执行环境
 (setenv "PATH" (concat (getenv "PATH") ":~/.opt/go/bin"))    ;;手动添加PATH路径到Emacs终端环境
@@ -378,7 +388,6 @@
 (add-hook 'js2-mode-hook #'setup-tide-mode)    ;;开启JavaScript语言Tide自动补全后端
 (add-hook 'rjsx-mode-hook #'setup-tide-mode)    ;;开启React语言Tide自动补全后端
 (add-hook 'typescript-mode-hook #'setup-tide-mode)    ;;开启TypeScript语言Tide自动补全后端
-(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'compilation-mode-hook 'my-compilation-mode)
@@ -415,10 +424,6 @@
 (setq lsp-auto-guess-root t)    ;;自动选项目根目录
 (when (not (display-graphic-p))
   (setq flycheck-indication-mode nil))
-(setq company-tooltip-limit 20)
-(setq company-idle-delay 0.2)
-(setq company-echo-delay 0)
-(setq company-begin-commands '(self-insert-command))
 (setq gofmt-command "goreturns")
 (setq special-display-buffer-names '("*compilation*"))    ;;分割编译窗口
 (setq special-display-function
