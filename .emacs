@@ -158,6 +158,8 @@
   (package-install 'projectile))    ;;自动安装projectile项目管理器
 (when (not (package-installed-p 'ivy))
   (package-install 'ivy))    ;;自动安装ivy缓冲区补全模块
+(when (not (package-installed-p 'avy))
+  (package-install 'avy))    ;;自动安装avy缓冲区可见文本跳转
 (when (not (package-installed-p 'counsel))
   (package-install 'counsel))    ;;自动安装counsel增强文件管理功能
 (when (not (package-installed-p 'swiper))
@@ -206,6 +208,7 @@
 (require 'popwin)    ;;导入popwin弹出窗口管理器
 (require 'projectile)    ;;导入projectile项目管理器
 (require 'ivy)    ;;导入ivy缓冲区补全模块
+(require 'avy)    ;;导入avy缓冲区可见文本跳转
 (require 'counsel)    ;;导入counsel增强文件管理功能
 (require 'swiper)    ;;导入swiper增强查找功能
 (require 'iedit)    ;;导入iedit增强替换功能
@@ -490,6 +493,8 @@
 (global-set-key (kbd "<C-left>") 'enlarge-window-horizontally)    ;;向左调整窗口大小
 (global-set-key (kbd "<C-right>") 'shrink-window-horizontally)    ;;向右调整窗口大小
 (global-set-key (kbd "<M-SPC>") 'hippie-expand)    ;;自带的自动补全
+(global-set-key (kbd "M-s") 'avy-goto-char-timer)    ;;用 Alt+s 快速搜索跳转
+(global-set-key (kbd "M-f") 'avy-goto-char)    ;;用 Alt+f 跳转到单字符
 (global-set-key (kbd "M-/") 'comment-dwim)    ;;自带的多行注释
 (global-set-key (kbd "C-+") 'start-kbd-macro)    ;;开始录制宏
 (global-set-key (kbd "C-=") 'end-kbd-macro)    ;;结束宏录制
